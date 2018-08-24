@@ -29,15 +29,17 @@ describe('<Tippy />', () => {
 
   test('calls onCreate() on mount, passing the instance back', () => {
     const spy = jest.fn()
-    const wrapper = shallow(
-      <Tippy onCreate={spy} content="tooltip">
-        <button />
-      </Tippy>
+    const wrapper = mount(
+      <div>
+        <Tippy onCreate={spy} content="tooltip">
+          <button>Hello</button>
+        </Tippy>
+      </div>
     )
     expect(spy.mock.calls.length).toBe(1)
-    const firstCallFirstArg = spy.mock.calls[0][0]
-    expect(firstCallFirstArg.popper).toBeDefined()
-    expect(firstCallFirstArg.reference).toBeDefined()
+    const arg = spy.mock.calls[0][0]
+    expect(arg.popper).toBeDefined()
+    expect(arg.reference).toBeDefined()
   })
 
   test('renders JSX inside content prop', () => {

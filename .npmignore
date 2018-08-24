@@ -2,3 +2,4 @@
 coverage
 src
 test
+package-lock.json

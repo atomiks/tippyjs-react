@@ -3,7 +3,7 @@ import tippy from 'tippy.js'
 import PropTypes from 'prop-types'
 
 const getNativeTippyProps = props => {
-  const { children, onCreate, onDestroy, ...tippyProps } = props
+  const { children, onCreate, ...tippyProps } = props
   return tippyProps
 }
 

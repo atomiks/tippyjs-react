@@ -3,3 +3,4 @@ coverage
 .devserver
 dist
 test/dev
+package-lock.json
