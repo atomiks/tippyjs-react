@@ -35,6 +35,9 @@ describe('<Tippy />', () => {
       </Tippy>
     )
     expect(spy.mock.calls.length).toBe(1)
+    const firstCallFirstArg = spy.mock.calls[0][0]
+    expect(firstCallFirstArg.popper).toBeDefined()
+    expect(firstCallFirstArg.reference).toBeDefined()
   })
 
   test('renders JSX inside content prop', () => {

@@ -9,7 +9,7 @@
     "build": "node build.js",
     "test": "jest --coverage"
   },
-  "author": "",
+  "author": "atomiks",
   "license": "MIT",
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>test/setup.js"
