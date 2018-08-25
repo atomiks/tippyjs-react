@@ -40,6 +40,7 @@ describe('<Tippy />', () => {
     const arg = spy.mock.calls[0][0]
     expect(arg.popper).toBeDefined()
     expect(arg.reference).toBeDefined()
+    wrapper.unmount()
   })
 
   test('renders JSX inside content prop', () => {
