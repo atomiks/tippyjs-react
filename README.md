@@ -14,10 +14,15 @@ Requires React 16.2+ and `prop-types` if using via CDN.
 
 ## Usage
 
+Import the Tippy component and Tippy's CSS.
+
+Required: tooltip content as `props.content` and a single element child (reference) as `props.children`.
+
 ```jsx
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Tippy from '@tippy.js/react'
+import 'tippy.js/dist/tippy.css'
 
 const RegularTooltip = () => (
   <Tippy content="Hello">
