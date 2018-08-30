@@ -5,7 +5,6 @@ const resolve = require('rollup-plugin-node-resolve')
 
 const pluginBabel = babel({
   babelrc: false,
-  externalHelpers: true,
   exclude: 'node_modules/**',
   presets: [['env', { modules: false }], 'react'],
   plugins: [
