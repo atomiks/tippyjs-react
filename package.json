@@ -37,5 +37,16 @@
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-babel-minify": "^5.0.0",
     "rollup-plugin-node-resolve": "^3.3.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atomiks/tippy.js-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/atomiks/tippy.js-react/issues"
+  },
+  "homepage": "https://github.com/atomiks/tippy.js-react#readme"
 }
