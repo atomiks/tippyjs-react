@@ -1,6 +1,6 @@
 {
   "name": "@tippy.js/react",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "description": "React component for Tippy.js",
   "main": "dist/Tippy.js",
   "module": "dist/esm/Tippy.js",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "tippy.js": "^3.0.0-alpha.3"
+    "tippy.js": "^3.0.0-beta.0"
   },
   "peerDependencies": {
     "react": ">= 16.2"
