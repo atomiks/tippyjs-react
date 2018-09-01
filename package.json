@@ -19,7 +19,7 @@
     "tippy.js": "^3.0.0-beta.0"
   },
   "peerDependencies": {
-    "react": ">= 16.2"
+    "react": ">= 16.3"
   },
   "devDependencies": {
     "babel-jest": "^23.4.2",
