@@ -19,7 +19,7 @@ const pluginResolve = resolve()
 const rollupConfig = (...plugins) => ({
   input: './src/Tippy.js',
   plugins: [pluginBabel, pluginResolve, ...plugins],
-  external: ['react', 'prop-types']
+  external: ['tippy.js', 'react', 'react-dom', 'prop-types']
 })
 const output = format => file => ({
   name: 'Tippy',
@@ -27,9 +27,10 @@ const output = format => file => ({
   file,
   sourcemap: true,
   globals: {
+    'tippy.js': 'tippy',
     react: 'React',
-    'prop-types': 'PropTypes',
-    'tippy.js': 'tippy'
+    'react-dom': 'ReactDOM',
+    'prop-types': 'PropTypes'
   }
 })
 

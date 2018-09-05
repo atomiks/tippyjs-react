@@ -1,6 +1,6 @@
 # @tippy.js/react
 
-React wrapper component for Tippy.js 3.
+React component for Tippy.js 3.
 
 ## Installation
 
@@ -10,7 +10,7 @@ npm i @tippy.js/react
 
 CDN: https://unpkg.com/@tippy.js/react
 
-Requires React 16.3+ and `prop-types` if using via CDN.
+Requires React 16.3+, `prop-types`, and `tippy.js` if using via CDN.
 
 ## Usage
 
@@ -65,8 +65,35 @@ const App = () => (
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
-See the [Tippy.js docs](https://atomiks.github.io/tippyjs/) for the rest of the props
-you can supply.
+### Component as a child
+
+Use `React.forwardRef()`:
+
+```jsx
+const withForwardRef = Comp => {
+  return React.forwardRef((props, ref) => (
+    <Comp {...props} forwardedRef={ref} />
+  ))
+}
+
+const Button = withForwardRef(
+  class extends React.Component {
+    render() {
+      return <button ref={this.props.forwardedRef}>My button</button>
+    }
+  }
+)
+
+const App = () => (
+  <main>
+    <Tippy>
+      <Button />
+    </Tippy>
+  </main>
+)
+```
+
+See the [Tippy.js docs](https://atomiks.github.io/tippyjs/) for the rest of the props you can supply.
 
 ## License
 
