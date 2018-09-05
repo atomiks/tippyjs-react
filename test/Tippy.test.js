@@ -15,6 +15,7 @@ describe('<Tippy />', () => {
         .first()
         .equals(<button />)
     ).toBe(true)
+    wrapper.unmount()
   })
 
   test('adds a tippy instance to the child node', () => {
@@ -100,18 +101,11 @@ describe('<Tippy />', () => {
   })
 
   test('component as a child', () => {
-    const withForwardRef = Comp => {
-      return React.forwardRef((props, ref) => (
-        <Comp {...props} forwardRef={ref} />
-      ))
-    }
-    const Button = withForwardRef(
-      class extends React.Component {
-        render() {
-          return <button ref={this.props.forwardRef}>My button</button>
-        }
+    class Button extends React.Component {
+      render() {
+        return <button>My button</button>
       }
-    )
+    }
     const wrapper = mount(
       <div>
         <Tippy content="tooltip">
