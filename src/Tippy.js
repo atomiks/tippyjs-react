@@ -1,6 +1,7 @@
 import React from 'react'
-import tippy from 'tippy.js'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import tippy from 'tippy.js'
 
 const getNativeTippyProps = props => {
   const { children, onCreate, ...tippyProps } = props
@@ -8,7 +9,6 @@ const getNativeTippyProps = props => {
 }
 
 class Tippy extends React.Component {
-  reference = React.createRef()
   content = React.createRef()
 
   static propTypes = {
@@ -24,7 +24,7 @@ class Tippy extends React.Component {
   }
 
   componentDidMount() {
-    this.tip = tippy.one(this.reference.current, {
+    this.tip = tippy.one(ReactDOM.findDOMNode(this), {
       ...getNativeTippyProps(this.props),
       content: this.getContent()
     })
@@ -46,13 +46,11 @@ class Tippy extends React.Component {
   }
 
   render() {
-    const { children, content } = this.props
-
     return (
       <React.Fragment>
-        {React.cloneElement(children, { ref: this.reference })}
-        {React.isValidElement(content) && (
-          <div ref={this.content}>{content}</div>
+        {this.props.children}
+        {React.isValidElement(this.props.content) && (
+          <div ref={this.content}>{this.props.content}</div>
         )}
       </React.Fragment>
     )

@@ -1,10 +1,10 @@
 import React from 'react'
 import Tippy from '../src/Tippy'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 
 describe('<Tippy />', () => {
   test('renders only the child element', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <Tippy content="tooltip">
         <button />
       </Tippy>
@@ -97,5 +97,29 @@ describe('<Tippy />', () => {
       wrapper.unmount()
       done()
     })
+  })
+
+  test('component as a child', () => {
+    const withForwardRef = Comp => {
+      return React.forwardRef((props, ref) => (
+        <Comp {...props} forwardRef={ref} />
+      ))
+    }
+    const Button = withForwardRef(
+      class extends React.Component {
+        render() {
+          return <button ref={this.props.forwardRef}>My button</button>
+        }
+      }
+    )
+    const wrapper = mount(
+      <div>
+        <Tippy content="tooltip">
+          <Button />
+        </Tippy>
+      </div>
+    )
+    expect(wrapper.find(Tippy).getDOMNode()._tippy).toBeDefined()
+    wrapper.unmount()
   })
 })
