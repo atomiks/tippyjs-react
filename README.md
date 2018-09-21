@@ -67,8 +67,6 @@ ReactDOM.render(<App />, document.getElementById('root'))
 
 See the [Tippy.js docs](https://atomiks.github.io/tippyjs/) for the rest of the props you can supply.
 
-> NOTE: The above docs are still v2. See the [3.0.0-alpha.0 release](https://github.com/atomiks/tippyjs/releases/tag/v3.0.0-alpha.0) for the breaking changes to use this component.
-
 ## License
 
 MIT
