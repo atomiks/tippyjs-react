@@ -1,6 +1,6 @@
 # @tippy.js/react
 
-React component for Tippy.js 3.
+React component for [Tippy.js](https://github.com/atomiks/tippyjs) 3.
 
 ## Installation
 
