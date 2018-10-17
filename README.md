@@ -10,7 +10,7 @@ npm i @tippy.js/react
 
 CDN: https://unpkg.com/@tippy.js/react
 
-Requires React 16.3+, `prop-types`, and `tippy.js` if using via CDN.
+Requires React 16.2+, `prop-types`, and `tippy.js` if using via CDN.
 
 ## Usage
 
