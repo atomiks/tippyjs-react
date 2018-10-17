@@ -6,7 +6,6 @@
   "module": "dist/esm/Tippy.js",
   "scripts": {
     "dev": "parcel test/dev/index.html -d .devserver --no-cache --open",
-    "ssr": "next",
     "build": "node build.js",
     "test": "jest --coverage"
   },
