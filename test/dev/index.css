@@ -1,0 +1,17 @@
+body {
+  font-family: sans-serif;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+button {
+  border: none;
+  font-size: 18px;
+  background: #eee;
+  margin-right: 10px;
+  padding: 10px;
+}
