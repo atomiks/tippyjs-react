@@ -1,6 +1,7 @@
 import React from 'react'
 import Tippy from '../src/Tippy'
 import { mount } from 'enzyme'
+import ReactDOMServer from 'react-dom/server'
 
 describe('<Tippy />', () => {
   test('renders only the child element', () => {
@@ -115,5 +116,15 @@ describe('<Tippy />', () => {
     )
     expect(wrapper.find(Tippy).getDOMNode()._tippy).toBeDefined()
     wrapper.unmount()
+  })
+
+  test('tooltip content is not rendered to the DOM', () => {
+    expect(
+      ReactDOMServer.renderToString(
+        <Tippy content={<div>Tooltip</div>}>
+          <button />
+        </Tippy>
+      ).includes('<div>Tooltip</div>')
+    ).toBe(false)
   })
 })

@@ -6,11 +6,10 @@ const resolve = require('rollup-plugin-node-resolve')
 const pluginBabel = babel({
   babelrc: false,
   exclude: 'node_modules/**',
-  presets: [['env', { modules: false }], 'react'],
+  presets: ['@babel/preset-env', '@babel/preset-react'],
   plugins: [
-    'external-helpers',
-    'transform-class-properties',
-    'transform-object-rest-spread'
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ['@babel/plugin-proposal-object-rest-spread', { loose: true }]
   ]
 })
 const pluginMinify = minify({ comments: false })

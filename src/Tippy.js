@@ -3,39 +3,48 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 
+// Avoid Babel's large '_objectWithoutProperties' helper function
 const getNativeTippyProps = props => {
-  const { children, onCreate, ...tippyProps } = props
-  return tippyProps
+  const nativeProps = {}
+  for (const prop in props) {
+    if (prop !== 'children' && prop !== 'onCreate') {
+      nativeProps[prop] = props[prop]
+    }
+  }
+  return nativeProps
 }
 
 class Tippy extends React.Component {
-  content = React.createRef()
+  state = { isMounted: false }
+
+  container = typeof document !== 'undefined' && document.createElement('div')
 
   static propTypes = {
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
       .isRequired,
-    children: PropTypes.element.isRequired
+    children: PropTypes.element.isRequired,
+    onCreate: PropTypes.func
   }
 
-  getContent() {
+  get isReactElementContent() {
     return React.isValidElement(this.props.content)
-      ? this.content.current
-      : this.props.content
+  }
+
+  get options() {
+    return {
+      ...getNativeTippyProps(this.props),
+      content: this.isReactElementContent ? this.container : this.props.content
+    }
   }
 
   componentDidMount() {
-    this.tip = tippy.one(ReactDOM.findDOMNode(this), {
-      ...getNativeTippyProps(this.props),
-      content: this.getContent()
-    })
+    this.setState({ isMounted: true })
+    this.tip = tippy.one(ReactDOM.findDOMNode(this), this.options)
     this.props.onCreate && this.props.onCreate(this.tip)
   }
 
   componentDidUpdate() {
-    this.tip.set({
-      ...getNativeTippyProps(this.props),
-      content: this.getContent()
-    })
+    this.tip.set(this.options)
   }
 
   componentWillUnmount() {
@@ -49,9 +58,9 @@ class Tippy extends React.Component {
     return (
       <React.Fragment>
         {this.props.children}
-        {React.isValidElement(this.props.content) && (
-          <div ref={this.content}>{this.props.content}</div>
-        )}
+        {this.isReactElementContent &&
+          this.state.isMounted &&
+          ReactDOM.createPortal(this.props.content, this.container)}
       </React.Fragment>
     )
   }
