@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 
-const isBrowser = typeof window !== 'undefined'
-
 const getNativeTippyProps = props => {
   const { children, onCreate, ...tippyProps } = props
   return tippyProps
@@ -13,7 +11,7 @@ const getNativeTippyProps = props => {
 class Tippy extends React.Component {
   state = { isMounted: false }
 
-  container = isBrowser && document.createElement('div')
+  container = typeof document !== 'undefined' && document.createElement('div')
 
   static propTypes = {
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
@@ -26,14 +24,10 @@ class Tippy extends React.Component {
     return React.isValidElement(this.props.content)
   }
 
-  get content() {
-    return this.isReactElementContent ? this.container : this.props.content
-  }
-
   get options() {
     return {
       ...getNativeTippyProps(this.props),
-      content: this.content
+      content: this.isReactElementContent ? this.container : this.props.content
     }
   }
 
@@ -58,8 +52,7 @@ class Tippy extends React.Component {
     return (
       <React.Fragment>
         {this.props.children}
-        {isBrowser &&
-          this.isReactElementContent &&
+        {this.isReactElementContent &&
           this.state.isMounted &&
           ReactDOM.createPortal(this.props.content, this.container)}
       </React.Fragment>
