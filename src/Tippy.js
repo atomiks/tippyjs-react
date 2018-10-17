@@ -15,6 +15,13 @@ class Tippy extends React.Component {
 
   container = isBrowser && document.createElement('div')
 
+  static propTypes = {
+    content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+      .isRequired,
+    children: PropTypes.element.isRequired,
+    onCreate: PropTypes.func
+  }
+
   get isReactElementContent() {
     return React.isValidElement(this.props.content)
   }
