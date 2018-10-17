@@ -1,6 +1,5 @@
 node_modules
 coverage
 .devserver
-.next
 dist
 package-lock.json
