@@ -1,7 +1,6 @@
 {
-  "presets": ["env", "react"],
+  "presets": ["next/babel", "@babel/preset-env", "@babel/preset-react"],
   "plugins": [
-    "transform-class-properties",
-    "transform-object-rest-spread"
+    "@babel/plugin-proposal-class-properties"
   ]
 }

@@ -3,9 +3,15 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 
+// Avoid Babel's large '_objectWithoutProperties' helper function
 const getNativeTippyProps = props => {
-  const { children, onCreate, ...tippyProps } = props
-  return tippyProps
+  const nativeProps = {}
+  for (const prop in props) {
+    if (prop !== 'children' && prop !== 'onCreate') {
+      nativeProps[prop] = props[prop]
+    }
+  }
+  return nativeProps
 }
 
 class Tippy extends React.Component {
