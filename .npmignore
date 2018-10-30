@@ -3,3 +3,5 @@ coverage
 src
 test
 package-lock.json
+.babelrc
+build.js
