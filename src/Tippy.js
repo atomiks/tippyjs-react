@@ -49,15 +49,17 @@ class Tippy extends React.Component {
 
     this.tip = tippy.one(ReactDOM.findDOMNode(this), this.options)
 
-    if (this.props.onCreate) {
-      this.props.onCreate(this.tip)
+    const { onCreate, isEnabled, isVisible } = this.props
+
+    if (onCreate) {
+      onCreate(this.tip)
     }
 
-    if (this.props.isEnabled === false) {
+    if (isEnabled === false) {
       this.tip.disable()
     }
 
-    if (this.isManualTrigger && this.props.isVisible === true) {
+    if (this.isManualTrigger && isVisible === true) {
       this.tip.show()
     }
   }
@@ -65,16 +67,18 @@ class Tippy extends React.Component {
   componentDidUpdate() {
     this.tip.set(this.options)
 
-    if (this.props.isEnabled === true) {
+    const { isEnabled, isVisible } = this.props
+
+    if (isEnabled === true) {
       this.tip.enable()
-    } else if (this.props.isEnabled === false) {
+    } else if (isEnabled === false) {
       this.tip.disable()
     }
 
     if (this.isManualTrigger) {
-      if (this.props.isVisible === true) {
+      if (isVisible === true) {
         this.tip.show()
-      } else if (this.props.isVisible === false) {
+      } else if (isVisible === false) {
         this.tip.hide()
       }
     }
