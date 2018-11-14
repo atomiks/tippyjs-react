@@ -127,4 +127,104 @@ describe('<Tippy />', () => {
       ).includes('<div>Tooltip</div>')
     ).toBe(false)
   })
+
+  function initialIsEnabledAs(bool) {
+    return class extends React.Component {
+      state = {
+        isEnabled: bool
+      }
+      render() {
+        return (
+          <Tippy content="tooltip" isEnabled={this.state.isEnabled}>
+            <button />
+          </Tippy>
+        )
+      }
+    }
+  }
+
+  test('props.isEnabled true initially', done => {
+    const EnabledInit = initialIsEnabledAs(true)
+    const enabledWrapper = mount(<EnabledInit />)
+    const enabledTip = enabledWrapper.getDOMNode()._tippy
+
+    expect(enabledTip.state.isEnabled).toBe(true)
+
+    enabledWrapper.setState({ isEnabled: true }, () => {
+      expect(enabledTip.state.isEnabled).toBe(true)
+      enabledWrapper.setState({ isEnabled: false }, () => {
+        expect(enabledTip.state.isEnabled).toBe(false)
+        enabledWrapper.unmount()
+        done()
+      })
+    })
+  })
+
+  test('props.isEnabled false initially', done => {
+    const DisabledInit = initialIsEnabledAs(false)
+    const disabledWrapper = mount(<DisabledInit />)
+    const disabledTip = disabledWrapper.getDOMNode()._tippy
+
+    expect(disabledTip.state.isEnabled).toBe(false)
+
+    disabledWrapper.setState({ isEnabled: false }, () => {
+      expect(disabledTip.state.isEnabled).toBe(false)
+      disabledWrapper.setState({ isEnabled: true }, () => {
+        expect(disabledTip.state.isEnabled).toBe(true)
+        disabledWrapper.unmount()
+        done()
+      })
+    })
+  })
+
+  function initialIsVisibleAs(bool) {
+    return class extends React.Component {
+      state = {
+        isVisible: bool
+      }
+      render() {
+        return (
+          <Tippy
+            content="tooltip"
+            trigger="manual"
+            isVisible={this.state.isVisible}
+          >
+            <button />
+          </Tippy>
+        )
+      }
+    }
+  }
+
+  test('props.isVisible true initially', done => {
+    const VisibleInit = initialIsVisibleAs(true)
+    const visibleWrapper = mount(<VisibleInit />)
+    const visibleTip = visibleWrapper.getDOMNode()._tippy
+
+    expect(visibleTip.state.isVisible).toBe(true)
+
+    visibleWrapper.setState({ isVisible: true }, () => {
+      expect(visibleTip.state.isVisible).toBe(true)
+      visibleWrapper.setState({ isVisible: false }, () => {
+        expect(visibleTip.state.isVisible).toBe(false)
+        done()
+      })
+    })
+  })
+
+  test('props.isVisible false initially', done => {
+    const HiddenInit = initialIsVisibleAs(false)
+    const hiddenWrapper = mount(<HiddenInit />)
+    const hiddenTip = hiddenWrapper.getDOMNode()._tippy
+
+    expect(hiddenTip.state.isVisible).toBe(false)
+
+    hiddenWrapper.setState({ isVisible: false }, () => {
+      expect(hiddenTip.state.isVisible).toBe(false)
+      hiddenWrapper.setState({ isVisible: true }, () => {
+        expect(hiddenTip.state.isVisible).toBe(true)
+        done()
+      })
+    })
+  })
 })

@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 
-// Avoid Babel's large '_objectWithoutProperties' helper function
+// These props are not native to `tippy.js` and are specific to React only.
+const REACT_ONLY_PROPS = ['children', 'onCreate', 'isVisible', 'isEnabled']
+
+// Avoid Babel's large '_objectWithoutProperties' helper function.
 const getNativeTippyProps = props => {
   const nativeProps = {}
   for (const prop in props) {
-    if (prop !== 'children' && prop !== 'onCreate') {
+    if (REACT_ONLY_PROPS.indexOf(prop) === -1) {
       nativeProps[prop] = props[prop]
     }
   }
@@ -37,14 +40,44 @@ class Tippy extends React.Component {
     }
   }
 
+  get isManualTrigger() {
+    return this.props.trigger === 'manual'
+  }
+
   componentDidMount() {
     this.setState({ isMounted: true })
+
     this.tip = tippy.one(ReactDOM.findDOMNode(this), this.options)
-    this.props.onCreate && this.props.onCreate(this.tip)
+
+    if (this.props.onCreate) {
+      this.props.onCreate(this.tip)
+    }
+
+    if (this.props.isEnabled === false) {
+      this.tip.disable()
+    }
+
+    if (this.isManualTrigger && this.props.isVisible === true) {
+      this.tip.show()
+    }
   }
 
   componentDidUpdate() {
     this.tip.set(this.options)
+
+    if (this.props.isEnabled === true) {
+      this.tip.enable()
+    } else if (this.props.isEnabled === false) {
+      this.tip.disable()
+    }
+
+    if (this.isManualTrigger) {
+      if (this.props.isVisible === true) {
+        this.tip.show()
+      } else if (this.props.isVisible === false) {
+        this.tip.hide()
+      }
+    }
   }
 
   componentWillUnmount() {
