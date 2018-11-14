@@ -26,7 +26,9 @@ class Tippy extends React.Component {
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
       .isRequired,
     children: PropTypes.element.isRequired,
-    onCreate: PropTypes.func
+    onCreate: PropTypes.func,
+    isVisible: PropTypes.bool,
+    isEnabled: PropTypes.bool
   }
 
   get isReactElementContent() {
