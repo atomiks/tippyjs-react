@@ -144,34 +144,34 @@ describe('<Tippy />', () => {
   }
 
   test('props.isEnabled true initially', done => {
-    const EnabledInit = initialIsEnabledAs(true)
-    const enabledWrapper = mount(<EnabledInit />)
-    const enabledTip = enabledWrapper.getDOMNode()._tippy
+    const Component = initialIsEnabledAs(true)
+    const wrapper = mount(<Component />)
+    const tip = wrapper.getDOMNode()._tippy
 
-    expect(enabledTip.state.isEnabled).toBe(true)
+    expect(tip.state.isEnabled).toBe(true)
 
-    enabledWrapper.setState({ isEnabled: true }, () => {
-      expect(enabledTip.state.isEnabled).toBe(true)
-      enabledWrapper.setState({ isEnabled: false }, () => {
-        expect(enabledTip.state.isEnabled).toBe(false)
-        enabledWrapper.unmount()
+    wrapper.setState({ isEnabled: true }, () => {
+      expect(tip.state.isEnabled).toBe(true)
+      wrapper.setState({ isEnabled: false }, () => {
+        expect(tip.state.isEnabled).toBe(false)
+        wrapper.unmount()
         done()
       })
     })
   })
 
   test('props.isEnabled false initially', done => {
-    const DisabledInit = initialIsEnabledAs(false)
-    const disabledWrapper = mount(<DisabledInit />)
-    const disabledTip = disabledWrapper.getDOMNode()._tippy
+    const Component = initialIsEnabledAs(false)
+    const wrapper = mount(<Component />)
+    const tip = wrapper.getDOMNode()._tippy
 
-    expect(disabledTip.state.isEnabled).toBe(false)
+    expect(tip.state.isEnabled).toBe(false)
 
-    disabledWrapper.setState({ isEnabled: false }, () => {
-      expect(disabledTip.state.isEnabled).toBe(false)
-      disabledWrapper.setState({ isEnabled: true }, () => {
-        expect(disabledTip.state.isEnabled).toBe(true)
-        disabledWrapper.unmount()
+    wrapper.setState({ isEnabled: false }, () => {
+      expect(tip.state.isEnabled).toBe(false)
+      wrapper.setState({ isEnabled: true }, () => {
+        expect(tip.state.isEnabled).toBe(true)
+        wrapper.unmount()
         done()
       })
     })
@@ -197,32 +197,34 @@ describe('<Tippy />', () => {
   }
 
   test('props.isVisible true initially', done => {
-    const VisibleInit = initialIsVisibleAs(true)
-    const visibleWrapper = mount(<VisibleInit />)
-    const visibleTip = visibleWrapper.getDOMNode()._tippy
+    const Component = initialIsVisibleAs(true)
+    const wrapper = mount(<Component />)
+    const tip = wrapper.getDOMNode()._tippy
 
-    expect(visibleTip.state.isVisible).toBe(true)
+    expect(tip.state.isVisible).toBe(true)
 
-    visibleWrapper.setState({ isVisible: true }, () => {
-      expect(visibleTip.state.isVisible).toBe(true)
-      visibleWrapper.setState({ isVisible: false }, () => {
-        expect(visibleTip.state.isVisible).toBe(false)
+    wrapper.setState({ isVisible: true }, () => {
+      expect(tip.state.isVisible).toBe(true)
+      wrapper.setState({ isVisible: false }, () => {
+        expect(tip.state.isVisible).toBe(false)
+        wrapper.unmount()
         done()
       })
     })
   })
 
   test('props.isVisible false initially', done => {
-    const HiddenInit = initialIsVisibleAs(false)
-    const hiddenWrapper = mount(<HiddenInit />)
-    const hiddenTip = hiddenWrapper.getDOMNode()._tippy
+    const Component = initialIsVisibleAs(false)
+    const wrapper = mount(<Component />)
+    const tip = wrapper.getDOMNode()._tippy
 
-    expect(hiddenTip.state.isVisible).toBe(false)
+    expect(tip.state.isVisible).toBe(false)
 
-    hiddenWrapper.setState({ isVisible: false }, () => {
-      expect(hiddenTip.state.isVisible).toBe(false)
-      hiddenWrapper.setState({ isVisible: true }, () => {
-        expect(hiddenTip.state.isVisible).toBe(true)
+    wrapper.setState({ isVisible: false }, () => {
+      expect(tip.state.isVisible).toBe(false)
+      wrapper.setState({ isVisible: true }, () => {
+        expect(tip.state.isVisible).toBe(true)
+        wrapper.unmount()
         done()
       })
     })
