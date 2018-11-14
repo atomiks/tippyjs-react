@@ -4,6 +4,7 @@
   "description": "React component for Tippy.js",
   "main": "dist/Tippy.js",
   "module": "dist/esm/Tippy.js",
+  "types": "index.d.ts",
   "scripts": {
     "dev": "parcel test/dev/index.html -d .devserver --no-cache --open",
     "build": "node build.js",
