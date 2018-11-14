@@ -67,23 +67,25 @@ ReactDOM.render(<App />, document.getElementById('root'))
 
 See the [Tippy.js docs](https://atomiks.github.io/tippyjs/) for the rest of the props you can supply.
 
-## Default props and static methods
+## Default props and themes
 
-You can create a component file named `Tippy.js` with your necessary defaults, static method calls (on the vanilla module), and theme imports to set up the component. From this file, you can import the component.
+You can create a new component file that imports the component and its CSS, themes etc., and sets the default props. From this file, you can import the component throughout your app.
 
 ```js
 import Tippy from '@tippy.js/react'
-import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/dist/themes/translucent.css'
 
-tippy.useCapture()
-
+// `performance: true` disables data-tippy-* attributes as they are unnecessary
+// in React and slow down initialization.
 Tippy.defaultProps = {
   performance: true
 }
 
 export default Tippy
+
+// In another file
+import Tippy from './Tippy'
 ```
 
 As an example, you might want to distinguish between a tooltip and a popover by creating a separate component for both.
