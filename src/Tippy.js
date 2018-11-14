@@ -52,6 +52,9 @@ class Tippy extends React.Component {
       this.tip.destroy()
       this.tip = null
     }
+    if (this.container) {
+      document.body.removeChild(this.container)
+    }
   }
 
   render() {
