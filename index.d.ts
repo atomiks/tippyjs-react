@@ -4,8 +4,8 @@ import { Instance, Props } from 'tippy.js';
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
 export interface TippyProps extends Omit<Props, 'content'> {
-  content: React.ReactNode | string
-  children: React.ReactNode
+  content: React.ReactElement<any> | string
+  children: React.ReactElement<any>
   onCreate?: (tip: Instance) => void
 }
 
