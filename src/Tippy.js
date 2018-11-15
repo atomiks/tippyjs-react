@@ -7,14 +7,13 @@ import tippy from 'tippy.js'
 const REACT_ONLY_PROPS = ['children', 'onCreate', 'isVisible', 'isEnabled']
 
 // Avoid Babel's large '_objectWithoutProperties' helper function.
-const getNativeTippyProps = props => {
-  const nativeProps = {}
-  for (const prop in props) {
-    if (REACT_ONLY_PROPS.indexOf(prop) === -1) {
-      nativeProps[prop] = props[prop]
+function getNativeTippyProps(props) {
+  return Object.keys(props).reduce((acc, key) => {
+    if (REACT_ONLY_PROPS.indexOf(key) === -1) {
+      acc[key] = props[key]
     }
-  }
-  return nativeProps
+    return acc
+  }, {})
 }
 
 class Tippy extends React.Component {
