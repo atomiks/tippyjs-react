@@ -72,24 +72,24 @@ class Tippy extends React.Component {
 
     if (isEnabled === true) {
       this.tip.enable()
-    } else if (isEnabled === false) {
+    }
+    if (isEnabled === false) {
       this.tip.disable()
     }
 
     if (this.isManualTrigger) {
       if (isVisible === true) {
         this.tip.show()
-      } else if (isVisible === false) {
+      }
+      if (isVisible === false) {
         this.tip.hide()
       }
     }
   }
 
   componentWillUnmount() {
-    if (this.tip) {
-      this.tip.destroy()
-      this.tip = null
-    }
+    this.tip.destroy()
+    this.tip = null
   }
 
   render() {
