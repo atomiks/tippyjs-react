@@ -101,6 +101,10 @@ class App extends Component {
 }
 ```
 
+> **Note 1**: You should also set the `hideOnClick` prop to `false` if you don't want the tippy to hide when the user clicks on the document somewhere.
+
+> **Note 2**: Use this prop instead Tippy's native `showOnInit` prop. The native prop just shows the tippy on init but won't respond to prop changes.
+
 ### `onCreate?: (tip: Instance) => void`
 
 Callback invoked when the Tippy instance has been created. Use this when you need to store the Tippy instance on the component.
