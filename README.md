@@ -42,30 +42,84 @@ const TooltipWithProps = () => (
   </Tippy>
 )
 
-// Special `onCreate` callback prop that passes the tippy instance
-class TooltipWithOnCreate extends React.Component {
-  render() {
-    return (
-      <Tippy content="Hi" onCreate={tip => (this.tip = tip)}>
-        <button>My button</button>
-      </Tippy>
-    )
-  }
-}
-
 const App = () => (
   <main>
     <RegularTooltip />
     <TooltipWithJSX />
     <TooltipWithProps />
-    <TooltipWithOnCreate />
   </main>
 )
 
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
-See the [Tippy.js docs](https://atomiks.github.io/tippyjs/) for the rest of the props you can supply.
+## Native props
+
+See the [Tippy.js docs](https://atomiks.github.io/tippyjs/#all-options)
+
+## React-specific props
+
+### `isEnabled?: boolean`
+
+Prop to control the `tippy.enable()` / `tippy.disable()` instance methods. Use this when you want to temporarily disable a tippy from showing.
+
+```jsx
+class App extends Component {
+  state = {
+    isEnabled: true
+  }
+
+  render() {
+    return (
+      <Tippy isEnabled={this.state.isEnabled}>
+        <button />
+      </Tippy>
+    )
+  }
+}
+```
+
+### `isVisible?: boolean`
+
+Prop to control the `tippy.show()` / `tippy.hide()` instance methods. Use this when you want to programmatically show or hide the tippy instead of relying on UI events.
+
+⚠️ **It must be accompanied by a `"manual"` trigger prop.**
+
+```jsx
+class App extends Component {
+  state = {
+    isVisible: true
+  }
+
+  render() {
+    return (
+      <Tippy trigger="manual" isVisible={this.state.isVisible}>
+        <button />
+      </Tippy>
+    )
+  }
+}
+```
+
+### `onCreate?: (tip: Instance) => void`
+
+Callback invoked when the Tippy instance has been created. Use this when you need to store the Tippy instance on the component.
+
+```jsx
+class App extends Component {
+  storeTippyInstance = tip => {
+    this.tip = tip
+  }
+
+  render() {
+    return (
+      <Tippy onCreate={this.storeTippyInstance}>
+        <button />
+      </Tippy>
+    )
+  }
+}
+```
 
 ## Default props and themes
 
