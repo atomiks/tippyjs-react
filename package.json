@@ -13,7 +13,8 @@
   "author": "atomiks",
   "license": "MIT",
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>test/setup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>test/setup.js",
+    "coveragePathIgnorePatterns": ["test/setup.js"]
   },
   "dependencies": {
     "prop-types": "^15.6.2",
@@ -31,12 +32,11 @@
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
-    "enzyme": "^3.6.0",
-    "enzyme-adapter-react-16": "^1.4.0",
     "jest": "^23.5.0",
     "parcel": "^1.10.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-testing-library": "^5.2.3",
     "rollup": "^0.64.1",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-babel-minify": "^5.0.0",
