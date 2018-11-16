@@ -71,7 +71,7 @@ class App extends Component {
 
   render() {
     return (
-      <Tippy isEnabled={this.state.isEnabled}>
+      <Tippy content="test" isEnabled={this.state.isEnabled}>
         <button />
       </Tippy>
     )
@@ -93,7 +93,7 @@ class App extends Component {
 
   render() {
     return (
-      <Tippy trigger="manual" isVisible={this.state.isVisible}>
+      <Tippy content="test" trigger="manual" isVisible={this.state.isVisible}>
         <button />
       </Tippy>
     )
@@ -103,7 +103,7 @@ class App extends Component {
 
 > **Note 1**: You should also set the `hideOnClick` prop to `false` if you don't want the tippy to hide when the user clicks on the document somewhere.
 
-> **Note 2**: Use this prop instead Tippy's native `showOnInit` prop. The native prop just shows the tippy on init but won't respond to prop changes.
+> **Note 2**: Use this prop instead of Tippy's native `showOnInit` prop. The native prop just shows the tippy on init but won't respond to prop changes.
 
 ### `onCreate?: (tip: Instance) => void`
 
@@ -117,7 +117,7 @@ class App extends Component {
 
   render() {
     return (
-      <Tippy onCreate={this.storeTippyInstance}>
+      <Tippy content="test" onCreate={this.storeTippyInstance}>
         <button />
       </Tippy>
     )
