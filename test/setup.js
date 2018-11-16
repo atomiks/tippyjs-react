@@ -1,4 +1,20 @@
-import Enzyme from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+global.MutationObserver = class {
+  constructor() {}
+  disconnect() {}
+  observe() {}
+}
 
-Enzyme.configure({ adapter: new Adapter() })
+global.window.document.createRange = function createRange() {
+  return {
+    setEnd: () => {},
+    setStart: () => {},
+    getBoundingClientRect: () => {
+      return { right: 0 }
+    },
+    getClientRects: () => [],
+    commonAncestorContainer: document.createElement('div')
+  }
+}
+
+global.window.focus = () => {}
+global.window.scroll = () => {}
