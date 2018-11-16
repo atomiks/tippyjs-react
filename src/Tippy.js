@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 
-// Avoid Babel's large '_objectWithoutProperties' helper function
-const getNativeTippyProps = props => {
-  const nativeProps = {}
-  for (const prop in props) {
-    if (prop !== 'children' && prop !== 'onCreate') {
-      nativeProps[prop] = props[prop]
+// These props are not native to `tippy.js` and are specific to React only.
+const REACT_ONLY_PROPS = ['children', 'onCreate', 'isVisible', 'isEnabled']
+
+// Avoid Babel's large '_objectWithoutProperties' helper function.
+function getNativeTippyProps(props) {
+  return Object.keys(props).reduce((acc, key) => {
+    if (REACT_ONLY_PROPS.indexOf(key) === -1) {
+      acc[key] = props[key]
     }
-  }
-  return nativeProps
+    return acc
+  }, {})
 }
 
 class Tippy extends React.Component {
@@ -23,7 +25,9 @@ class Tippy extends React.Component {
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
       .isRequired,
     children: PropTypes.element.isRequired,
-    onCreate: PropTypes.func
+    onCreate: PropTypes.func,
+    isVisible: PropTypes.bool,
+    isEnabled: PropTypes.bool
   }
 
   get isReactElementContent() {
@@ -37,21 +41,55 @@ class Tippy extends React.Component {
     }
   }
 
+  get isManualTrigger() {
+    return this.props.trigger === 'manual'
+  }
+
   componentDidMount() {
     this.setState({ isMounted: true })
+
     this.tip = tippy.one(ReactDOM.findDOMNode(this), this.options)
-    this.props.onCreate && this.props.onCreate(this.tip)
+
+    const { onCreate, isEnabled, isVisible } = this.props
+
+    if (onCreate) {
+      onCreate(this.tip)
+    }
+
+    if (isEnabled === false) {
+      this.tip.disable()
+    }
+
+    if (this.isManualTrigger && isVisible === true) {
+      this.tip.show()
+    }
   }
 
   componentDidUpdate() {
     this.tip.set(this.options)
+
+    const { isEnabled, isVisible } = this.props
+
+    if (isEnabled === true) {
+      this.tip.enable()
+    }
+    if (isEnabled === false) {
+      this.tip.disable()
+    }
+
+    if (this.isManualTrigger) {
+      if (isVisible === true) {
+        this.tip.show()
+      }
+      if (isVisible === false) {
+        this.tip.hide()
+      }
+    }
   }
 
   componentWillUnmount() {
-    if (this.tip) {
-      this.tip.destroy()
-      this.tip = null
-    }
+    this.tip.destroy()
+    this.tip = null
   }
 
   render() {
