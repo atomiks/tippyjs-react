@@ -125,14 +125,12 @@ class App extends Component {
 }
 ```
 
-## Default props and themes
+## Default props
 
-You can create a new component file that imports the component and its CSS, themes etc., and sets the default props. From this file, you can import the component throughout your app.
+You can create a new component file that imports the component and sets the default props. From this file, you can import the component throughout your app.
 
 ```js
 import Tippy from '@tippy.js/react'
-import 'tippy.js/dist/tippy.css'
-import 'tippy.js/dist/themes/translucent.css'
 
 // `performance: true` disables data-tippy-* attributes as they are unnecessary
 // in React and slow down initialization.
