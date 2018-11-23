@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Instance, Props } from 'tippy.js'
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
