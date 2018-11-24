@@ -1,6 +1,6 @@
 {
   "name": "@tippy.js/react",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "React component for Tippy.js",
   "main": "dist/Tippy.js",
   "module": "dist/esm/Tippy.js",
@@ -14,11 +14,13 @@
   "license": "MIT",
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>test/setup.js",
-    "coveragePathIgnorePatterns": ["test/setup.js"]
+    "coveragePathIgnorePatterns": [
+      "test/setup.js"
+    ]
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "tippy.js": "^3.0.6"
+    "tippy.js": "^3.2.0"
   },
   "peerDependencies": {
     "react": ">=16.2",
