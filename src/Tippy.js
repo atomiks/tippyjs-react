@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 
 // These props are not native to `tippy.js` and are specific to React only.
-const REACT_ONLY_PROPS = ['children', 'onCreate', 'isVisible', 'isEnabled']
+const REACT_ONLY_PROPS = ['children', 'onCreate', 'isVisible', 'isEnabled', 'wrapperType']
 
 // Avoid Babel's large '_objectWithoutProperties' helper function.
 function getNativeTippyProps(props) {
@@ -27,7 +27,13 @@ class Tippy extends React.Component {
     children: PropTypes.element.isRequired,
     onCreate: PropTypes.func,
     isVisible: PropTypes.bool,
-    isEnabled: PropTypes.bool
+    isEnabled: PropTypes.bool,
+    wrapperType: PropTypes.string
+  }
+
+  constructor(props) {
+    super(props)
+    this.ref = React.createRef();
   }
 
   get isReactElementContent() {
@@ -48,7 +54,7 @@ class Tippy extends React.Component {
   componentDidMount() {
     this.setState({ isMounted: true })
 
-    this.tip = tippy.one(ReactDOM.findDOMNode(this), this.options)
+    this.tip = tippy.one(this.ref.current, this.options)
 
     const { onCreate, isEnabled, isVisible } = this.props
 
@@ -95,7 +101,17 @@ class Tippy extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {this.props.children}
+        {this.props.wrapperType
+          ? React.createElement(
+              this.props.wrapperType,
+              { ref: this.ref },
+              this.props.children
+            )
+          : React.createElement(
+               "div",
+               { ref: this.ref },
+               this.props.children
+          )}
         {this.isReactElementContent &&
           this.state.isMounted &&
           ReactDOM.createPortal(this.props.content, this.container)}
