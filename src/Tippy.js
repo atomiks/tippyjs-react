@@ -18,6 +18,7 @@ function getNativeTippyProps(props) {
 
 class Tippy extends React.Component {
   state = { isMounted: false }
+  ref;
 
   container = typeof document !== 'undefined' && document.createElement('div')
 
@@ -28,6 +29,11 @@ class Tippy extends React.Component {
     onCreate: PropTypes.func,
     isVisible: PropTypes.bool,
     isEnabled: PropTypes.bool
+  }
+
+  constructor(props) {
+    super(props);
+    this.ref = React.createRef();
   }
 
   get isReactElementContent() {
@@ -48,7 +54,7 @@ class Tippy extends React.Component {
   componentDidMount() {
     this.setState({ isMounted: true })
 
-    this.tip = tippy.one(ReactDOM.findDOMNode(this), this.options)
+    this.tip = tippy.one(this.ref.current, this.options)
 
     const { onCreate, isEnabled, isVisible } = this.props
 
@@ -94,7 +100,7 @@ class Tippy extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <React.Fragment ref={this.ref}>
         {this.props.children}
         {this.isReactElementContent &&
           this.state.isMounted &&
