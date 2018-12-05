@@ -16,15 +16,22 @@ function getNativeTippyProps(props) {
   }, {})
 }
 
+function isFunction(value) {
+  return typeof value === 'function'
+}
+
 class Tippy extends React.Component {
   state = { isMounted: false }
 
   container = typeof document !== 'undefined' && document.createElement('div')
 
+  ref = React.createRef()
+
   static propTypes = {
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
       .isRequired,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
+      .isRequired,
     onCreate: PropTypes.func,
     isVisible: PropTypes.bool,
     isEnabled: PropTypes.bool
@@ -46,11 +53,14 @@ class Tippy extends React.Component {
   }
 
   componentDidMount() {
+    const { children, onCreate, isEnabled, isVisible } = this.props
+
     this.setState({ isMounted: true })
 
-    this.tip = tippy.one(ReactDOM.findDOMNode(this), this.options)
-
-    const { onCreate, isEnabled, isVisible } = this.props
+    this.tip = tippy.one(
+      isFunction(children) ? this.ref.current : ReactDOM.findDOMNode(this),
+      this.options
+    )
 
     if (onCreate) {
       onCreate(this.tip)
@@ -93,12 +103,14 @@ class Tippy extends React.Component {
   }
 
   render() {
+    const { children, content } = this.props
+
     return (
       <React.Fragment>
-        {this.props.children}
+        {isFunction(children) ? children(this.ref) : children}
         {this.isReactElementContent &&
           this.state.isMounted &&
-          ReactDOM.createPortal(this.props.content, this.container)}
+          ReactDOM.createPortal(content, this.container)}
       </React.Fragment>
     )
   }

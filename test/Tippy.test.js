@@ -202,4 +202,12 @@ describe('<Tippy />', () => {
     expect(button._tippy.state.isVisible).toBe(false)
     fireEvent.click(button)
   })
+
+  test('render prop ref', () => {
+    const { container } = render(
+      <Tippy content="tooltip">{ref => <button ref={ref} />}</Tippy>
+    )
+    const button = container.querySelector('button')
+    expect(button._tippy).toBeDefined()
+  })
 })
