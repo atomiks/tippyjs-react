@@ -7,7 +7,7 @@
   "types": "index.d.ts",
   "scripts": {
     "dev": "parcel demo/index.html -d .devserver --no-cache --open",
-    "build": "node build.js",
+    "build": "node rollup.build.js",
     "test": "jest --coverage"
   },
   "author": "atomiks",
