@@ -5,9 +5,9 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
 export interface TippyProps extends Omit<Props, 'content'> {
   content: React.ReactElement<any> | string
-  children: (
-    ref: React.RefObject
-  ) => React.ReactElement<any> | React.ReactElement<any>
+  children:
+    | ((ref: React.RefObject) => React.ReactElement<any>)
+    | React.ReactElement<any>
   onCreate?: (tip: Instance) => void
   isVisible?: boolean
   isEnabled?: boolean
