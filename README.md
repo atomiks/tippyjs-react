@@ -55,7 +55,7 @@ ReactDOM.render(<App />, document.getElementById('root'))
 
 ## Native props
 
-See the [Tippy.js docs](https://atomiks.github.io/tippyjs/#all-options)
+See the [Tippy.js docs](https://atomiks.github.io/tippyjs/all-options)
 
 ## React-specific props
 
