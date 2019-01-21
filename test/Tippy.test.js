@@ -159,7 +159,10 @@ describe('<Tippy />', () => {
 
     expect(onShow).toBeCalledTimes(1)
     expect(onShow).toBeCalledWith(tip)
-    await wait(() => expect(onHidden).toBeCalledTimes(1))
+    await wait(() => [
+      expect(onHidden).toBeCalledTimes(1),
+      expect(onHidden).toBeCalledWith(tip)
+    ])
     done()
   })
 
