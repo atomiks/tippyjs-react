@@ -6,7 +6,7 @@ import {
   fireEvent,
   cleanup,
   waitForElement,
-  wait,
+  wait
 } from 'react-testing-library'
 
 afterEach(cleanup)

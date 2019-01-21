@@ -9,7 +9,7 @@ const REACT_ONLY_PROPS = [
   'onCreate',
   'isVisible',
   'isEnabled',
-  'lazyRender',
+  'lazyRender'
 ]
 
 // Avoid Babel's large '_objectWithoutProperties' helper function.
@@ -36,7 +36,7 @@ class Tippy extends React.Component {
     onHidden: PropTypes.func,
     isVisible: PropTypes.bool,
     lazyRender: PropTypes.bool,
-    isEnabled: PropTypes.bool,
+    isEnabled: PropTypes.bool
   }
 
   get isReactElementContent() {
@@ -49,9 +49,9 @@ class Tippy extends React.Component {
       ...(this.props.lazyRender &&
         !this.isManualTrigger && {
           onShow: this.handleShow,
-          onHidden: this.handleHidden,
+          onHidden: this.handleHidden
         }),
-      content: this.isReactElementContent ? this.container : this.props.content,
+      content: this.isReactElementContent ? this.container : this.props.content
     }
   }
 
@@ -111,7 +111,7 @@ class Tippy extends React.Component {
 
   handleShow = e => {
     this.setState({
-      isShow: true,
+      isShow: true
     })
     if (this.props.onShow) {
       this.props.onShow(e)
@@ -120,7 +120,7 @@ class Tippy extends React.Component {
 
   handleHidden = e => {
     this.setState({
-      isShow: false,
+      isShow: false
     })
     if (this.props.onHidden) {
       this.props.onHidden(e)
