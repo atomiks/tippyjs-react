@@ -3,9 +3,7 @@ import PropTypes from 'prop-types'
 import Tippy from './Tippy'
 
 export class LazyTippy extends React.Component {
-  state = {
-    isShow: false
-  }
+  state = { isShow: false }
 
   static propTypes = {
     onShow: PropTypes.func,
