@@ -17,7 +17,7 @@ function getNativeTippyProps(props) {
 }
 
 class Tippy extends React.Component {
-  state = { isMounted: false, isShow: false }
+  state = { isMounted: false }
 
   container = typeof document !== 'undefined' && document.createElement('div')
 
@@ -26,7 +26,6 @@ class Tippy extends React.Component {
     children: PropTypes.element.isRequired,
     onCreate: PropTypes.func,
     isVisible: PropTypes.bool,
-    lazyRender: PropTypes.bool,
     isEnabled: PropTypes.bool
   }
 
