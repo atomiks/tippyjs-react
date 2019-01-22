@@ -11,18 +11,14 @@ export class LazyTippy extends React.Component {
   }
 
   handleShow = e => {
-    this.setState({
-      isShow: true
-    })
+    this.setState({ isShow: true })
     if (this.props.onShow) {
       this.props.onShow(e)
     }
   }
 
   handleHidden = e => {
-    this.setState({
-      isShow: false
-    })
+    this.setState({ isShow: false })
     if (this.props.onHidden) {
       this.props.onHidden(e)
     }
