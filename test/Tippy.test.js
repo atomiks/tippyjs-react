@@ -10,13 +10,13 @@ describe('<Tippy />', () => {
     const stringContent = render(
       <Tippy content="tooltip">
         <button />
-      </Tippy>
+      </Tippy>,
     )
     expect(stringContent.container.innerHTML).toBe('<button></button>')
     const reactElementContent = render(
       <Tippy content={<div>tooltip</div>}>
         <button />
-      </Tippy>
+      </Tippy>,
     )
     expect(reactElementContent.container.innerHTML).toBe('<button></button>')
   })
@@ -25,7 +25,7 @@ describe('<Tippy />', () => {
     const { container } = render(
       <Tippy content="tooltip">
         <button />
-      </Tippy>
+      </Tippy>,
     )
     expect(container.querySelector('button')._tippy).toBeDefined()
   })
@@ -35,7 +35,7 @@ describe('<Tippy />', () => {
     render(
       <Tippy content="tooltip" onCreate={spy}>
         <button />
-      </Tippy>
+      </Tippy>,
     )
     expect(spy).toHaveBeenCalledTimes(1)
     const arg = spy.mock.calls[0][0]
@@ -47,7 +47,7 @@ describe('<Tippy />', () => {
     const { container } = render(
       <Tippy content={<strong>tooltip</strong>}>
         <button />
-      </Tippy>
+      </Tippy>,
     )
     const tip = container.querySelector('button')._tippy
     expect(tip.popper.querySelector('strong')).not.toBeNull()
@@ -57,7 +57,7 @@ describe('<Tippy />', () => {
     const { container, unmount } = render(
       <Tippy content="tooltip">
         <button />
-      </Tippy>
+      </Tippy>,
     )
     const button = container.querySelector('button')
     unmount()
@@ -96,7 +96,7 @@ describe('<Tippy />', () => {
     const { container } = render(
       <Tippy content="tooltip">
         <Child />
-      </Tippy>
+      </Tippy>,
     )
     expect(container.querySelector('button')._tippy).toBeDefined()
   })
@@ -106,8 +106,8 @@ describe('<Tippy />', () => {
       ReactDOMServer.renderToString(
         <Tippy content={<div>Tooltip</div>}>
           <button />
-        </Tippy>
-      ).includes('<div>Tooltip</div>')
+        </Tippy>,
+      ).includes('<div>Tooltip</div>'),
     ).toBe(false)
   })
 
