@@ -173,6 +173,20 @@ Popover.defaultProps = {
 import { Tooltip, Popover } from './Tippy'
 ```
 
+## LazyTippy
+
+If you need to show some hard component inside the tooltip, for better performance use this component.
+
+```jsx
+import { LazyTippy } from '@tippy.js/react'
+
+const App = () => (
+  <LazyTippy content={<SomeHardComponent />}>
+    <button>My button</button>
+  </LazyTippy>
+)
+```
+
 ## License
 
 MIT
