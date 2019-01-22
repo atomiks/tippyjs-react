@@ -7,7 +7,7 @@ import './index.css'
 Tippy.defaultProps = {
   content: 'Tooltip',
   animateFill: false,
-  hideOnClick: false
+  hideOnClick: false,
 }
 
 class FetchExample extends React.Component {
@@ -15,7 +15,7 @@ class FetchExample extends React.Component {
     image: null,
     isFetching: false,
     canFetch: true,
-    isVisible: false
+    isVisible: false,
   }
 
   static loadingContent = 'Loading new image...'
@@ -27,7 +27,7 @@ class FetchExample extends React.Component {
 
     this.setState({
       isFetching: true,
-      canFetch: false
+      canFetch: false,
     })
 
     fetch('https://unsplash.it/200/?random')
@@ -35,11 +35,11 @@ class FetchExample extends React.Component {
       .then(blob => {
         if (this.state.isVisible) {
           this.setState({
-            image: URL.createObjectURL(blob)
+            image: URL.createObjectURL(blob),
           })
         }
         this.setState({
-          isFetching: false
+          isFetching: false,
         })
       })
   }
@@ -83,7 +83,7 @@ const COLORS = ['red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple']
 
 class InputExample extends React.Component {
   state = {
-    value: ''
+    value: '',
   }
 
   onChange = e => {
@@ -117,12 +117,12 @@ class ComponentChild extends React.Component {
 
 class App extends React.Component {
   state = {
-    arrow: false
+    arrow: false,
   }
 
   toggleArrow = () => {
     this.setState(state => ({
-      arrow: !state.arrow
+      arrow: !state.arrow,
     }))
   }
 

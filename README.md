@@ -16,7 +16,8 @@ Requires React 16.2+, `prop-types`, and `tippy.js` if using via CDN.
 
 Import the Tippy component and Tippy's CSS.
 
-Required: tooltip content as `props.content` and a single element child (reference) as `props.children`.
+Required: tooltip content as `props.content` and a single element child
+(reference) as `props.children`.
 
 ```jsx
 import React from 'react'
@@ -61,12 +62,13 @@ See the [Tippy.js docs](https://atomiks.github.io/tippyjs/all-options)
 
 ### `isEnabled?: boolean`
 
-Prop to control the `tippy.enable()` / `tippy.disable()` instance methods. Use this when you want to temporarily disable a tippy from showing.
+Prop to control the `tippy.enable()` / `tippy.disable()` instance methods. Use
+this when you want to temporarily disable a tippy from showing.
 
 ```jsx
 class App extends Component {
   state = {
-    isEnabled: true
+    isEnabled: true,
   }
 
   render() {
@@ -81,14 +83,16 @@ class App extends Component {
 
 ### `isVisible?: boolean`
 
-Prop to control the `tippy.show()` / `tippy.hide()` instance methods. Use this when you want to programmatically show or hide the tippy instead of relying on UI events.
+Prop to control the `tippy.show()` / `tippy.hide()` instance methods. Use this
+when you want to programmatically show or hide the tippy instead of relying on
+UI events.
 
 ⚠️ **It must be accompanied by a `"manual"` trigger prop.**
 
 ```jsx
 class App extends Component {
   state = {
-    isVisible: true
+    isVisible: true,
   }
 
   render() {
@@ -101,13 +105,16 @@ class App extends Component {
 }
 ```
 
-> **Note 1**: You should also set the `hideOnClick` prop to `false` if you don't want the tippy to hide when the user clicks on the document somewhere.
+> **Note 1**: You should also set the `hideOnClick` prop to `false` if you don't
+> want the tippy to hide when the user clicks on the document somewhere.
 
-> **Note 2**: Use this prop instead of Tippy's native `showOnInit` prop. The native prop just shows the tippy on init but won't respond to prop changes.
+> **Note 2**: Use this prop instead of Tippy's native `showOnInit` prop. The
+> native prop just shows the tippy on init but won't respond to prop changes.
 
 ### `onCreate?: (tip: Instance) => void`
 
-Callback invoked when the Tippy instance has been created. Use this when you need to store the Tippy instance on the component.
+Callback invoked when the Tippy instance has been created. Use this when you
+need to store the Tippy instance on the component.
 
 ```jsx
 class App extends Component {
@@ -127,7 +134,8 @@ class App extends Component {
 
 ## Default props
 
-You can create a new component file that imports the component and sets the default props. From this file, you can import the component throughout your app.
+You can create a new component file that imports the component and sets the
+default props. From this file, you can import the component throughout your app.
 
 ```js
 import Tippy from '@tippy.js/react'
@@ -135,7 +143,7 @@ import Tippy from '@tippy.js/react'
 // `performance: true` disables data-tippy-* attributes as they are unnecessary
 // in React and slow down initialization.
 Tippy.defaultProps = {
-  performance: true
+  performance: true,
 }
 
 export default Tippy
@@ -144,7 +152,8 @@ export default Tippy
 import Tippy from './Tippy'
 ```
 
-As an example, you might want to distinguish between a tooltip and a popover by creating a separate component for both.
+As an example, you might want to distinguish between a tooltip and a popover by
+creating a separate component for both.
 
 ```jsx
 export const Tooltip = ({ children, ...rest }) => (
@@ -154,7 +163,7 @@ Tooltip.defaultProps = {
   animation: 'fade',
   arrow: true,
   delay: 150,
-  theme: 'translucent'
+  theme: 'translucent',
 }
 
 export const Popover = ({ children, ...rest }) => (
@@ -166,7 +175,7 @@ Popover.defaultProps = {
   interactive: true,
   interactiveBorder: 10,
   theme: 'light-border',
-  trigger: 'click'
+  trigger: 'click',
 }
 
 // In another file

@@ -27,7 +27,7 @@ class Tippy extends React.Component {
     children: PropTypes.element.isRequired,
     onCreate: PropTypes.func,
     isVisible: PropTypes.bool,
-    isEnabled: PropTypes.bool
+    isEnabled: PropTypes.bool,
   }
 
   get isReactElementContent() {
@@ -37,7 +37,7 @@ class Tippy extends React.Component {
   get options() {
     return {
       ...getNativeTippyProps(this.props),
-      content: this.isReactElementContent ? this.container : this.props.content
+      content: this.isReactElementContent ? this.container : this.props.content,
     }
   }
 

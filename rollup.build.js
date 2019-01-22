@@ -9,8 +9,8 @@ const pluginBabel = babel({
   presets: ['@babel/preset-env', '@babel/preset-react'],
   plugins: [
     ['@babel/plugin-proposal-class-properties', { loose: true }],
-    ['@babel/plugin-proposal-object-rest-spread', { loose: true }]
-  ]
+    ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
+  ],
 })
 const pluginMinify = minify({ comments: false })
 const pluginResolve = resolve()
@@ -18,8 +18,9 @@ const pluginResolve = resolve()
 const rollupConfig = (...plugins) => ({
   input: './src/Tippy.js',
   plugins: [pluginBabel, pluginResolve, ...plugins],
-  external: ['tippy.js', 'react', 'react-dom', 'prop-types']
+  external: ['tippy.js', 'react', 'react-dom', 'prop-types'],
 })
+
 const output = format => file => ({
   name: 'Tippy',
   format,
@@ -29,8 +30,8 @@ const output = format => file => ({
     'tippy.js': 'tippy',
     react: 'React',
     'react-dom': 'ReactDOM',
-    'prop-types': 'PropTypes'
-  }
+    'prop-types': 'PropTypes',
+  },
 })
 
 const umd = output('umd')
