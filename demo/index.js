@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Tippy from '../src/Tippy'
+import Tippy from '../src/index'
 import 'tippy.js/dist/tippy.css'
 import './index.css'
 

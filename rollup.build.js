@@ -16,7 +16,7 @@ const pluginMinify = minify({ comments: false })
 const pluginResolve = resolve()
 
 const rollupConfig = (...plugins) => ({
-  input: './src/Tippy.js',
+  input: './src/index.js',
   plugins: [pluginBabel, pluginResolve, ...plugins],
   external: ['tippy.js', 'react', 'react-dom', 'prop-types']
 })

@@ -4,13 +4,7 @@ import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 
 // These props are not native to `tippy.js` and are specific to React only.
-const REACT_ONLY_PROPS = [
-  'children',
-  'onCreate',
-  'isVisible',
-  'isEnabled',
-  'lazyRender'
-]
+const REACT_ONLY_PROPS = ['children', 'onCreate', 'isVisible', 'isEnabled']
 
 // Avoid Babel's large '_objectWithoutProperties' helper function.
 function getNativeTippyProps(props) {
@@ -28,12 +22,9 @@ class Tippy extends React.Component {
   container = typeof document !== 'undefined' && document.createElement('div')
 
   static propTypes = {
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-      .isRequired,
+    content: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     children: PropTypes.element.isRequired,
     onCreate: PropTypes.func,
-    onShow: PropTypes.func,
-    onHidden: PropTypes.func,
     isVisible: PropTypes.bool,
     lazyRender: PropTypes.bool,
     isEnabled: PropTypes.bool
@@ -46,25 +37,12 @@ class Tippy extends React.Component {
   get options() {
     return {
       ...getNativeTippyProps(this.props),
-      ...(this.props.lazyRender &&
-        !this.isManualTrigger && {
-          onShow: this.handleShow,
-          onHidden: this.handleHidden
-        }),
       content: this.isReactElementContent ? this.container : this.props.content
     }
   }
 
   get isManualTrigger() {
     return this.props.trigger === 'manual'
-  }
-
-  get isCanRender() {
-    if (!this.props.lazyRender || this.isManualTrigger) {
-      return true
-    }
-
-    return this.state.isShow
   }
 
   componentDidMount() {
@@ -109,24 +87,6 @@ class Tippy extends React.Component {
     }
   }
 
-  handleShow = e => {
-    this.setState({
-      isShow: true
-    })
-    if (this.props.onShow) {
-      this.props.onShow(e)
-    }
-  }
-
-  handleHidden = e => {
-    this.setState({
-      isShow: false
-    })
-    if (this.props.onHidden) {
-      this.props.onHidden(e)
-    }
-  }
-
   componentWillUnmount() {
     this.tip.destroy()
     this.tip = null
@@ -138,10 +98,7 @@ class Tippy extends React.Component {
         {this.props.children}
         {this.isReactElementContent &&
           this.state.isMounted &&
-          ReactDOM.createPortal(
-            this.isCanRender ? this.props.content : null,
-            this.container
-          )}
+          ReactDOM.createPortal(this.props.content, this.container)}
       </React.Fragment>
     )
   }
