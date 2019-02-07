@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Tippy from '../src/Tippy'
-import 'tippy.js/dist/tippy.css'
+import Tippy, { TippyGroup } from '../src/Tippy'
 import './index.css'
 
 Tippy.defaultProps = {
@@ -147,6 +146,16 @@ class App extends React.Component {
         <Tippy>
           <ComponentChild />
         </Tippy>
+
+        <h1>Group</h1>
+        <TippyGroup delay={1000}>
+          <Tippy>
+            <button>Text</button>
+          </Tippy>
+          <Tippy>
+            <button>Text</button>
+          </Tippy>
+        </TippyGroup>
       </main>
     )
   }

@@ -1,10 +1,11 @@
 {
   "name": "@tippy.js/react",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "React component for Tippy.js",
-  "main": "dist/Tippy.js",
-  "module": "dist/esm/Tippy.js",
+  "main": "./umd/index.min.js",
+  "module": "./esm/index.js",
   "types": "index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "dev": "parcel demo/index.html -d .devserver --no-cache --open",
     "build": "node rollup.build.js",
@@ -41,7 +42,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "tippy.js": "^3.2.0"
+    "tippy.js": "^4.0.0-alpha.0"
   },
   "peerDependencies": {
     "react": ">=16.2",
@@ -64,13 +65,13 @@
     "lint-staged": "^8.1.0",
     "parcel": "^1.10.3",
     "prettier": "^1.16.1",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-testing-library": "^5.2.3",
-    "rollup": "^0.64.1",
-    "rollup-plugin-babel": "^4.0.3",
-    "rollup-plugin-babel-minify": "^5.0.0",
-    "rollup-plugin-node-resolve": "^3.4.0"
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-testing-library": "^5.5.3",
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-terser": "^4.0.4"
   },
   "directories": {
     "test": "test"

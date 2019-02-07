@@ -14,16 +14,13 @@ Requires React 16.2+, `prop-types`, and `tippy.js` if using via CDN.
 
 ## Usage
 
-Import the Tippy component and Tippy's CSS.
-
-Required: tooltip content as `props.content` and a single element child
+Required props: tooltip content as `props.content` and a single element child
 (reference) as `props.children`.
 
 ```jsx
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Tippy from '@tippy.js/react'
-import 'tippy.js/dist/tippy.css'
 
 const RegularTooltip = () => (
   <Tippy content="Hello">
@@ -87,8 +84,6 @@ Prop to control the `tippy.show()` / `tippy.hide()` instance methods. Use this
 when you want to programmatically show or hide the tippy instead of relying on
 UI events.
 
-⚠️ **It must be accompanied by a `"manual"` trigger prop.**
-
 ```jsx
 class App extends Component {
   state = {
@@ -97,7 +92,7 @@ class App extends Component {
 
   render() {
     return (
-      <Tippy content="test" trigger="manual" isVisible={this.state.isVisible}>
+      <Tippy content="test" isVisible={this.state.isVisible}>
         <button />
       </Tippy>
     )

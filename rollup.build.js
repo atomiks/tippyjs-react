@@ -1,18 +1,10 @@
 const { rollup } = require('rollup')
 const babel = require('rollup-plugin-babel')
-const minify = require('rollup-plugin-babel-minify')
+const { terser } = require('rollup-plugin-terser')
 const resolve = require('rollup-plugin-node-resolve')
 
-const pluginBabel = babel({
-  babelrc: false,
-  exclude: 'node_modules/**',
-  presets: ['@babel/preset-env', '@babel/preset-react'],
-  plugins: [
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
-  ],
-})
-const pluginMinify = minify({ comments: false })
+const pluginBabel = babel({ exclude: 'node_modules/**' })
+const pluginMinify = terser()
 const pluginResolve = resolve()
 
 const rollupConfig = (...plugins) => ({
@@ -32,6 +24,7 @@ const output = format => file => ({
     'react-dom': 'ReactDOM',
     'prop-types': 'PropTypes',
   },
+  exports: 'named',
 })
 
 const umd = output('umd')
@@ -41,10 +34,10 @@ const build = async () => {
   const bundle = await rollup(rollupConfig())
   const bundleMin = await rollup(rollupConfig(pluginMinify))
 
-  bundle.write(umd('./dist/Tippy.js'))
-  bundleMin.write(umd('./dist/Tippy.min.js'))
-  bundle.write(esm('./dist/esm/Tippy.js'))
-  bundleMin.write(esm('./dist/esm/Tippy.min.js'))
+  bundle.write(umd('./umd/index.js'))
+  bundleMin.write(umd('./umd/index.min.js'))
+  bundle.write(esm('./esm/index.js'))
+  bundleMin.write(esm('./esm/index.min.js'))
 }
 
 build()

@@ -65,34 +65,39 @@ describe('<Tippy />', () => {
   })
 
   test('updating state updates the tippy instance', done => {
-    class App extends React.Component {
-      state = { arrow: false, interactive: false }
-      componentDidUpdate() {
-        expect(tip.props.arrow).toBe(true)
-        expect(tip.props.interactive).toBe(true)
+    function App() {
+      const [arrow, setArrow] = React.useState(false)
+      const [interactive, setInteractive] = React.useState(false)
+      const ref = React.useRef()
+
+      React.useEffect(() => {
+        const instance = ref.current._tippy
+        expect(instance.props.arrow).toBe(arrow)
+        expect(instance.props.interactive).toBe(interactive)
         done()
+      })
+
+      function handleClick() {
+        setArrow(true)
+        setInteractive(true)
       }
-      render() {
-        const { arrow, interactive } = this.state
-        return (
-          <Tippy content="tooltip" arrow={arrow} interactive={interactive}>
-            <button
-              onClick={() => this.setState({ arrow: true, interactive: true })}
-            />
-          </Tippy>
-        )
-      }
+
+      return (
+        <Tippy content="tooltip" arrow={arrow} interactive={interactive}>
+          <button ref={ref} onClick={handleClick} />
+        </Tippy>
+      )
     }
+
     const { container } = render(<App />)
     const button = container.querySelector('button')
-    const tip = button._tippy
-    expect(tip.props.arrow).toBe(false)
-    expect(tip.props.interactive).toBe(false)
     fireEvent.click(button)
   })
 
   test('component as a child', () => {
-    const Child = () => <button />
+    const Child = React.forwardRef(function Comp(_, ref) {
+      return <button ref={ref} />
+    })
     const { container } = render(
       <Tippy content="tooltip">
         <Child />
@@ -111,95 +116,82 @@ describe('<Tippy />', () => {
     ).toBe(false)
   })
 
-  test('props.isEnabled initially `true`', done => {
+  test('refs are preserved on the child', done => {
     class App extends React.Component {
-      state = { isEnabled: true }
-      componentDidUpdate() {
-        expect(button._tippy.state.isEnabled).toBe(false)
+      refObject = React.createRef()
+      componentDidMount() {
+        expect(this.callbackRef instanceof Element).toBe(true)
+        expect(this.refObject.current instanceof Element).toBe(true)
         done()
       }
       render() {
         return (
-          <Tippy content="tooltip" isEnabled={this.state.isEnabled}>
-            <button onClick={() => this.setState({ isEnabled: false })} />
-          </Tippy>
+          <>
+            <Tippy content="tooltip">
+              <button ref={node => (this.callbackRef = node)} />
+            </Tippy>
+            <Tippy content="tooltip">
+              <button ref={this.refObject} />
+            </Tippy>
+          </>
         )
       }
     }
-    const { container } = render(<App />)
-    const button = container.querySelector('button')
-    expect(button._tippy.state.isEnabled).toBe(true)
-    fireEvent.click(button)
+    render(<App />)
+  })
+
+  test('props.isEnabled initially `true`', done => {
+    booleanPropsBoilerplate('isEnabled', true, done)
   })
 
   test('props.isEnabled initially `false`', done => {
-    class App extends React.Component {
-      state = { isEnabled: false }
-      componentDidUpdate() {
-        expect(button._tippy.state.isEnabled).toBe(true)
-        done()
-      }
-      render() {
-        return (
-          <Tippy content="tooltip" isEnabled={this.state.isEnabled}>
-            <button onClick={() => this.setState({ isEnabled: true })} />
-          </Tippy>
-        )
-      }
-    }
-    const { container } = render(<App />)
-    const button = container.querySelector('button')
-    expect(button._tippy.state.isEnabled).toBe(false)
-    fireEvent.click(button)
+    booleanPropsBoilerplate('isEnabled', false, done)
   })
 
   test('props.isVisible initially `true`', done => {
-    class App extends React.Component {
-      state = { isVisible: true }
-      componentDidUpdate() {
-        expect(button._tippy.state.isVisible).toBe(false)
-        done()
-      }
-      render() {
-        return (
-          <Tippy
-            content="tooltip"
-            trigger="manual"
-            isVisible={this.state.isVisible}
-          >
-            <button onClick={() => this.setState({ isVisible: false })} />
-          </Tippy>
-        )
-      }
-    }
-    const { container } = render(<App />)
-    const button = container.querySelector('button')
-    expect(button._tippy.state.isVisible).toBe(true)
-    fireEvent.click(button)
+    booleanPropsBoilerplate('isVisible', true, done)
   })
 
   test('props.isVisible initially `false`', done => {
-    class App extends React.Component {
-      state = { isVisible: false }
-      componentDidUpdate() {
-        expect(button._tippy.state.isVisible).toBe(true)
-        done()
-      }
-      render() {
-        return (
-          <Tippy
-            content="tooltip"
-            trigger="manual"
-            isVisible={this.state.isVisible}
-          >
-            <button onClick={() => this.setState({ isVisible: true })} />
-          </Tippy>
-        )
-      }
-    }
-    const { container } = render(<App />)
-    const button = container.querySelector('button')
-    expect(button._tippy.state.isVisible).toBe(false)
-    fireEvent.click(button)
+    booleanPropsBoilerplate('isVisible', false, done)
   })
 })
+
+// ************************************************************
+
+function booleanPropsBoilerplate(prop, bool, done) {
+  function App() {
+    const [value, setValue] = React.useState(bool)
+    const ref = React.useRef()
+    const passes = React.useRef(0)
+
+    React.useEffect(() => {
+      const instance = ref.current._tippy
+      expect(instance.state[prop]).toBe(value)
+
+      passes.current++
+
+      if (passes.current === 2) {
+        done()
+      }
+    })
+
+    function handleClick() {
+      setValue(!bool)
+    }
+
+    const props = {
+      [prop]: value,
+    }
+
+    return (
+      <Tippy content="tooltip" {...props}>
+        <button ref={ref} onClick={handleClick} />
+      </Tippy>
+    )
+  }
+
+  const { container } = render(<App />)
+  const button = container.querySelector('button')
+  fireEvent.click(button)
+}
