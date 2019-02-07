@@ -121,7 +121,7 @@ Wraps the [`tippy.group()`](https://atomiks.github.io/tippyjs/misc/#groups)
 method.
 
 ```jsx
-import { TippyGroup } from '@tippy.js/react'
+import Tippy, { TippyGroup } from '@tippy.js/react'
 
 function App() {
   return (
