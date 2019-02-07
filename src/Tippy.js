@@ -77,14 +77,12 @@ function Tippy(props) {
 
   return (
     <>
-      {React.Children.map(props.children, child =>
-        React.cloneElement(child, {
-          ref: node => {
-            reference.current = node
-            preserveRef(child, node)
-          },
-        }),
-      )}
+      {React.cloneElement(props.children, {
+        ref: node => {
+          reference.current = node
+          preserveRef(props.children.ref, node)
+        },
+      })}
       {isMounted && ReactDOM.createPortal(props.content, container.current)}
     </>
   )
@@ -99,5 +97,17 @@ Tippy.propTypes = {
   isEnabled: PropTypes.bool,
 }
 
-export default Tippy
+export default React.forwardRef(function TippyWrapper(props, ref) {
+  return (
+    <Tippy {...props}>
+      {React.cloneElement(props.children, {
+        ref: node => {
+          preserveRef(ref, node)
+          preserveRef(props.children.ref, node)
+        },
+      })}
+    </Tippy>
+  )
+})
+
 export { TippyGroup }
