@@ -156,6 +156,15 @@ class App extends React.Component {
             <button>Text</button>
           </Tippy>
         </TippyGroup>
+
+        <h1>Multiple</h1>
+        <Tippy placement="bottom" multiple>
+          <Tippy placement="left" multiple>
+            <Tippy>
+              <button>Text</button>
+            </Tippy>
+          </Tippy>
+        </Tippy>
       </main>
     )
   }

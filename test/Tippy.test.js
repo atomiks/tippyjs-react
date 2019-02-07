@@ -140,6 +140,18 @@ describe('<Tippy />', () => {
     render(<App />)
   })
 
+  test('nesting', () => {
+    render(
+      <Tippy content="tooltip" placement="bottom" multiple>
+        <Tippy content="tooltip" placement="left" multiple>
+          <Tippy content="tooltip">
+            <button>Text</button>
+          </Tippy>
+        </Tippy>
+      </Tippy>,
+    )
+  })
+
   test('props.isEnabled initially `true`', done => {
     booleanPropsBoilerplate('isEnabled', true, done)
   })
