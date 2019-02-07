@@ -11,7 +11,7 @@ export interface TippyProps extends Omit<Props, 'content'> {
   isEnabled?: boolean
 }
 
-export const TippyGroup: React.ForwardRefExoticComponent<TippyProps>
+export const TippyGroup: React.FunctionComponent<TippyProps>
 
-declare const Tippy: React.FunctionComponent<TippyProps>
+declare const Tippy: React.ForwardRefExoticComponent<TippyProps>
 export default Tippy
