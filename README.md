@@ -1,6 +1,6 @@
 # @tippy.js/react
 
-React component for [Tippy.js](https://github.com/atomiks/tippyjs) 3.
+React component for [Tippy.js](https://github.com/atomiks/tippyjs) 4.
 
 ## Installation
 
@@ -115,7 +115,7 @@ function App() {
 }
 ```
 
-## <TippyGroup />
+## `<TippyGroup />`
 
 Wraps the [`tippy.group()`](https://atomiks.github.io/tippyjs/misc/#groups)
 method.
