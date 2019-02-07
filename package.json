@@ -45,8 +45,8 @@
     "tippy.js": "^4.0.0-alpha.0"
   },
   "peerDependencies": {
-    "react": ">=16.2",
-    "react-dom": ">=16.2"
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
