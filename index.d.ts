@@ -11,12 +11,11 @@ export interface TippyProps extends Omit<Props, 'content'> {
   isEnabled?: boolean
 }
 
-export interface TippyGroupProps
-  extends Omit<TippyProps & GroupOptions, 'children'> {
+declare const Tippy: React.ForwardRefExoticComponent<TippyProps>
+export default Tippy
+
+export interface TippyGroupProps extends GroupOptions {
   children: Array<React.ReactElement<any>>
 }
 
 export const TippyGroup: React.FunctionComponent<TippyGroupProps>
-
-declare const Tippy: React.ForwardRefExoticComponent<TippyProps>
-export default Tippy
