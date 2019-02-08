@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 
 export default function TippyGroup({ children, ...props }) {
@@ -21,4 +22,8 @@ export default function TippyGroup({ children, ...props }) {
       },
     })
   })
+}
+
+TippyGroup.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
 }
