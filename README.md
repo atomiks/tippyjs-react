@@ -115,6 +115,22 @@ function App() {
 }
 ```
 
+## Multiple tippys on a single reference
+
+You can nest the components, ensuring they have a `multiple` prop:
+
+```jsx
+<Tippy placement="bottom" multiple>
+  <Tippy placement="left" multiple>
+    <Tippy placement="right" multiple>
+      <Tippy multiple>
+        <button />
+      </Tippy>
+    </Tippy>
+  </Tippy>
+</Tippy>
+```
+
 ## `<TippyGroup />`
 
 Wraps the [`tippy.group()`](https://atomiks.github.io/tippyjs/misc/#groups)
