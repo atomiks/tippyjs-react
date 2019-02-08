@@ -156,9 +156,7 @@ As an example, you might want to distinguish between a tooltip and a popover by
 creating a separate component for both.
 
 ```jsx
-export const Tooltip = ({ children, ...rest }) => (
-  <Tippy {...rest}>{children}</Tippy>
-)
+export const Tooltip = props => <Tippy {...props} />
 Tooltip.defaultProps = {
   animation: 'fade',
   arrow: true,
@@ -166,9 +164,7 @@ Tooltip.defaultProps = {
   theme: 'translucent',
 }
 
-export const Popover = ({ children, ...rest }) => (
-  <Tippy {...rest}>{children}</Tippy>
-)
+export const Popover = props => <Tippy {...props} />
 Popover.defaultProps = {
   animateFill: false,
   animation: 'scale',
