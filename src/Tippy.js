@@ -97,6 +97,10 @@ Tippy.propTypes = {
   isEnabled: PropTypes.bool,
 }
 
+Tippy.defaultProps = {
+  ignoreAttributes: true,
+}
+
 export default React.forwardRef(function TippyWrapper(props, ref) {
   return (
     <Tippy {...props}>

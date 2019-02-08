@@ -145,10 +145,9 @@ default props. From this file, you can import the component throughout your app.
 ```js
 import Tippy from '@tippy.js/react'
 
-// Disables data-tippy-* attributes as they are unnecessary in React
-// and slow down initialization.
 Tippy.defaultProps = {
-  ignoreAttributes: true,
+  ...Tippy.defaultProps,
+  arrow: true,
 }
 
 export default Tippy
