@@ -2,106 +2,116 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
+import {
+  getNativeTippyProps,
+  hasOwnProperty,
+  ssrSafeCreateDiv,
+  preserveRef,
+} from './utils'
 
-// These props are not native to `tippy.js` and are specific to React only.
-const REACT_ONLY_PROPS = ['children', 'onCreate', 'isVisible', 'isEnabled']
+import TippyGroup from './TippyGroup'
 
-// Avoid Babel's large '_objectWithoutProperties' helper function.
-function getNativeTippyProps(props) {
-  return Object.keys(props).reduce((acc, key) => {
-    if (REACT_ONLY_PROPS.indexOf(key) === -1) {
-      acc[key] = props[key]
-    }
-    return acc
-  }, {})
-}
+function Tippy(props) {
+  const [isMounted, setIsMounted] = React.useState(false)
+  const container = React.useRef(ssrSafeCreateDiv())
+  const reference = React.useRef()
+  const instance = React.useRef()
 
-class Tippy extends React.Component {
-  state = { isMounted: false }
-
-  container = typeof document !== 'undefined' && document.createElement('div')
-
-  static propTypes = {
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-      .isRequired,
-    children: PropTypes.element.isRequired,
-    onCreate: PropTypes.func,
-    isVisible: PropTypes.bool,
-    isEnabled: PropTypes.bool,
+  const options = {
+    ...getNativeTippyProps(props),
+    content: container.current,
   }
 
-  get isReactElementContent() {
-    return React.isValidElement(this.props.content)
+  if (hasOwnProperty(props, 'isVisible')) {
+    options.trigger = 'manual'
   }
 
-  get options() {
-    return {
-      ...getNativeTippyProps(this.props),
-      content: this.isReactElementContent ? this.container : this.props.content,
-    }
-  }
+  React.useEffect(() => {
+    instance.current = tippy(reference.current, options)
 
-  get isManualTrigger() {
-    return this.props.trigger === 'manual'
-  }
-
-  componentDidMount() {
-    this.setState({ isMounted: true })
-
-    this.tip = tippy.one(ReactDOM.findDOMNode(this), this.options)
-
-    const { onCreate, isEnabled, isVisible } = this.props
+    const { onCreate, isEnabled, isVisible } = props
 
     if (onCreate) {
-      onCreate(this.tip)
+      onCreate(instance.current)
     }
 
     if (isEnabled === false) {
-      this.tip.disable()
+      instance.current.disable()
     }
 
-    if (this.isManualTrigger && isVisible === true) {
-      this.tip.show()
+    if (isVisible === true) {
+      instance.current.show()
     }
-  }
 
-  componentDidUpdate() {
-    this.tip.set(this.options)
+    setIsMounted(true)
 
-    const { isEnabled, isVisible } = this.props
+    return () => {
+      instance.current.destroy()
+      instance.current = null
+    }
+  }, [])
+
+  React.useEffect(() => {
+    if (!isMounted) {
+      return
+    }
+
+    instance.current.set(options)
+
+    const { isEnabled, isVisible } = props
 
     if (isEnabled === true) {
-      this.tip.enable()
+      instance.current.enable()
     }
     if (isEnabled === false) {
-      this.tip.disable()
+      instance.current.disable()
     }
 
-    if (this.isManualTrigger) {
-      if (isVisible === true) {
-        this.tip.show()
-      }
-      if (isVisible === false) {
-        this.tip.hide()
-      }
+    if (isVisible === true) {
+      instance.current.show()
     }
-  }
+    if (isVisible === false) {
+      instance.current.hide()
+    }
+  })
 
-  componentWillUnmount() {
-    this.tip.destroy()
-    this.tip = null
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        {this.props.children}
-        {this.isReactElementContent &&
-          this.state.isMounted &&
-          ReactDOM.createPortal(this.props.content, this.container)}
-      </React.Fragment>
-    )
-  }
+  return (
+    <>
+      {React.cloneElement(props.children, {
+        ref: node => {
+          reference.current = node
+          preserveRef(props.children.ref, node)
+        },
+      })}
+      {isMounted && ReactDOM.createPortal(props.content, container.current)}
+    </>
+  )
 }
 
-export default Tippy
+Tippy.propTypes = {
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+    .isRequired,
+  children: PropTypes.element.isRequired,
+  onCreate: PropTypes.func,
+  isVisible: PropTypes.bool,
+  isEnabled: PropTypes.bool,
+}
+
+Tippy.defaultProps = {
+  ignoreAttributes: true,
+}
+
+export default React.forwardRef(function TippyWrapper(props, ref) {
+  return (
+    <Tippy {...props}>
+      {React.cloneElement(props.children, {
+        ref: node => {
+          preserveRef(ref, node)
+          preserveRef(props.children.ref, node)
+        },
+      })}
+    </Tippy>
+  )
+})
+
+export { TippyGroup }

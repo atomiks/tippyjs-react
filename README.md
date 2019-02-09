@@ -1,6 +1,6 @@
 # @tippy.js/react
 
-React component for [Tippy.js](https://github.com/atomiks/tippyjs) 3.
+React component for [Tippy.js](https://github.com/atomiks/tippyjs) 4.
 
 ## Installation
 
@@ -10,20 +10,17 @@ npm i @tippy.js/react
 
 CDN: https://unpkg.com/@tippy.js/react
 
-Requires React 16.2+, `prop-types`, and `tippy.js` if using via CDN.
+Requires React 16.8+, `prop-types`, and `tippy.js` if using via CDN.
 
 ## Usage
 
-Import the Tippy component and Tippy's CSS.
-
-Required: tooltip content as `props.content` and a single element child
+Required props: tooltip content as `props.content` and a single element child
 (reference) as `props.children`.
 
 ```jsx
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Tippy from '@tippy.js/react'
-import 'tippy.js/dist/tippy.css'
 
 const RegularTooltip = () => (
   <Tippy content="Hello">
@@ -56,7 +53,7 @@ ReactDOM.render(<App />, document.getElementById('root'))
 
 ## Native props
 
-See the [Tippy.js docs](https://atomiks.github.io/tippyjs/all-options)
+See the [Tippy.js docs](https://atomiks.github.io/tippyjs/all-options/)
 
 ## React-specific props
 
@@ -66,18 +63,13 @@ Prop to control the `tippy.enable()` / `tippy.disable()` instance methods. Use
 this when you want to temporarily disable a tippy from showing.
 
 ```jsx
-class App extends Component {
-  state = {
-    isEnabled: true,
-  }
-
-  render() {
-    return (
-      <Tippy content="test" isEnabled={this.state.isEnabled}>
-        <button />
-      </Tippy>
-    )
-  }
+function App() {
+  const [isEnabled, setIsEnabled] = useState(true)
+  return (
+    <Tippy content="test" isEnabled={isEnabled}>
+      <button />
+    </Tippy>
+  )
 }
 ```
 
@@ -87,21 +79,14 @@ Prop to control the `tippy.show()` / `tippy.hide()` instance methods. Use this
 when you want to programmatically show or hide the tippy instead of relying on
 UI events.
 
-⚠️ **It must be accompanied by a `"manual"` trigger prop.**
-
 ```jsx
-class App extends Component {
-  state = {
-    isVisible: true,
-  }
-
-  render() {
-    return (
-      <Tippy content="test" trigger="manual" isVisible={this.state.isVisible}>
-        <button />
-      </Tippy>
-    )
-  }
+function App() {
+  const [isVisible, setIsVisible] = useState(true)
+  return (
+    <Tippy content="test" isVisible={isVisible}>
+      <button />
+    </Tippy>
+  )
 }
 ```
 
@@ -117,18 +102,54 @@ Callback invoked when the Tippy instance has been created. Use this when you
 need to store the Tippy instance on the component.
 
 ```jsx
-class App extends Component {
-  storeTippyInstance = tip => {
-    this.tip = tip
-  }
+function App() {
+  const tippyInstance = useRef()
+  return (
+    <Tippy
+      content="test"
+      onCreate={instance => (tippyInstance.current = instance)}
+    >
+      <button />
+    </Tippy>
+  )
+}
+```
 
-  render() {
-    return (
-      <Tippy content="test" onCreate={this.storeTippyInstance}>
+## Multiple tippys on a single reference
+
+You can nest the components, ensuring they have a `multiple` prop:
+
+```jsx
+<Tippy placement="bottom" multiple>
+  <Tippy placement="left" multiple>
+    <Tippy placement="right" multiple>
+      <Tippy multiple>
         <button />
       </Tippy>
-    )
-  }
+    </Tippy>
+  </Tippy>
+</Tippy>
+```
+
+## `<TippyGroup />`
+
+Wraps the [`tippy.group()`](https://atomiks.github.io/tippyjs/misc/#groups)
+method.
+
+```jsx
+import Tippy, { TippyGroup } from '@tippy.js/react'
+
+function App() {
+  return (
+    <TippyGroup delay={1000}>
+      <Tippy content="a">
+        <button />
+      </Tippy>
+      <Tippy content="b">
+        <button />
+      </Tippy>
+    </TippyGroup>
+  )
 }
 ```
 
@@ -140,10 +161,9 @@ default props. From this file, you can import the component throughout your app.
 ```js
 import Tippy from '@tippy.js/react'
 
-// `performance: true` disables data-tippy-* attributes as they are unnecessary
-// in React and slow down initialization.
 Tippy.defaultProps = {
-  performance: true,
+  ...Tippy.defaultProps,
+  arrow: true,
 }
 
 export default Tippy
