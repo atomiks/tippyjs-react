@@ -1,6 +1,6 @@
 {
   "name": "@tippy.js/react",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "React component for Tippy.js",
   "main": "./umd/index.min.js",
   "module": "./esm/index.js",
@@ -16,7 +16,8 @@
   "author": "atomiks",
   "license": "MIT",
   "files": [
-    "dist",
+    "esm",
+    "umd",
     "index.d.ts"
   ],
   "jest": {
