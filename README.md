@@ -19,36 +19,50 @@ Required props: tooltip content as `props.content` and a single element child
 
 ```jsx
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Tippy from '@tippy.js/react'
 
-const RegularTooltip = () => (
+const StringContent = () => (
   <Tippy content="Hello">
     <button>My button</button>
   </Tippy>
 )
 
-const TooltipWithJSX = () => (
+const JSXContent = () => (
   <Tippy content={<span>Tooltip</span>}>
     <button>My button</button>
   </Tippy>
 )
 
-const TooltipWithProps = () => (
+const VariousProps = () => (
   <Tippy content="Hi" arrow={true} duration={500} delay={[100, 50]}>
     <button>My button</button>
   </Tippy>
 )
+```
 
-const App = () => (
-  <main>
-    <RegularTooltip />
-    <TooltipWithJSX />
-    <TooltipWithProps />
-  </main>
-)
+## Component children
 
-ReactDOM.render(<App />, document.getElementById('root'))
+If you want to use a component as a child, ensure you forward the ref to the DOM
+node:
+
+```jsx
+import React, { forwardRef } from 'react'
+
+function ThisWontWork() {
+  return <button>Text</button>
+}
+
+const ThisWillWork = forwardRef((props, ref) => {
+  return <button ref={ref}>Text</button>
+})
+
+function App() {
+  return (
+    <Tippy content="Tooltip">
+      <ThisWillWork />
+    </Tippy>
+  )
+}
 ```
 
 ## Native props
@@ -92,9 +106,6 @@ function App() {
 
 > **Note 1**: You should also set the `hideOnClick` prop to `false` if you don't
 > want the tippy to hide when the user clicks on the document somewhere.
-
-> **Note 2**: Use this prop instead of Tippy's native `showOnInit` prop. The
-> native prop just shows the tippy on init but won't respond to prop changes.
 
 ### `onCreate?: (tip: Instance) => void`
 
