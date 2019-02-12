@@ -17,13 +17,13 @@ import {
 
 function Tippy(props) {
   const [isMounted, setIsMounted] = useState(false)
-  const container = useRef(ssrSafeCreateDiv())
-  const reference = useRef()
-  const instance = useRef()
+  const containerRef = useRef(ssrSafeCreateDiv())
+  const targetRef = useRef()
+  const instanceRef = useRef()
 
   const options = {
     ...getNativeTippyProps(props),
-    content: container.current,
+    content: containerRef.current,
   }
 
   if (hasOwnProperty(props, 'isVisible')) {
@@ -31,27 +31,27 @@ function Tippy(props) {
   }
 
   useEffect(() => {
-    instance.current = tippy(reference.current, options)
+    instanceRef.current = tippy(targetRef.current, options)
 
     const { onCreate, isEnabled, isVisible } = props
 
     if (onCreate) {
-      onCreate(instance.current)
+      onCreate(instanceRef.current)
     }
 
     if (isEnabled === false) {
-      instance.current.disable()
+      instanceRef.current.disable()
     }
 
     if (isVisible === true) {
-      instance.current.show()
+      instanceRef.current.show()
     }
 
     setIsMounted(true)
 
     return () => {
-      instance.current.destroy()
-      instance.current = null
+      instanceRef.current.destroy()
+      instanceRef.current = null
     }
   }, [])
 
@@ -60,22 +60,22 @@ function Tippy(props) {
       return
     }
 
-    instance.current.set(options)
+    instanceRef.current.set(options)
 
     const { isEnabled, isVisible } = props
 
     if (isEnabled === true) {
-      instance.current.enable()
+      instanceRef.current.enable()
     }
     if (isEnabled === false) {
-      instance.current.disable()
+      instanceRef.current.disable()
     }
 
     if (isVisible === true) {
-      instance.current.show()
+      instanceRef.current.show()
     }
     if (isVisible === false) {
-      instance.current.hide()
+      instanceRef.current.hide()
     }
   })
 
@@ -83,11 +83,11 @@ function Tippy(props) {
     <>
       {cloneElement(props.children, {
         ref: node => {
-          reference.current = node
+          targetRef.current = node
           preserveRef(props.children.ref, node)
         },
       })}
-      {isMounted && createPortal(props.content, container.current)}
+      {isMounted && createPortal(props.content, containerRef.current)}
     </>
   )
 }

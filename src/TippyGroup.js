@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 
 export default function TippyGroup({ children, ...props }) {
-  const instances = useRef([])
+  const instancesRef = useRef([])
 
   useEffect(() => {
-    tippy.group(instances.current, props)
+    tippy.group(instancesRef.current, props)
     return () => {
-      instances.current = null
+      instancesRef.current = null
     }
   }, [])
 
@@ -18,7 +18,7 @@ export default function TippyGroup({ children, ...props }) {
         if (child.props.onCreate) {
           child.props.onCreate(instance)
         }
-        instances.current.push(instance)
+        instancesRef.current.push(instance)
       },
     })
   })
