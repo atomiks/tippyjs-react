@@ -1,5 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, {
+  forwardRef,
+  cloneElement,
+  useState,
+  useRef,
+  useEffect,
+} from 'react'
+import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
 import {
@@ -9,13 +15,11 @@ import {
   preserveRef,
 } from './utils'
 
-import TippyGroup from './TippyGroup'
-
 function Tippy(props) {
-  const [isMounted, setIsMounted] = React.useState(false)
-  const container = React.useRef(ssrSafeCreateDiv())
-  const reference = React.useRef()
-  const instance = React.useRef()
+  const [isMounted, setIsMounted] = useState(false)
+  const container = useRef(ssrSafeCreateDiv())
+  const reference = useRef()
+  const instance = useRef()
 
   const options = {
     ...getNativeTippyProps(props),
@@ -26,7 +30,7 @@ function Tippy(props) {
     options.trigger = 'manual'
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     instance.current = tippy(reference.current, options)
 
     const { onCreate, isEnabled, isVisible } = props
@@ -51,7 +55,7 @@ function Tippy(props) {
     }
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isMounted) {
       return
     }
@@ -77,13 +81,13 @@ function Tippy(props) {
 
   return (
     <>
-      {React.cloneElement(props.children, {
+      {cloneElement(props.children, {
         ref: node => {
           reference.current = node
           preserveRef(props.children.ref, node)
         },
       })}
-      {isMounted && ReactDOM.createPortal(props.content, container.current)}
+      {isMounted && createPortal(props.content, container.current)}
     </>
   )
 }
@@ -101,10 +105,10 @@ Tippy.defaultProps = {
   ignoreAttributes: true,
 }
 
-export default React.forwardRef(function TippyWrapper(props, ref) {
+export default forwardRef(function TippyWrapper(props, ref) {
   return (
     <Tippy {...props}>
-      {React.cloneElement(props.children, {
+      {cloneElement(props.children, {
         ref: node => {
           preserveRef(ref, node)
           preserveRef(props.children.ref, node)
@@ -113,5 +117,3 @@ export default React.forwardRef(function TippyWrapper(props, ref) {
     </Tippy>
   )
 })
-
-export { TippyGroup }

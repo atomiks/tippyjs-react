@@ -1,5 +1,5 @@
 import React from 'react'
-import Tippy, { TippyGroup } from '../src/Tippy'
+import Tippy, { TippyGroup } from '../src'
 import { render, cleanup } from 'react-testing-library'
 
 afterEach(cleanup)
