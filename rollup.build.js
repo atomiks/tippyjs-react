@@ -8,7 +8,7 @@ const pluginMinify = terser()
 const pluginResolve = resolve()
 
 const rollupConfig = (...plugins) => ({
-  input: './src/Tippy.js',
+  input: './src',
   plugins: [pluginBabel, pluginResolve, ...plugins],
   external: ['tippy.js', 'react', 'react-dom', 'prop-types'],
 })
