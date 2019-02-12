@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Tippy, { TippyGroup } from '../src/Tippy'
+import Tippy, { TippyGroup } from '../src'
 import './index.css'
 
 Tippy.defaultProps = {
