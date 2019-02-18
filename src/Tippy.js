@@ -31,6 +31,12 @@ function Tippy(props) {
   }
 
   useEffect(() => {
+    if (!targetRef.current) {
+      throw new Error(
+        `[tippy]: Passed an invalid DOM node ref (\`${targetRef.current}\`)`,
+      )
+    }
+
     instanceRef.current = tippy(targetRef.current, options)
 
     const { onCreate, isEnabled, isVisible } = props
