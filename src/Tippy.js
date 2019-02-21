@@ -13,6 +13,7 @@ import {
   hasOwnProperty,
   ssrSafeCreateDiv,
   preserveRef,
+  updateClassNames,
 } from './utils'
 
 function Tippy(props) {
@@ -33,10 +34,15 @@ function Tippy(props) {
   useEffect(() => {
     instanceRef.current = tippy(targetRef.current, options)
 
-    const { onCreate, isEnabled, isVisible } = props
+    const { onCreate, isEnabled, isVisible, className } = props
 
     if (onCreate) {
       onCreate(instanceRef.current)
+    }
+
+    if (className) {
+      const { tooltip } = instanceRef.current.popperChildren
+      updateClassNames(props.className, 'add', tooltip)
     }
 
     if (isEnabled === false) {
@@ -70,7 +76,6 @@ function Tippy(props) {
     if (isEnabled === false) {
       instanceRef.current.disable()
     }
-
     if (isVisible === true) {
       instanceRef.current.show()
     }
@@ -78,6 +83,18 @@ function Tippy(props) {
       instanceRef.current.hide()
     }
   })
+
+  useEffect(() => {
+    if (!isMounted) {
+      return
+    }
+    const { tooltip } = instanceRef.current.popperChildren
+    updateClassNames(props.className, 'add', tooltip)
+
+    return () => {
+      updateClassNames(props.className, 'remove', tooltip)
+    }
+  }, [props.className])
 
   return (
     <>
@@ -99,6 +116,7 @@ Tippy.propTypes = {
   onCreate: PropTypes.func,
   isVisible: PropTypes.bool,
   isEnabled: PropTypes.bool,
+  className: PropTypes.string,
 }
 
 Tippy.defaultProps = {

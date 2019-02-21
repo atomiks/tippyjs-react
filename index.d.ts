@@ -8,7 +8,8 @@ export interface TippyProps extends Omit<Props, 'content'> {
   children: React.ReactElement<any>
   onCreate?: (tip: Instance) => void
   isVisible?: boolean
-  isEnabled?: boolean
+  isEnabled?: boolean,
+  className?: string,
 }
 
 declare const Tippy: React.ForwardRefExoticComponent<TippyProps>
