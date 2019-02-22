@@ -1,7 +1,7 @@
 import React from 'react'
 import Tippy from '../src/Tippy'
 import ReactDOMServer from 'react-dom/server'
-import { render, fireEvent, cleanup } from 'react-testing-library'
+import { render, cleanup } from 'react-testing-library'
 
 afterEach(cleanup)
 
@@ -49,8 +49,8 @@ describe('<Tippy />', () => {
         <button />
       </Tippy>,
     )
-    const tip = container.querySelector('button')._tippy
-    expect(tip.popper.querySelector('strong')).not.toBeNull()
+    const instance = container.querySelector('button')._tippy
+    expect(instance.popper.querySelector('strong')).not.toBeNull()
   })
 
   test('unmount destroys the tippy instance and allows garbage collection', () => {
@@ -64,34 +64,20 @@ describe('<Tippy />', () => {
     expect(button._tippy).toBeUndefined()
   })
 
-  test('updating state updates the tippy instance', done => {
-    function App() {
-      const [arrow, setArrow] = React.useState(false)
-      const [interactive, setInteractive] = React.useState(false)
-      const ref = React.useRef()
-
-      React.useEffect(() => {
-        const instance = ref.current._tippy
-        expect(instance.props.arrow).toBe(arrow)
-        expect(instance.props.interactive).toBe(interactive)
-        done()
-      })
-
-      function handleClick() {
-        setArrow(true)
-        setInteractive(true)
-      }
-
-      return (
-        <Tippy content="tooltip" arrow={arrow} interactive={interactive}>
-          <button ref={ref} onClick={handleClick} />
-        </Tippy>
-      )
-    }
-
-    const { container } = render(<App />)
-    const button = container.querySelector('button')
-    fireEvent.click(button)
+  test('updating props updates the tippy instance', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" arrow={false}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.props.arrow).toBe(false)
+    rerender(
+      <Tippy content="tooltip" arrow={true}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.props.arrow).toBe(true)
   })
 
   test('component as a child', () => {
@@ -152,58 +138,67 @@ describe('<Tippy />', () => {
     )
   })
 
-  test('props.isEnabled initially `true`', done => {
-    booleanPropsBoilerplate('isEnabled', true, done)
+  test('props.isEnabled initially `true`', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" isEnabled={true}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.state.isEnabled).toBe(true)
+    rerender(
+      <Tippy content="tooltip" isEnabled={false}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.state.isEnabled).toBe(false)
   })
 
-  test('props.isEnabled initially `false`', done => {
-    booleanPropsBoilerplate('isEnabled', false, done)
+  test('props.isEnabled initially `false`', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" isEnabled={false}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.state.isEnabled).toBe(false)
+    rerender(
+      <Tippy content="tooltip" isEnabled={true}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.state.isEnabled).toBe(true)
   })
 
-  test('props.isVisible initially `true`', done => {
-    booleanPropsBoilerplate('isVisible', true, done)
+  test('props.isVisible initially `true`', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" isVisible={true}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.state.isVisible).toBe(true)
+    rerender(
+      <Tippy content="tooltip" isVisible={false}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.state.isVisible).toBe(false)
   })
 
-  test('props.isVisible initially `false`', done => {
-    booleanPropsBoilerplate('isVisible', false, done)
+  test('props.isVisible initially `false`', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" isVisible={false}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.state.isVisible).toBe(false)
+    rerender(
+      <Tippy content="tooltip" isVisible={true}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.state.isVisible).toBe(true)
   })
 })
-
-// ************************************************************
-
-function booleanPropsBoilerplate(prop, bool, done) {
-  function App() {
-    const [value, setValue] = React.useState(bool)
-    const ref = React.useRef()
-    const passes = React.useRef(0)
-
-    React.useEffect(() => {
-      const instance = ref.current._tippy
-      expect(instance.state[prop]).toBe(value)
-
-      passes.current++
-
-      if (passes.current === 2) {
-        done()
-      }
-    })
-
-    function handleClick() {
-      setValue(!bool)
-    }
-
-    const props = {
-      [prop]: value,
-    }
-
-    return (
-      <Tippy content="tooltip" {...props}>
-        <button ref={ref} onClick={handleClick} />
-      </Tippy>
-    )
-  }
-
-  const { container } = render(<App />)
-  const button = container.querySelector('button')
-  fireEvent.click(button)
-}
