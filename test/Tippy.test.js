@@ -1,6 +1,5 @@
 import React from 'react'
 import Tippy from '../src/Tippy'
-import ReactDOMServer from 'react-dom/server'
 import { render, cleanup } from 'react-testing-library'
 
 afterEach(cleanup)
@@ -113,16 +112,6 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     expect(container.querySelector('button')._tippy).toBeDefined()
-  })
-
-  test('tooltip content is not rendered to the DOM', () => {
-    expect(
-      ReactDOMServer.renderToString(
-        <Tippy content={<div>Tooltip</div>}>
-          <button />
-        </Tippy>,
-      ).includes('<div>Tooltip</div>'),
-    ).toBe(false)
   })
 
   test('refs are preserved on the child', done => {
