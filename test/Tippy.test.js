@@ -76,6 +76,28 @@ describe('<Tippy />', () => {
     expect(tip.popper.querySelector('.world')).not.toBeNull()
   })
 
+  // this test currently fails
+  test('className prop gets updated properly and does not leave orphaned old class', () => {
+    const firstClass = 'original'
+    const secondClass = 'new'
+    const { container, rerender } = render(
+      <Tippy content="tip content" className={firstClass}>
+        <button />
+      </Tippy>,
+    )
+    const tip = container.querySelector('button')._tippy
+    expect(tip.popper.querySelector('.original')).not.toBeNull()
+    expect(tip.popper.querySelector('.new')).toBeNull()
+
+    rerender(
+      <Tippy content="tip content" className={secondClass}>
+        <button />
+      </Tippy>,
+    )
+    expect(tip.popper.querySelector('.original')).toBeNull()
+    expect(tip.popper.querySelector('.new')).not.toBeNull()
+  })
+
   test('unmount destroys the tippy instance and allows garbage collection', () => {
     const { container, unmount } = render(
       <Tippy content="tooltip">

@@ -23,7 +23,7 @@ export function ssrSafeCreateDiv() {
   return typeof document !== 'undefined' && document.createElement('div')
 }
 
-export function updateClassNames(classNames, action, tooltip) {
+export function updateClassName(tooltip, action, classNames) {
   classNames.split(' ').forEach(name => {
     if (name) {
       tooltip.classList[action](name)

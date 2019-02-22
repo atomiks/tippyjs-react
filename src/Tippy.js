@@ -4,6 +4,7 @@ import React, {
   useState,
   useRef,
   useEffect,
+  useLayoutEffect,
 } from 'react'
 import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
@@ -13,7 +14,7 @@ import {
   hasOwnProperty,
   ssrSafeCreateDiv,
   preserveRef,
-  updateClassNames,
+  updateClassName,
 } from './utils'
 
 function Tippy(props) {
@@ -42,7 +43,7 @@ function Tippy(props) {
 
     if (className) {
       const { tooltip } = instanceRef.current.popperChildren
-      updateClassNames(props.className, 'add', tooltip)
+      updateClassName(tooltip, 'add', props.className)
     }
 
     if (isEnabled === false) {
@@ -61,7 +62,7 @@ function Tippy(props) {
     }
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isMounted) {
       return
     }
@@ -84,15 +85,16 @@ function Tippy(props) {
     }
   })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isMounted) {
       return
     }
+
     const { tooltip } = instanceRef.current.popperChildren
-    updateClassNames(props.className, 'add', tooltip)
+    updateClassName(tooltip, 'add', props.className)
 
     return () => {
-      updateClassNames(props.className, 'remove', tooltip)
+      updateClassName(tooltip, 'remove', props.className)
     }
   }, [props.className])
 
