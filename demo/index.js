@@ -117,12 +117,19 @@ class ComponentChild extends React.Component {
 class App extends React.Component {
   state = {
     arrow: false,
+    customClass: ''
   }
 
   toggleArrow = () => {
     this.setState(state => ({
-      arrow: !state.arrow,
+      arrow: !state.arrow
     }))
+  }
+
+  updateCustomClass = (e) => {
+    this.setState({
+      customClass: e.target.value
+    })
   }
 
   render() {
@@ -164,6 +171,12 @@ class App extends React.Component {
               <button>Text</button>
             </Tippy>
           </Tippy>
+        </Tippy>
+
+        <h1>Other</h1>
+        <input type="text" placeholder="Enter class" onChange={this.updateCustomClass}/>
+        <Tippy placement="bottom" className={this.state.customClass}>
+          <button>Custom class</button>
         </Tippy>
       </main>
     )

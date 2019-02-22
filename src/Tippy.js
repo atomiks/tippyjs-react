@@ -4,6 +4,7 @@ import React, {
   useState,
   useRef,
   useEffect,
+  useLayoutEffect,
 } from 'react'
 import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
@@ -13,6 +14,7 @@ import {
   hasOwnProperty,
   ssrSafeCreateDiv,
   preserveRef,
+  updateClassName,
 } from './utils'
 
 function Tippy(props) {
@@ -33,10 +35,15 @@ function Tippy(props) {
   useEffect(() => {
     instanceRef.current = tippy(targetRef.current, options)
 
-    const { onCreate, isEnabled, isVisible } = props
+    const { onCreate, isEnabled, isVisible, className } = props
 
     if (onCreate) {
       onCreate(instanceRef.current)
+    }
+
+    if (className) {
+      const { tooltip } = instanceRef.current.popperChildren
+      updateClassName(tooltip, 'add', props.className)
     }
 
     if (isEnabled === false) {
@@ -55,7 +62,7 @@ function Tippy(props) {
     }
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isMounted) {
       return
     }
@@ -70,7 +77,6 @@ function Tippy(props) {
     if (isEnabled === false) {
       instanceRef.current.disable()
     }
-
     if (isVisible === true) {
       instanceRef.current.show()
     }
@@ -78,6 +84,19 @@ function Tippy(props) {
       instanceRef.current.hide()
     }
   })
+
+  useLayoutEffect(() => {
+    if (!isMounted) {
+      return
+    }
+
+    const { tooltip } = instanceRef.current.popperChildren
+    updateClassName(tooltip, 'add', props.className)
+
+    return () => {
+      updateClassName(tooltip, 'remove', props.className)
+    }
+  }, [props.className])
 
   return (
     <>
@@ -99,6 +118,7 @@ Tippy.propTypes = {
   onCreate: PropTypes.func,
   isVisible: PropTypes.bool,
   isEnabled: PropTypes.bool,
+  className: PropTypes.string,
 }
 
 Tippy.defaultProps = {

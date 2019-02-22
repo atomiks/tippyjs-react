@@ -53,6 +53,29 @@ describe('<Tippy />', () => {
     expect(instance.popper.querySelector('strong')).not.toBeNull()
   })
 
+  test('custom class name get added to DOM', () => {
+    const className = 'hello'
+    const { container } = render(
+      <Tippy content="tip content" className={className}>
+        <button />
+      </Tippy>,
+    )
+    const tip = container.querySelector('button')._tippy
+    expect(tip.popper.querySelector(`.${className}`)).not.toBeNull()
+  })
+
+  test('custom class name get added to DOM', () => {
+    const classNames = 'hello world'
+    const { container } = render(
+      <Tippy content="tip content" className={classNames}>
+        <button />
+      </Tippy>,
+    )
+    const tip = container.querySelector('button')._tippy
+    expect(tip.popper.querySelector('.hello')).not.toBeNull()
+    expect(tip.popper.querySelector('.world')).not.toBeNull()
+  })
+
   test('unmount destroys the tippy instance and allows garbage collection', () => {
     const { container, unmount } = render(
       <Tippy content="tooltip">

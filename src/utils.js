@@ -1,6 +1,6 @@
 export function getNativeTippyProps(props) {
   // eslint-disable-next-line no-unused-vars
-  const { children, onCreate, isVisible, isEnabled, ...nativeProps } = props
+  const { children, onCreate, isVisible, isEnabled, className, ...nativeProps } = props
   return nativeProps
 }
 
@@ -21,4 +21,12 @@ export function preserveRef(ref, node) {
 
 export function ssrSafeCreateDiv() {
   return typeof document !== 'undefined' && document.createElement('div')
+}
+
+export function updateClassName(tooltip, action, classNames) {
+  classNames.split(/\s+/).forEach(name => {
+    if (name) {
+      tooltip.classList[action](name)
+    }
+  })
 }
