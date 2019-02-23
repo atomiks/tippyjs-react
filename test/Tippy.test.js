@@ -55,24 +55,24 @@ describe('<Tippy />', () => {
   test('custom class name get added to DOM', () => {
     const className = 'hello'
     const { container } = render(
-      <Tippy content="tip content" className={className}>
+      <Tippy content="tooltip" className={className}>
         <button />
       </Tippy>,
     )
-    const tip = container.querySelector('button')._tippy
-    expect(tip.popper.querySelector(`.${className}`)).not.toBeNull()
+    const instance = container.querySelector('button')._tippy
+    expect(instance.popper.querySelector(`.${className}`)).not.toBeNull()
   })
 
   test('custom class name get added to DOM', () => {
     const classNames = 'hello world'
     const { container } = render(
-      <Tippy content="tip content" className={classNames}>
+      <Tippy content="tooltip" className={classNames}>
         <button />
       </Tippy>,
     )
-    const tip = container.querySelector('button')._tippy
-    expect(tip.popper.querySelector('.hello')).not.toBeNull()
-    expect(tip.popper.querySelector('.world')).not.toBeNull()
+    const instance = container.querySelector('button')._tippy
+    expect(instance.popper.querySelector('.hello')).not.toBeNull()
+    expect(instance.popper.querySelector('.world')).not.toBeNull()
   })
 
   test('updating className does not leave stale className behind', () => {
