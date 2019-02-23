@@ -31,6 +31,8 @@ export function ssrSafeCreateDiv() {
 
 export function updateClassName(tooltip, action, classNames) {
   classNames.split(/\s+/).forEach(name => {
-    tooltip.classList[action](name)
+    if (name) {
+      tooltip.classList[action](name)
+    }
   })
 }

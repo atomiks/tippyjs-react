@@ -52,7 +52,7 @@ describe('<Tippy />', () => {
     expect(instance.popper.querySelector('strong')).not.toBeNull()
   })
 
-  test('custom class name get added to DOM', () => {
+  test('props.className: single name is added to tooltip', () => {
     const className = 'hello'
     const { container } = render(
       <Tippy content="tooltip" className={className}>
@@ -63,7 +63,7 @@ describe('<Tippy />', () => {
     expect(instance.popper.querySelector(`.${className}`)).not.toBeNull()
   })
 
-  test('custom class name get added to DOM', () => {
+  test('props.className: multiple names are added to tooltip', () => {
     const classNames = 'hello world'
     const { container } = render(
       <Tippy content="tooltip" className={classNames}>
@@ -75,7 +75,18 @@ describe('<Tippy />', () => {
     expect(instance.popper.querySelector('.world')).not.toBeNull()
   })
 
-  test('updating className does not leave stale className behind', () => {
+  test('props.className: extra whitespace is ignored', () => {
+    const className = ' hello world  '
+    const { container } = render(
+      <Tippy content="tooltip" className={className}>
+        <button />
+      </Tippy>,
+    )
+    const { tooltip } = container.querySelector('button')._tippy.popperChildren
+    expect(tooltip.className).toBe('tippy-tooltip dark-theme hello world')
+  })
+
+  test('props.className: updating does not leave stale className behind', () => {
     const { container, rerender } = render(
       <Tippy content="tooltip" className="one">
         <button />
