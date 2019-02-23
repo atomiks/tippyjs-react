@@ -1,6 +1,6 @@
 {
   "name": "@tippy.js/react",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "React component for Tippy.js",
   "main": "./umd/index.min.js",
   "module": "./esm/index.js",
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "tippy.js": "^4.0.0"
+    "tippy.js": "^4.0.3"
   },
   "peerDependencies": {
     "react": ">=16.8",
