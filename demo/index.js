@@ -126,12 +126,6 @@ class App extends React.Component {
     }))
   }
 
-  updateCustomClass = e => {
-    this.setState({
-      customClass: e.target.value,
-    })
-  }
-
   componentDidMount() {
     setTimeout(() => {
       this.setState({ customClass: 'bye' })
@@ -180,11 +174,6 @@ class App extends React.Component {
         </Tippy>
 
         <h1>Other</h1>
-        <input
-          type="text"
-          placeholder="Enter class"
-          onChange={this.updateCustomClass}
-        />
         <Tippy trigger="click" className={this.state.customClass}>
           <button>Custom class</button>
         </Tippy>
