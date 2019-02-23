@@ -3,7 +3,6 @@ import React, {
   cloneElement,
   useState,
   useRef,
-  useEffect,
   useLayoutEffect,
 } from 'react'
 import { createPortal } from 'react-dom'
@@ -32,18 +31,13 @@ function Tippy(props) {
     options.trigger = 'manual'
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     instanceRef.current = tippy(targetRef.current, options)
 
-    const { onCreate, isEnabled, isVisible, className } = props
+    const { onCreate, isEnabled, isVisible } = props
 
     if (onCreate) {
       onCreate(instanceRef.current)
-    }
-
-    if (className) {
-      const { tooltip } = instanceRef.current.popperChildren
-      updateClassName(tooltip, 'add', props.className)
     }
 
     if (isEnabled === false) {
@@ -86,15 +80,12 @@ function Tippy(props) {
   })
 
   useLayoutEffect(() => {
-    if (!isMounted) {
-      return
-    }
-
-    const { tooltip } = instanceRef.current.popperChildren
-    updateClassName(tooltip, 'add', props.className)
-
-    return () => {
-      updateClassName(tooltip, 'remove', props.className)
+    if (props.className) {
+      const { tooltip } = instanceRef.current.popperChildren
+      updateClassName(tooltip, 'add', props.className)
+      return () => {
+        updateClassName(tooltip, 'remove', props.className)
+      }
     }
   }, [props.className])
 

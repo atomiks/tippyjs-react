@@ -19,7 +19,7 @@
   },
   "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
   "rules": {
-    "react/no-find-dom-node": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-unused-vars": ["error", { "ignoreRestSiblings": true }]
   }
 }

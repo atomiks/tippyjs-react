@@ -1,6 +1,12 @@
 export function getNativeTippyProps(props) {
-  // eslint-disable-next-line no-unused-vars
-  const { children, onCreate, isVisible, isEnabled, className, ...nativeProps } = props
+  const {
+    children,
+    onCreate,
+    isVisible,
+    isEnabled,
+    className,
+    ...nativeProps
+  } = props
   return nativeProps
 }
 
