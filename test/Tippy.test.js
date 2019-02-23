@@ -75,6 +75,23 @@ describe('<Tippy />', () => {
     expect(tip.popper.querySelector('.world')).not.toBeNull()
   })
 
+  test('updating className does not leave stale className behind', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" className="one">
+        <button />
+      </Tippy>,
+    )
+    const { tooltip } = container.querySelector('button')._tippy.popperChildren
+    expect(tooltip.classList.contains('one')).toBe(true)
+    rerender(
+      <Tippy content="tooltip" className="two">
+        <button />
+      </Tippy>,
+    )
+    expect(tooltip.classList.contains('one')).toBe(false)
+    expect(tooltip.classList.contains('two')).toBe(true)
+  })
+
   test('unmount destroys the tippy instance and allows garbage collection', () => {
     const { container, unmount } = render(
       <Tippy content="tooltip">

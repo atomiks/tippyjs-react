@@ -117,19 +117,25 @@ class ComponentChild extends React.Component {
 class App extends React.Component {
   state = {
     arrow: false,
-    customClass: ''
+    customClass: 'hello',
   }
 
   toggleArrow = () => {
     this.setState(state => ({
-      arrow: !state.arrow
+      arrow: !state.arrow,
     }))
   }
 
-  updateCustomClass = (e) => {
+  updateCustomClass = e => {
     this.setState({
-      customClass: e.target.value
+      customClass: e.target.value,
     })
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ customClass: 'bye' })
+    }, 500)
   }
 
   render() {
@@ -174,8 +180,12 @@ class App extends React.Component {
         </Tippy>
 
         <h1>Other</h1>
-        <input type="text" placeholder="Enter class" onChange={this.updateCustomClass}/>
-        <Tippy placement="bottom" className={this.state.customClass}>
+        <input
+          type="text"
+          placeholder="Enter class"
+          onChange={this.updateCustomClass}
+        />
+        <Tippy trigger="click" className={this.state.customClass}>
           <button>Custom class</button>
         </Tippy>
       </main>
