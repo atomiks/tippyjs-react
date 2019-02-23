@@ -1,6 +1,12 @@
-# @tippy.js/react
+<p align="center">
+  <img src="https://github.com/atomiks/tippy.js-react/raw/master/logo.png" alt="Logo" width="295">
+</p>
 
-React component for [Tippy.js](https://github.com/atomiks/tippyjs) 4.
+<h1 align="center">Tippy.js for React</h1>
+
+React component for [Tippy.js](https://github.com/atomiks/tippyjs) 4. Tippy.js
+is a highly customizable tooltip and popover library powered by Popper.js. This
+wrapper lets you use it declaratively in React.
 
 ## Installation
 
@@ -65,11 +71,46 @@ function App() {
 }
 ```
 
+`styled-components` v4 does this for you automatically, so it should be seamless
+when using the `styled` constructor.
+
 ## Native props
 
 See the [Tippy.js docs](https://atomiks.github.io/tippyjs/all-options/)
 
 ## React-specific props
+
+> Note: these examples are using the new
+> [React Hooks API](https://reactjs.org/docs/hooks-intro.html). It isn't
+> required to use this library – the props will work as expected in class
+> components too.
+
+### `className?: string`
+
+A React-alternative to the `theme` prop. The className gets added to the tooltip
+element's class list as expected, without adding `-theme` as a suffix.
+
+```jsx
+function App() {
+  return (
+    <Tippy content="Tooltip" className="hello world">
+      <button />
+    </Tippy>
+  )
+}
+```
+
+Rendered DOM:
+
+```html
+<div class="tippy-popper">
+  <div class="tippy-tooltip dark-theme hello world">
+    <!-- inner elements -->
+  </div>
+</div>
+```
+
+See [themes](https://atomiks.github.io/tippyjs/themes/) for more information.
 
 ### `isEnabled?: boolean`
 
@@ -80,7 +121,7 @@ this when you want to temporarily disable a tippy from showing.
 function App() {
   const [isEnabled, setIsEnabled] = useState(true)
   return (
-    <Tippy content="test" isEnabled={isEnabled}>
+    <Tippy content="Tooltip" isEnabled={isEnabled}>
       <button />
     </Tippy>
   )
@@ -97,14 +138,14 @@ UI events.
 function App() {
   const [isVisible, setIsVisible] = useState(true)
   return (
-    <Tippy content="test" isVisible={isVisible}>
+    <Tippy content="Tooltip" isVisible={isVisible}>
       <button />
     </Tippy>
   )
 }
 ```
 
-> **Note 1**: You should also set the `hideOnClick` prop to `false` if you don't
+> **Note**: You should also set the `hideOnClick` prop to `false` if you don't
 > want the tippy to hide when the user clicks on the document somewhere.
 
 ### `onCreate?: (tip: Instance) => void`
@@ -112,12 +153,15 @@ function App() {
 Callback invoked when the Tippy instance has been created. Use this when you
 need to store the Tippy instance on the component.
 
+This should only be done for advanced (imperative) manipulation of the tippy
+instance – in most cases using props should suffice.
+
 ```jsx
 function App() {
   const tippyInstance = useRef()
   return (
     <Tippy
-      content="test"
+      content="Tooltip"
       onCreate={instance => (tippyInstance.current = instance)}
     >
       <button />
