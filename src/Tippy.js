@@ -3,6 +3,7 @@ import React, {
   cloneElement,
   useState,
   useRef,
+  useEffect,
   useLayoutEffect,
 } from 'react'
 import { createPortal } from 'react-dom'
@@ -15,6 +16,9 @@ import {
   preserveRef,
   updateClassName,
 } from './utils'
+
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 function Tippy(props) {
   const [isMounted, setIsMounted] = useState(false)
@@ -31,7 +35,7 @@ function Tippy(props) {
     options.trigger = 'manual'
   }
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     instanceRef.current = tippy(targetRef.current, options)
 
     const { onCreate, isEnabled, isVisible } = props
@@ -56,7 +60,7 @@ function Tippy(props) {
     }
   }, [])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!isMounted) {
       return
     }
@@ -79,7 +83,7 @@ function Tippy(props) {
     }
   })
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (props.className) {
       const { tooltip } = instanceRef.current.popperChildren
       updateClassName(tooltip, 'add', props.className)

@@ -42,6 +42,7 @@
     ]
   },
   "dependencies": {
+    "eslint-plugin-react-hooks": "^1.2.0",
     "prop-types": "^15.6.2",
     "tippy.js": "^4.0.3"
   },
