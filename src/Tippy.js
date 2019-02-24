@@ -17,6 +17,12 @@ import {
   updateClassName,
 } from './utils'
 
+// React currently throws a warning when using useLayoutEffect
+// on the server. To get around it, we can conditionally
+// useEffect on the server (no-op) and useLayoutEffect in the
+// browser. We need useLayoutEffect because we want Tippy to
+// perform sync mutations to the DOM elements after renders
+// to prevent jitters/jumps, especially when updating content.
 const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
