@@ -21,7 +21,9 @@
     "index.d.ts"
   ],
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>test/setup.js",
+    "setupFilesAfterEnv": [
+      "<rootDir>test/setup.js"
+    ],
     "coveragePathIgnorePatterns": [
       "test/setup.js"
     ]

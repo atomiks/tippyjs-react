@@ -118,6 +118,7 @@ class App extends React.Component {
   state = {
     arrow: false,
     customClass: 'hello',
+    content: 'hello',
   }
 
   toggleArrow = () => {
@@ -128,8 +129,8 @@ class App extends React.Component {
 
   componentDidMount() {
     setTimeout(() => {
-      this.setState({ customClass: 'bye' })
-    }, 500)
+      this.setState({ customClass: 'bye', content: 'testing content update' })
+    }, 2000)
   }
 
   render() {
@@ -174,7 +175,11 @@ class App extends React.Component {
         </Tippy>
 
         <h1>Other</h1>
-        <Tippy trigger="click" className={this.state.customClass}>
+        <Tippy
+          content={this.state.content}
+          trigger="click"
+          className={this.state.customClass}
+        >
           <button>Custom class</button>
         </Tippy>
       </main>
