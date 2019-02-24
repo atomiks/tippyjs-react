@@ -85,7 +85,7 @@ See the [Tippy.js docs](https://atomiks.github.io/tippyjs/all-options/)
 > required to use this library – the props will work as expected in class
 > components too.
 
-### `className?: string`
+### `className?: string` (v2.1)
 
 A React-alternative to the `theme` prop. The className gets added to the tooltip
 element's class list as expected, without adding `-theme` as a suffix.
