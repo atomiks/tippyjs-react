@@ -3,6 +3,7 @@ import React, {
   cloneElement,
   useState,
   useRef,
+  useEffect,
   useLayoutEffect,
 } from 'react'
 import { createPortal } from 'react-dom'
@@ -15,6 +16,15 @@ import {
   preserveRef,
   updateClassName,
 } from './utils'
+
+// React currently throws a warning when using useLayoutEffect
+// on the server. To get around it, we can conditionally
+// useEffect on the server (no-op) and useLayoutEffect in the
+// browser. We need useLayoutEffect because we want Tippy to
+// perform sync mutations to the DOM elements after renders
+// to prevent jitters/jumps, especially when updating content.
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 function Tippy(props) {
   const [isMounted, setIsMounted] = useState(false)
@@ -31,7 +41,7 @@ function Tippy(props) {
     options.trigger = 'manual'
   }
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     instanceRef.current = tippy(targetRef.current, options)
 
     const { onCreate, isEnabled, isVisible } = props
@@ -56,7 +66,7 @@ function Tippy(props) {
     }
   }, [])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!isMounted) {
       return
     }
@@ -79,7 +89,7 @@ function Tippy(props) {
     }
   })
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (props.className) {
       const { tooltip } = instanceRef.current.popperChildren
       updateClassName(tooltip, 'add', props.className)

@@ -17,9 +17,11 @@
       "version": "detect"
     }
   },
+  "plugins": ["react-hooks"],
   "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
   "rules": {
     "react/prop-types": "off",
-    "no-unused-vars": ["error", { "ignoreRestSiblings": true }]
+    "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+    "react-hooks/rules-of-hooks": "error"
   }
 }
