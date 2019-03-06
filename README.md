@@ -48,8 +48,8 @@ const VariousProps = () => (
 
 ## Component children
 
-If you want to use a component as a child, ensure you forward the ref to the DOM
-node:
+If you want to use a component element as a child, ensure you forward the ref to
+the DOM node:
 
 ```jsx
 import React, { forwardRef } from 'react'
@@ -73,6 +73,20 @@ function App() {
 
 `styled-components` v4 does this for you automatically, so it should be seamless
 when using the `styled` constructor.
+
+If you're using a library that doesn't `forwardRef` for you, and doesn't give
+access to the ref via `innerRef` or similar, you can use a wrapper `<span>`
+element as a workaround. Note that this may affect accessibility with regards to
+screenreaders, since `<span>` is not traditionally focusable (unlike a
+`<button>` for example).
+
+```jsx
+<Tippy content="Tooltip">
+  <span>
+    <LegacyComponent>Unfortunately</LegacyComponent>
+  </span>
+</Tippy>
+```
 
 ## Native props
 
