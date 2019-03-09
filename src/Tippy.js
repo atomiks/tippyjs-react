@@ -9,13 +9,7 @@ import React, {
 import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
-import {
-  getNativeTippyProps,
-  hasOwnProperty,
-  ssrSafeCreateDiv,
-  preserveRef,
-  updateClassName,
-} from './utils'
+import { ssrSafeCreateDiv, preserveRef, updateClassName } from './utils'
 
 // React currently throws a warning when using useLayoutEffect
 // on the server. To get around it, we can conditionally
@@ -24,37 +18,46 @@ import {
 // perform sync mutations to the DOM elements after renders
 // to prevent jitters/jumps, especially when updating content.
 const useIsomorphicLayoutEffect =
-  typeof window !== 'undefined' ? useLayoutEffect : useEffect
+  typeof window !== 'undefined' && typeof document !== 'undefined'
+    ? useLayoutEffect
+    : useEffect
 
-function Tippy(props) {
+function Tippy({
+  children,
+  content,
+  className,
+  onCreate,
+  isEnabled = true,
+  isVisible,
+  ...nativeProps
+}) {
   const [isMounted, setIsMounted] = useState(false)
   const containerRef = useRef(ssrSafeCreateDiv())
   const targetRef = useRef()
   const instanceRef = useRef()
+  const isControlledMode = typeof isVisible === 'boolean'
 
   const options = {
-    ...getNativeTippyProps(props),
+    ...nativeProps,
     content: containerRef.current,
   }
 
-  if (hasOwnProperty(props, 'isVisible')) {
+  if (isControlledMode) {
     options.trigger = 'manual'
   }
 
   useIsomorphicLayoutEffect(() => {
     instanceRef.current = tippy(targetRef.current, options)
 
-    const { onCreate, isEnabled, isVisible } = props
-
     if (onCreate) {
       onCreate(instanceRef.current)
     }
 
-    if (isEnabled === false) {
+    if (!isEnabled) {
       instanceRef.current.disable()
     }
 
-    if (isVisible === true) {
+    if (isVisible) {
       instanceRef.current.show()
     }
 
@@ -73,41 +76,40 @@ function Tippy(props) {
 
     instanceRef.current.set(options)
 
-    const { isEnabled, isVisible } = props
-
-    if (isEnabled === true) {
+    if (isEnabled) {
       instanceRef.current.enable()
-    }
-    if (isEnabled === false) {
+    } else {
       instanceRef.current.disable()
     }
-    if (isVisible === true) {
-      instanceRef.current.show()
-    }
-    if (isVisible === false) {
-      instanceRef.current.hide()
+
+    if (isControlledMode) {
+      if (isVisible) {
+        instanceRef.current.show()
+      } else {
+        instanceRef.current.hide()
+      }
     }
   })
 
   useIsomorphicLayoutEffect(() => {
-    if (props.className) {
+    if (className) {
       const { tooltip } = instanceRef.current.popperChildren
-      updateClassName(tooltip, 'add', props.className)
+      updateClassName(tooltip, 'add', className)
       return () => {
-        updateClassName(tooltip, 'remove', props.className)
+        updateClassName(tooltip, 'remove', className)
       }
     }
-  }, [props.className])
+  }, [className])
 
   return (
     <>
-      {cloneElement(props.children, {
+      {cloneElement(children, {
         ref: node => {
           targetRef.current = node
-          preserveRef(props.children.ref, node)
+          preserveRef(children.ref, node)
         },
       })}
-      {isMounted && createPortal(props.content, containerRef.current)}
+      {isMounted && createPortal(content, containerRef.current)}
     </>
   )
 }
@@ -126,13 +128,13 @@ Tippy.defaultProps = {
   ignoreAttributes: true,
 }
 
-export default forwardRef(function TippyWrapper(props, ref) {
+export default forwardRef(function TippyWrapper({ children, ...props }, ref) {
   return (
     <Tippy {...props}>
-      {cloneElement(props.children, {
+      {cloneElement(children, {
         ref: node => {
           preserveRef(ref, node)
-          preserveRef(props.children.ref, node)
+          preserveRef(children.ref, node)
         },
       })}
     </Tippy>
