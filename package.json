@@ -2,8 +2,9 @@
   "name": "@tippy.js/react",
   "version": "2.1.1",
   "description": "React component for Tippy.js",
-  "main": "./umd/index.min.js",
+  "main": "./umd/index.js",
   "module": "./esm/index.js",
+  "unpkg": "./umd/index.min.js",
   "types": "index.d.ts",
   "sideEffects": false,
   "scripts": {
