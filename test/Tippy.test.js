@@ -103,6 +103,57 @@ describe('<Tippy />', () => {
     expect(tooltip.classList.contains('two')).toBe(true)
   })
 
+  test('props.popperClassName: single name is added to tooltip', () => {
+    const popperClassName = 'hello'
+    const { container } = render(
+      <Tippy content="tooltip" popperClassName={popperClassName}>
+        <button />
+      </Tippy>,
+    )
+    const { popper } = container.querySelector('button')._tippy
+    expect(popper.classList.contains(popperClassName)).toBe(true)
+  })
+
+  test('props.popperClassName: multiple names are added to tooltip', () => {
+    const popperClassName = 'hello world'
+    const { container } = render(
+      <Tippy content="tooltip" popperClassName={popperClassName}>
+        <button />
+      </Tippy>,
+    )
+    const { popper } = container.querySelector('button')._tippy
+    expect(popper.classList.contains('hello')).toBe(true)
+    expect(popper.classList.contains('world')).toBe(true)
+  })
+
+  test('props.popperClassName: extra whitespace is ignored', () => {
+    const popperClassName = ' hello world  '
+    const { container } = render(
+      <Tippy content="tooltip" popperClassName={popperClassName}>
+        <button />
+      </Tippy>,
+    )
+    const { popper } = container.querySelector('button')._tippy
+    expect(popper.className).toBe('tippy-popper hello world')
+  })
+
+  test('props.popperClassName: updating does not leave stale popperClassName behind', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" popperClassName="one">
+        <button />
+      </Tippy>,
+    )
+    const { popper } = container.querySelector('button')._tippy
+    expect(popper.classList.contains('one')).toBe(true)
+    rerender(
+      <Tippy content="tooltip" popperClassName="two">
+        <button />
+      </Tippy>,
+    )
+    expect(popper.classList.contains('one')).toBe(false)
+    expect(popper.classList.contains('two')).toBe(true)
+  })
+
   test('unmount destroys the tippy instance and allows garbage collection', () => {
     const { container, unmount } = render(
       <Tippy content="tooltip">

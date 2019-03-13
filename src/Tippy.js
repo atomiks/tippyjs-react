@@ -26,6 +26,7 @@ function Tippy({
   children,
   content,
   className,
+  popperClassName,
   onCreate,
   isEnabled = true,
   isVisible,
@@ -100,6 +101,16 @@ function Tippy({
       }
     }
   }, [className])
+
+  useIsomorphicLayoutEffect(() => {
+    if (popperClassName) {
+      const { popper } = instanceRef.current
+      updateClassName(popper, 'add', popperClassName)
+      return () => {
+        updateClassName(popper, 'remove', popperClassName)
+      }
+    }
+  }, [popperClassName])
 
   return (
     <>
