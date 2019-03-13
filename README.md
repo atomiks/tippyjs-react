@@ -124,6 +124,22 @@ Rendered DOM:
 </div>
 ```
 
+If you're using `styled-components`, the `className` prop allows you to avoid
+global styles with the following technique:
+
+```js
+const PurpleTippy = styled(Tippy)`
+  background: purple;
+
+  /* Styling the arrow for different placements */
+  &[x-placement^='top'] {
+    .tippy-arrow {
+      border-top-color: purple;
+    }
+  }
+`
+```
+
 See [themes](https://atomiks.github.io/tippyjs/themes/) for more information.
 
 ### `isEnabled?: boolean`
