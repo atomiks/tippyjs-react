@@ -178,7 +178,7 @@ function App() {
 > **Note**: You should also set the `hideOnClick` prop to `false` if you don't
 > want the tippy to hide when the user clicks on the document somewhere.
 
-### `onCreate?: (tip: Instance) => void`
+### `onCreate?: (instance: Instance) => void`
 
 Callback invoked when the Tippy instance has been created. Use this when you
 need to store the Tippy instance on the component.
