@@ -27,8 +27,9 @@ function Tippy({
   content,
   className,
   onCreate,
-  isEnabled = true,
   isVisible,
+  isEnabled = true,
+  ignoreAttributes = true,
   ...nativeProps
 }) {
   const [isMounted, setIsMounted] = useState(false)
@@ -39,6 +40,7 @@ function Tippy({
 
   const options = {
     ...nativeProps,
+    ignoreAttributes,
     content: containerRef.current,
   }
 
@@ -122,10 +124,6 @@ Tippy.propTypes = {
   isVisible: PropTypes.bool,
   isEnabled: PropTypes.bool,
   className: PropTypes.string,
-}
-
-Tippy.defaultProps = {
-  ignoreAttributes: true,
 }
 
 export default forwardRef(function TippyWrapper({ children, ...props }, ref) {
