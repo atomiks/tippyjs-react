@@ -1,19 +1,19 @@
-<p align="center">
-  <img src="https://github.com/atomiks/tippy.js-react/raw/master/logo.png" alt="Logo" width="295">
-</p>
+<div align="center">
+  <img src="https://github.com/atomiks/tippy.js-react/raw/master/logo.png" alt="Logo" height="105">
+</div>
 
-<h1 align="center">Tippy.js for React</h1>
-
-<p align="center">
+<div align="center">
+  <h1>Tippy.js for React</h1>
   <a href="https://www.npmjs.com/package/@tippy.js/react">
    <img src="https://img.shields.io/npm/dm/@tippy.js/react.svg?color=%235599ff&style=for-the-badge" alt="npm Downloads per Month">
   <a>
   <a href="https://github.com/atomiks/tippy.js-react/blob/master/LICENSE">
     <img src="https://img.shields.io/npm/l/@tippy.js/react.svg?color=%23c677cf&style=for-the-badge" alt="MIT License">
   </a>
-</p>
-
-<p align="center"><strong>The ultimate tooltip and popover solution for React apps</strong></p>
+  <br>
+  <br>
+  The complete tooltip and popover solution for React apps
+</div>
 
 ---
 
