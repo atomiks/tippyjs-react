@@ -31,7 +31,7 @@ function Tippy({
   isEnabled = true,
   ignoreAttributes = true,
   multiple = true,
-  ...nativeProps
+  ...restOfNativeProps
 }) {
   const [isMounted, setIsMounted] = useState(false)
   const containerRef = useRef(ssrSafeCreateDiv())
@@ -40,9 +40,9 @@ function Tippy({
   const isControlledMode = typeof isVisible === 'boolean'
 
   const options = {
-    ...nativeProps,
     ignoreAttributes,
     multiple,
+    ...restOfNativeProps,
     content: containerRef.current,
   }
 
