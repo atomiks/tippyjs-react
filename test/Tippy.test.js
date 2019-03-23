@@ -168,14 +168,15 @@ describe('<Tippy />', () => {
 
   test('nesting', () => {
     render(
-      <Tippy content="tooltip" placement="bottom" multiple>
-        <Tippy content="tooltip" placement="left" multiple>
-          <Tippy content="tooltip">
+      <Tippy content="tooltip" placement="bottom" isVisible>
+        <Tippy content="tooltip" placement="left" isVisible>
+          <Tippy content="tooltip" isVisible>
             <button>Text</button>
           </Tippy>
         </Tippy>
       </Tippy>,
     )
+    expect(document.querySelectorAll('.tippy-popper').length).toBe(3)
   })
 
   test('props.isEnabled initially `true`', () => {
