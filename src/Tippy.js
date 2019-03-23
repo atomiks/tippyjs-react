@@ -30,6 +30,7 @@ function Tippy({
   isVisible,
   isEnabled = true,
   ignoreAttributes = true,
+  multiple = true,
   ...nativeProps
 }) {
   const [isMounted, setIsMounted] = useState(false)
@@ -41,6 +42,7 @@ function Tippy({
   const options = {
     ...nativeProps,
     ignoreAttributes,
+    multiple,
     content: containerRef.current,
   }
 
