@@ -4,15 +4,15 @@
 
 <div align="center">
   <h1>Tippy.js for React</h1>
+  <p>The complete tooltip and popover solution for React apps</p>
   <a href="https://www.npmjs.com/package/@tippy.js/react">
-   <img src="https://img.shields.io/npm/dm/@tippy.js/react.svg?color=%235599ff&style=for-the-badge" alt="npm Downloads per Month">
+   <img src="https://img.shields.io/npm/dm/@tippy.js/react.svg?color=%235599ff&style=for-the-badge" alt="npm downloads per month">
   <a>
   <a href="https://github.com/atomiks/tippy.js-react/blob/master/LICENSE">
     <img src="https://img.shields.io/npm/l/@tippy.js/react.svg?color=%23c677cf&style=for-the-badge" alt="MIT License">
   </a>
   <br>
   <br>
-  The complete tooltip and popover solution for React apps
 </div>
 
 ---
@@ -261,13 +261,13 @@ import { Tooltip, Popover } from './Tippy'
 
 ## 🌈 Multiple tippys on a single element
 
-You can nest the components, ensuring they have a `multiple` prop:
+You can nest the components like so:
 
 ```jsx
-<Tippy placement="bottom" multiple>
-  <Tippy placement="left" multiple>
-    <Tippy placement="right" multiple>
-      <Tippy multiple>
+<Tippy content="Tooltip" placement="bottom">
+  <Tippy content="Tooltip" placement="left">
+    <Tippy content="Tooltip" placement="right">
+      <Tippy content="Tooltip">
         <button />
       </Tippy>
     </Tippy>
