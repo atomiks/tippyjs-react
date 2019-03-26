@@ -12,7 +12,6 @@
     <img src="https://img.shields.io/npm/l/@tippy.js/react.svg?color=%23c677cf&style=for-the-badge" alt="MIT License">
   </a>
   <br>
-  <br>
 </div>
 
 ---
