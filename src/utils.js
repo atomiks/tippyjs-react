@@ -1,3 +1,6 @@
+export const isBrowser =
+  typeof window !== 'undefined' && typeof document !== 'undefined'
+
 export function preserveRef(ref, node) {
   if (ref) {
     if (typeof ref === 'function') {
@@ -10,7 +13,7 @@ export function preserveRef(ref, node) {
 }
 
 export function ssrSafeCreateDiv() {
-  return typeof document !== 'undefined' && document.createElement('div')
+  return isBrowser && document.createElement('div')
 }
 
 export function updateClassName(tooltip, action, classNames) {
