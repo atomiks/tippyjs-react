@@ -7,10 +7,7 @@ export default function TippyGroup({ children, ...props }) {
 
   useEffect(() => {
     tippy.group(instancesRef.current, props)
-    return () => {
-      instancesRef.current = null
-    }
-  }, [])
+  })
 
   return Children.map(children, child => {
     return cloneElement(child, {

@@ -65,4 +65,32 @@ describe('<TippyGroup />', () => {
 
     render(<App />)
   })
+
+  test('props are updateable', () => {
+    const delay = 1000
+    const nextDelay = 500
+    const { container, rerender } = render(
+      <TippyGroup delay={delay}>
+        <Tippy content="toolip">
+          <button />
+        </Tippy>
+        <Tippy content="toolip">
+          <button />
+        </Tippy>
+      </TippyGroup>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.props.delay).toBe(delay)
+    rerender(
+      <TippyGroup delay={nextDelay}>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="toolip">
+          <button />
+        </Tippy>
+      </TippyGroup>,
+    )
+    expect(instance.props.delay).toBe(nextDelay)
+  })
 })
