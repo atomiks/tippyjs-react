@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { Instance, Props, GroupOptions } from 'tippy.js'
+import { Instance, Options, GroupOptions } from 'tippy.js'
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
-export interface TippyProps extends Omit<Props, 'content'> {
+export interface TippyProps extends Omit<Options, 'content'> {
   content: React.ReactElement<any> | string
   children: React.ReactElement<any>
   onCreate?: (instance: Instance) => void
