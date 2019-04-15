@@ -7,8 +7,12 @@ export interface TippyProps extends Omit<Props, 'content'> {
   content: React.ReactElement<any> | string
   children: React.ReactElement<any>
   onCreate?: (instance: Instance) => void
+  /** @deprecated Use `visible` instead */
   isVisible?: boolean
+  /** @deprecated Use `enabled` instead */
   isEnabled?: boolean
+  visible?: boolean
+  enabled?: boolean
   className?: string
 }
 

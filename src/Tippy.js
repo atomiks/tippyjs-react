@@ -9,7 +9,12 @@ import React, {
 import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
-import { ssrSafeCreateDiv, preserveRef, updateClassName } from './utils'
+import {
+  isBrowser,
+  ssrSafeCreateDiv,
+  preserveRef,
+  updateClassName,
+} from './utils'
 
 // React currently throws a warning when using useLayoutEffect
 // on the server. To get around it, we can conditionally
@@ -17,27 +22,31 @@ import { ssrSafeCreateDiv, preserveRef, updateClassName } from './utils'
 // browser. We need useLayoutEffect because we want Tippy to
 // perform sync mutations to the DOM elements after renders
 // to prevent jitters/jumps, especially when updating content.
-const useIsomorphicLayoutEffect =
-  typeof window !== 'undefined' && typeof document !== 'undefined'
-    ? useLayoutEffect
-    : useEffect
+const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect
 
 function Tippy({
   children,
   content,
   className,
   onCreate,
-  isVisible,
-  isEnabled = true,
+  isVisible, // deprecated
+  isEnabled, // deprecated
+  visible,
+  enabled,
   ignoreAttributes = true,
   multiple = true,
   ...restOfNativeProps
 }) {
-  const [isMounted, setIsMounted] = useState(false)
+  // `isVisible` / `isEnabled` renamed to `visible` / `enabled`
+  enabled =
+    enabled !== undefined ? enabled : isEnabled !== undefined ? isEnabled : true
+  visible = visible !== undefined ? visible : isVisible
+
+  const [mounted, setMounted] = useState(false)
   const containerRef = useRef(ssrSafeCreateDiv())
   const targetRef = useRef()
   const instanceRef = useRef()
-  const isControlledMode = typeof isVisible === 'boolean'
+  const isControlledMode = visible !== undefined
 
   const options = {
     ignoreAttributes,
@@ -57,15 +66,15 @@ function Tippy({
       onCreate(instanceRef.current)
     }
 
-    if (!isEnabled) {
+    if (!enabled) {
       instanceRef.current.disable()
     }
 
-    if (isVisible) {
+    if (visible) {
       instanceRef.current.show()
     }
 
-    setIsMounted(true)
+    setMounted(true)
 
     return () => {
       instanceRef.current.destroy()
@@ -74,20 +83,20 @@ function Tippy({
   }, [])
 
   useIsomorphicLayoutEffect(() => {
-    if (!isMounted) {
+    if (!mounted) {
       return
     }
 
     instanceRef.current.set(options)
 
-    if (isEnabled) {
+    if (enabled) {
       instanceRef.current.enable()
     } else {
       instanceRef.current.disable()
     }
 
     if (isControlledMode) {
-      if (isVisible) {
+      if (visible) {
         instanceRef.current.show()
       } else {
         instanceRef.current.hide()
@@ -113,7 +122,7 @@ function Tippy({
           preserveRef(children.ref, node)
         },
       })}
-      {isMounted && createPortal(content, containerRef.current)}
+      {mounted && createPortal(content, containerRef.current)}
     </>
   )
 }
@@ -123,8 +132,10 @@ Tippy.propTypes = {
     .isRequired,
   children: PropTypes.element.isRequired,
   onCreate: PropTypes.func,
-  isVisible: PropTypes.bool,
-  isEnabled: PropTypes.bool,
+  isVisible: PropTypes.bool, // deprecated
+  isEnabled: PropTypes.bool, // deprecated
+  visible: PropTypes.bool,
+  enabled: PropTypes.bool,
   className: PropTypes.string,
 }
 

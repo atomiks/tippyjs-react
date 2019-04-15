@@ -179,6 +179,22 @@ describe('<Tippy />', () => {
     expect(document.querySelectorAll('.tippy-popper').length).toBe(3)
   })
 
+  test('props.enabled initially `true`', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" enabled={true}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.state.isEnabled).toBe(true)
+    rerender(
+      <Tippy content="tooltip" enabled={false}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.state.isEnabled).toBe(false)
+  })
+
   test('props.isEnabled initially `true`', () => {
     const { container, rerender } = render(
       <Tippy content="tooltip" isEnabled={true}>
@@ -193,6 +209,22 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     expect(instance.state.isEnabled).toBe(false)
+  })
+
+  test('props.enabled initially `false`', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" enabled={false}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.state.isEnabled).toBe(false)
+    rerender(
+      <Tippy content="tooltip" enabled={true}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.state.isEnabled).toBe(true)
   })
 
   test('props.isEnabled initially `false`', () => {
@@ -211,6 +243,22 @@ describe('<Tippy />', () => {
     expect(instance.state.isEnabled).toBe(true)
   })
 
+  test('props.visible initially `true`', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" visible={true}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.state.isVisible).toBe(true)
+    rerender(
+      <Tippy content="tooltip" visible={false}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.state.isVisible).toBe(false)
+  })
+
   test('props.isVisible initially `true`', () => {
     const { container, rerender } = render(
       <Tippy content="tooltip" isVisible={true}>
@@ -225,6 +273,22 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     expect(instance.state.isVisible).toBe(false)
+  })
+
+  test('props.visible initially `false`', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" visible={false}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    expect(instance.state.isVisible).toBe(false)
+    rerender(
+      <Tippy content="tooltip" visible={true}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.state.isVisible).toBe(true)
   })
 
   test('props.isVisible initially `false`', () => {
