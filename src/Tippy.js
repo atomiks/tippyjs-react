@@ -37,9 +37,7 @@ function Tippy({
   multiple = true,
   ...restOfNativeProps
 }) {
-  // Deprecated `is` prefixed props, because native props don't have the same
-  // convention, since they can potentially have non-boolean values in the
-  // future.
+  // `isVisible` / `isEnabled` renamed to `visible` / `enabled`
   enabled =
     enabled !== undefined ? enabled : isEnabled !== undefined ? isEnabled : true
   visible = visible !== undefined ? visible : isVisible
