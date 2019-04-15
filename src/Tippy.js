@@ -42,7 +42,7 @@ function Tippy({
     enabled !== undefined ? enabled : isEnabled !== undefined ? isEnabled : true
   visible = visible !== undefined ? visible : isVisible
 
-  const [isMounted, setIsMounted] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const containerRef = useRef(ssrSafeCreateDiv())
   const targetRef = useRef()
   const instanceRef = useRef()
@@ -74,7 +74,7 @@ function Tippy({
       instanceRef.current.show()
     }
 
-    setIsMounted(true)
+    setMounted(true)
 
     return () => {
       instanceRef.current.destroy()
@@ -83,7 +83,7 @@ function Tippy({
   }, [])
 
   useIsomorphicLayoutEffect(() => {
-    if (!isMounted) {
+    if (!mounted) {
       return
     }
 
@@ -122,7 +122,7 @@ function Tippy({
           preserveRef(children.ref, node)
         },
       })}
-      {isMounted && createPortal(content, containerRef.current)}
+      {mounted && createPortal(content, containerRef.current)}
     </>
   )
 }
