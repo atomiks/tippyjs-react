@@ -16,6 +16,12 @@
   },
   "author": "atomiks",
   "license": "MIT",
+  "keywords": [
+    "tooltip",
+    "popover",
+    "tippy",
+    "react"
+  ],
   "files": [
     "esm",
     "umd",
