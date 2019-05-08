@@ -148,7 +148,7 @@ element's class list as expected, without adding `-theme` as a suffix.
 If you're using `styled-components`, the `className` prop allows you to avoid
 global styles with the following technique:
 
-```js
+```jsx
 const PurpleTippy = styled(Tippy)`
   background: purple;
 
