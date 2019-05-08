@@ -168,23 +168,23 @@ See [themes](https://atomiks.github.io/tippyjs/themes/) for more information.
 > required to use this library – the props will work as expected in class
 > components too.
 
-### `isEnabled?: boolean`
+### `enabled?: boolean`
 
 Prop to control the `tippy.enable()` / `tippy.disable()` instance methods. Use
 this when you want to temporarily disable a tippy from showing.
 
 ```jsx
 function App() {
-  const [isEnabled, setIsEnabled] = useState(true)
+  const [enabled, setEnabled] = useState(true)
   return (
-    <Tippy content="Tooltip" isEnabled={isEnabled}>
+    <Tippy content="Tooltip" enabled={enabled}>
       <button />
     </Tippy>
   )
 }
 ```
 
-### `isVisible?: boolean`
+### `visible?: boolean`
 
 Prop to control the `tippy.show()` / `tippy.hide()` instance methods. Use this
 when you want to programmatically show or hide the tippy instead of relying on
@@ -193,9 +193,9 @@ state.
 
 ```jsx
 function App() {
-  const [isVisible, setIsVisible] = useState(true)
+  const [visible, setVisible] = useState(true)
   return (
-    <Tippy content="Tooltip" isVisible={isVisible}>
+    <Tippy content="Tooltip" visible={visible}>
       <button />
     </Tippy>
   )
