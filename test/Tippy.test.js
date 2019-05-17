@@ -306,4 +306,21 @@ describe('<Tippy />', () => {
     )
     expect(instance.state.isVisible).toBe(true)
   })
+
+  test('setting enabled to false hides the tooltip if it is visible', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip" enabled={true}>
+        <button />
+      </Tippy>,
+    )
+    const instance = container.querySelector('button')._tippy
+    instance.show()
+    rerender(
+      <Tippy content="tooltip" enabled={false}>
+        <button />
+      </Tippy>,
+    )
+    expect(instance.state.isEnabled).toBe(false)
+    expect(instance.state.isVisible).toBe(false)
+  })
 })

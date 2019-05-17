@@ -91,6 +91,10 @@ function Tippy({
     if (enabled) {
       instanceRef.current.enable()
     } else {
+      if (!isControlledMode) {
+        instanceRef.current.hide()
+      }
+
       instanceRef.current.disable()
     }
 
