@@ -126,8 +126,13 @@ function Tippy({
   )
 }
 
+const ContentType = PropTypes.oneOfType([
+  PropTypes.number,
+  PropTypes.string,
+  PropTypes.element,
+])
 Tippy.propTypes = {
-  content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+  content: PropTypes.oneOf([ContentType, PropTypes.arrayOf(ContentType)])
     .isRequired,
   children: PropTypes.element.isRequired,
   onCreate: PropTypes.func,

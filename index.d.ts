@@ -4,7 +4,7 @@ import { Instance, Options, GroupOptions } from 'tippy.js'
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
 export interface TippyProps extends Omit<Options, 'content'> {
-  content: React.ReactElement<any> | string
+  content: React.ReactChild | React.ReactChild[]
   children: React.ReactElement<any>
   onCreate?: (instance: Instance) => void
   /** @deprecated Use `visible` instead */
