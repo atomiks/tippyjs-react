@@ -126,16 +126,23 @@ function Tippy({
   )
 }
 
-Tippy.propTypes = {
-  content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-    .isRequired,
-  children: PropTypes.element.isRequired,
-  onCreate: PropTypes.func,
-  isVisible: PropTypes.bool, // deprecated
-  isEnabled: PropTypes.bool, // deprecated
-  visible: PropTypes.bool,
-  enabled: PropTypes.bool,
-  className: PropTypes.string,
+if (process.env.NODE_ENV !== 'production') {
+  const ContentType = PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.element,
+  ])
+  Tippy.propTypes = {
+    content: PropTypes.oneOf([ContentType, PropTypes.arrayOf(ContentType)])
+      .isRequired,
+    children: PropTypes.element.isRequired,
+    onCreate: PropTypes.func,
+    isVisible: PropTypes.bool, // deprecated
+    isEnabled: PropTypes.bool, // deprecated
+    visible: PropTypes.bool,
+    enabled: PropTypes.bool,
+    className: PropTypes.string,
+  }
 }
 
 export default forwardRef(function TippyWrapper({ children, ...props }, ref) {

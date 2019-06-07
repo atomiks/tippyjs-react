@@ -21,6 +21,8 @@ export default function TippyGroup({ children, ...props }) {
   })
 }
 
-TippyGroup.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+if (process.env.NODE_ENV !== 'production') {
+  TippyGroup.propTypes = {
+    children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  }
 }
