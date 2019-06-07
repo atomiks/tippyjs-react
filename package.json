@@ -9,7 +9,7 @@
   "sideEffects": false,
   "scripts": {
     "dev": "parcel demo/index.html -d .devserver --no-cache --open",
-    "build": "node rollup.build.js",
+    "build": "rollup --config",
     "test": "jest --coverage",
     "lint": "eslint \"{src,test}/**/*.js\"",
     "format": "prettier --write \"{src,test}/**/*.{js,json,css,md}\""
@@ -80,9 +80,10 @@
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-testing-library": "^5.5.3",
-    "rollup": "^1.1.2",
+    "rollup": "^1.14.3",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^4.0.4",
     "typescript": "^3.3.3"
   },
