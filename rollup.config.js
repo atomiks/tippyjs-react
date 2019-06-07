@@ -13,7 +13,10 @@ const pluginReplaceEnvDevelopment = replace({
   'process.env.NODE_ENV': JSON.stringify('development'),
 })
 
-const external = ['react', 'react-dom', 'prop-types', 'tippy.js']
+const COMMON_INPUT = {
+  input: './src/index.js',
+  external: ['react', 'react-dom', 'prop-types', 'tippy.js'],
+}
 
 const COMMON_OUTPUT = {
   name: 'Tippy',
@@ -29,8 +32,7 @@ const COMMON_OUTPUT = {
 
 export default [
   {
-    input: './src/index.js',
-    external,
+    ...COMMON_INPUT,
     plugins: [pluginBabel, pluginResolve, pluginReplaceEnvDevelopment],
     output: {
       ...COMMON_OUTPUT,
@@ -39,8 +41,7 @@ export default [
     },
   },
   {
-    input: './src/index.js',
-    external,
+    ...COMMON_INPUT,
     plugins: [
       pluginBabel,
       pluginResolve,
@@ -54,8 +55,7 @@ export default [
     },
   },
   {
-    input: './src/index.js',
-    external,
+    ...COMMON_INPUT,
     plugins: [pluginBabel, pluginResolve],
     output: {
       ...COMMON_OUTPUT,
@@ -64,8 +64,7 @@ export default [
     },
   },
   {
-    input: './src/index.js',
-    external,
+    ...COMMON_INPUT,
     plugins: [pluginBabel, pluginResolve, pluginMinify],
     output: {
       ...COMMON_OUTPUT,
