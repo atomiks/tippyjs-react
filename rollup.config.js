@@ -9,9 +9,6 @@ const pluginResolve = resolve()
 const pluginReplaceEnvProduction = replace({
   'process.env.NODE_ENV': JSON.stringify('production'),
 })
-const pluginReplaceEnvDevelopment = replace({
-  'process.env.NODE_ENV': JSON.stringify('development'),
-})
 
 const COMMON_INPUT = {
   input: './src/index.js',
@@ -33,7 +30,7 @@ const COMMON_OUTPUT = {
 export default [
   {
     ...COMMON_INPUT,
-    plugins: [pluginBabel, pluginResolve, pluginReplaceEnvDevelopment],
+    plugins: [pluginBabel, pluginResolve],
     output: {
       ...COMMON_OUTPUT,
       format: 'umd',
