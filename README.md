@@ -229,40 +229,64 @@ function App() {
 
 ### Default props
 
-You can create a new component file that imports the component and sets the
-default props. From this file, you can import the component throughout your app.
+You can create a new component file that exports a wrapper component that has
+its own default props.
 
 ```js
 import Tippy from '@tippy.js/react'
 
-Tippy.defaultProps = {
-  ...Tippy.defaultProps,
-  arrow: true,
-}
-
-export default Tippy
+// When importing Tippy from this file instead, it will have the fade animation
+// by default
+export default props => <Tippy animation="fade" {...props} />
 ```
 
-You could also create Proxy components that wrap the base `<Tippy />` component
-with a new name and sets its own default props:
+### Proxy components
+
+`<Tippy />`'s purpose is to be a useful generic component for all types of
+popper elements. This includes tooltips, popovers, dropdowns, etc. This means
+you can create proxy components that wrap the base `<Tippy />` component with a
+new name and their own default props, to distinguish their functionality. For
+example:
 
 ```jsx
-export const Tooltip = props => <Tippy {...props} />
-Tooltip.defaultProps = {
-  animation: 'fade',
-  arrow: true,
-  delay: 150,
-  theme: 'translucent',
+function Tooltip({
+  animation = 'fade',
+  theme = 'translucent',
+  arrow = true,
+  delay = 150,
+  ...etc
+}) {
+  return (
+    <Tippy
+      animation={animation}
+      theme={theme}
+      arrow={arrow}
+      delay={delay}
+      {...etc}
+    />
+  )
 }
 
-export const Popover = props => <Tippy {...props} />
-Popover.defaultProps = {
-  animateFill: false,
-  animation: 'scale',
-  interactive: true,
-  interactiveBorder: 10,
-  theme: 'light-border',
-  trigger: 'click',
+function Popover({
+  animateFill = false,
+  interactive = true,
+  interactiveBorder = 10,
+  animation = 'scale',
+  theme = 'light-border',
+  trigger = 'click',
+  ...etc
+}) {
+  return (
+    <Tippy
+      animateFill={animateFill}
+      interactive={interactive}
+      interactiveBorder={interactiveBorder}
+      animation={animation}
+      theme={theme}
+      trigger={trigger}
+      {...etc}
+    />
+  )
 }
 
 // In another file
