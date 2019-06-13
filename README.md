@@ -249,42 +249,28 @@ new name and their own default props, to distinguish their functionality. For
 example:
 
 ```jsx
-function Tooltip({
-  animation = 'fade',
-  theme = 'translucent',
-  arrow = true,
-  delay = 150,
-  ...etc
-}) {
+function Tooltip(props) {
   return (
     <Tippy
-      animation={animation}
-      theme={theme}
-      arrow={arrow}
-      delay={delay}
-      {...etc}
+      animation="fade"
+      theme="translucent"
+      arrow={true}
+      delay={150}
+      {...props}
     />
   )
 }
 
-function Popover({
-  animateFill = false,
-  interactive = true,
-  interactiveBorder = 10,
-  animation = 'scale',
-  theme = 'light-border',
-  trigger = 'click',
-  ...etc
-}) {
+function Popover(props) {
   return (
     <Tippy
-      animateFill={animateFill}
-      interactive={interactive}
-      interactiveBorder={interactiveBorder}
-      animation={animation}
-      theme={theme}
-      trigger={trigger}
-      {...etc}
+      animateFill={false}
+      interactive={true}
+      interactiveBorder={10}
+      animation="scale"
+      theme="light-border"
+      trigger="click"
+      {...props}
     />
   )
 }
