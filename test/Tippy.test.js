@@ -114,6 +114,43 @@ describe('<Tippy />', () => {
     expect(button._tippy).toBeUndefined()
   })
 
+  test('updating children destroys old instance and creates new one', () => {
+    const Button = (_, ref) => <button ref={ref} />
+    const Main = (_, ref) => <main ref={ref} />
+    const Component1 = React.forwardRef(Button)
+    const Component2 = React.forwardRef(Main)
+
+    const { container, rerender } = render(
+      <Tippy content="tooltip">
+        <div />
+      </Tippy>,
+    )
+    const div = container.querySelector('div')
+    rerender(
+      <Tippy content="tooltip">
+        <span />
+      </Tippy>,
+    )
+    const span = container.querySelector('span')
+    expect(div._tippy).toBeUndefined()
+    expect(span._tippy).toBeDefined()
+    rerender(
+      <Tippy content="tooltip">
+        <Component1 />
+      </Tippy>,
+    )
+    const button = container.querySelector('button')
+    expect(span._tippy).toBeUndefined()
+    expect(button._tippy).toBeDefined()
+    rerender(
+      <Tippy content="tooltip">
+        <Component2 />
+      </Tippy>,
+    )
+    expect(button._tippy).toBeUndefined()
+    expect(container.querySelector('main')._tippy).toBeDefined()
+  })
+
   test('updating props updates the tippy instance', () => {
     const { container, rerender } = render(
       <Tippy content="tooltip" arrow={false}>
