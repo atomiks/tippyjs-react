@@ -114,6 +114,22 @@ describe('<Tippy />', () => {
     expect(button._tippy).toBeUndefined()
   })
 
+  test('updating children destroys old instance and creates new one', () => {
+    const { container, rerender } = render(
+      <Tippy content="tooltip">
+        <div />
+      </Tippy>,
+    )
+    const div = container.querySelector('div')
+    rerender(
+      <Tippy content="tooltip">
+        <span />
+      </Tippy>,
+    )
+    expect(div._tippy).toBeUndefined()
+    expect(container.querySelector('span')._tippy).toBeDefined()
+  })
+
   test('updating props updates the tippy instance', () => {
     const { container, rerender } = render(
       <Tippy content="tooltip" arrow={false}>

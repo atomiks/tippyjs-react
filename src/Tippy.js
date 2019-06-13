@@ -79,7 +79,7 @@ function Tippy({
       instanceRef.current.destroy()
       instanceRef.current = null
     }
-  }, [])
+  }, [children.type])
 
   useIsomorphicLayoutEffect(() => {
     if (!mounted) {
