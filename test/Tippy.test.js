@@ -1,6 +1,6 @@
 import React from 'react'
 import Tippy from '../src/Tippy'
-import { render, cleanup } from 'react-testing-library'
+import { render, cleanup } from '@testing-library/react'
 
 afterEach(cleanup)
 
