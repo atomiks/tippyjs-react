@@ -132,8 +132,9 @@ if (process.env.NODE_ENV !== 'production') {
     PropTypes.string,
     PropTypes.element,
   ])
+
   Tippy.propTypes = {
-    content: PropTypes.oneOf([ContentType, PropTypes.arrayOf(ContentType)])
+    content: PropTypes.oneOfType([ContentType, PropTypes.arrayOf(ContentType)])
       .isRequired,
     children: PropTypes.element.isRequired,
     onCreate: PropTypes.func,
