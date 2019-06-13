@@ -1,6 +1,6 @@
 {
   "name": "@tippy.js/react",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "React component for Tippy.js",
   "main": "./umd/index.js",
   "module": "./esm/index.js",
