@@ -2,7 +2,6 @@ import React, {
   forwardRef,
   cloneElement,
   useState,
-  useRef,
   useEffect,
   useLayoutEffect,
 } from 'react'
@@ -41,17 +40,21 @@ function Tippy({
     enabled !== undefined ? enabled : isEnabled !== undefined ? isEnabled : true
   visible = visible !== undefined ? visible : isVisible
 
-  const [mounted, setMounted] = useState(false)
-  const containerRef = useRef(ssrSafeCreateDiv())
-  const targetRef = useRef()
-  const instanceRef = useRef()
   const isControlledMode = visible !== undefined
+
+  const [mounted, setMounted] = useState(false)
+  const $this = useState({
+    container: ssrSafeCreateDiv(),
+    renders: 1,
+    ref: null,
+    instance: null,
+  })[0]
 
   const options = {
     ignoreAttributes,
     multiple,
     ...restOfNativeProps,
-    content: containerRef.current,
+    content: $this.container,
   }
 
   if (isControlledMode) {
@@ -59,53 +62,58 @@ function Tippy({
   }
 
   useIsomorphicLayoutEffect(() => {
-    instanceRef.current = tippy(targetRef.current, options)
+    const instance = tippy($this.ref, options)
+
+    $this.instance = instance
 
     if (onCreate) {
-      onCreate(instanceRef.current)
+      onCreate(instance)
     }
 
     if (!enabled) {
-      instanceRef.current.disable()
+      instance.disable()
     }
 
     if (visible) {
-      instanceRef.current.show()
+      instance.show()
     }
 
     setMounted(true)
 
     return () => {
-      instanceRef.current.destroy()
-      instanceRef.current = null
+      instance.destroy()
     }
   }, [children.type])
 
   useIsomorphicLayoutEffect(() => {
-    if (!mounted) {
+    // Prevent this effect from running on 1st + 2nd render (setMounted())
+    if ($this.renders < 3) {
+      $this.renders++
       return
     }
 
-    instanceRef.current.set(options)
+    const { instance } = $this
+
+    instance.set(options)
 
     if (enabled) {
-      instanceRef.current.enable()
+      instance.enable()
     } else {
-      instanceRef.current.disable()
+      instance.disable()
     }
 
     if (isControlledMode) {
       if (visible) {
-        instanceRef.current.show()
+        instance.show()
       } else {
-        instanceRef.current.hide()
+        instance.hide()
       }
     }
   })
 
   useIsomorphicLayoutEffect(() => {
     if (className) {
-      const { tooltip } = instanceRef.current.popperChildren
+      const { tooltip } = $this.instance.popperChildren
       updateClassName(tooltip, 'add', className)
       return () => {
         updateClassName(tooltip, 'remove', className)
@@ -117,11 +125,11 @@ function Tippy({
     <>
       {cloneElement(children, {
         ref: node => {
-          targetRef.current = node
+          $this.ref = node
           preserveRef(children.ref, node)
         },
       })}
-      {mounted && createPortal(content, containerRef.current)}
+      {mounted && createPortal(content, $this.container)}
     </>
   )
 }
