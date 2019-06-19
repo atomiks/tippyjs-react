@@ -43,11 +43,10 @@ function Tippy({
   const isControlledMode = visible !== undefined
 
   const [mounted, setMounted] = useState(false)
+  // useImperativeInstance
   const $this = useState({
     container: ssrSafeCreateDiv(),
     renders: 1,
-    ref: null,
-    instance: null,
   })[0]
 
   const options = {
