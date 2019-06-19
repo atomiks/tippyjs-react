@@ -123,7 +123,7 @@ function Tippy({
   return (
     <>
       {cloneElement(children, {
-        ref: node => {
+        ref(node) {
           $this.ref = node
           preserveRef(children.ref, node)
         },
@@ -157,7 +157,7 @@ export default forwardRef(function TippyWrapper({ children, ...props }, ref) {
   return (
     <Tippy {...props}>
       {cloneElement(children, {
-        ref: node => {
+        ref(node) {
           preserveRef(ref, node)
           preserveRef(children.ref, node)
         },

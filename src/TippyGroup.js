@@ -12,7 +12,7 @@ export default function TippyGroup({ children, ...props }) {
 
   return Children.map(children, child => {
     return cloneElement(child, {
-      onCreate: instance => {
+      onCreate(instance) {
         if (child.props.onCreate) {
           child.props.onCreate(instance)
         }
