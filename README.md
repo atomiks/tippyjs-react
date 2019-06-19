@@ -249,7 +249,7 @@ new name and their own default props, to distinguish their functionality. For
 example:
 
 ```jsx
-function Tooltip(props) {
+export function Tooltip(props) {
   return (
     <Tippy
       animation="fade"
@@ -261,7 +261,7 @@ function Tooltip(props) {
   )
 }
 
-function Popover(props) {
+export function Popover(props) {
   return (
     <Tippy
       animateFill={false}
