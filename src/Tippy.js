@@ -108,7 +108,7 @@ function Tippy({
         instance.hide()
       }
     }
-  })
+  }, [enabled, visible])
 
   useIsomorphicLayoutEffect(() => {
     if (className) {
