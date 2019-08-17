@@ -1,14 +1,17 @@
-import { Children, cloneElement, useState, useEffect } from 'react'
+import { Children, cloneElement, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import tippy from 'tippy.js'
+import { createSingleton } from 'tippy.js/addons'
+import { useThis } from './utils'
 
-export default function TippyGroup({ children, ...props }) {
-  // useImperativeInstance
-  const $this = useState({ instances: [] })[0]
+export default function TippySingleton({ children, delay }) {
+  const $this = useThis({ instances: [] })
 
   useEffect(() => {
-    tippy.group($this.instances, props)
-  })
+    const singleton = createSingleton($this.instances, { delay })
+    return () => {
+      singleton.destroy(false)
+    }
+  }, [delay])
 
   return Children.map(children, child => {
     return cloneElement(child, {
@@ -24,7 +27,7 @@ export default function TippyGroup({ children, ...props }) {
 }
 
 if (process.env.NODE_ENV !== 'production') {
-  TippyGroup.propTypes = {
+  TippySingleton.propTypes = {
     children: PropTypes.arrayOf(PropTypes.element).isRequired,
   }
 }

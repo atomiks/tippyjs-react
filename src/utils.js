@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 export const isBrowser =
   typeof window !== 'undefined' && typeof document !== 'undefined'
 
@@ -22,4 +24,8 @@ export function updateClassName(tooltip, action, classNames) {
       tooltip.classList[action](name)
     }
   })
+}
+
+export function useThis(initialState = {}) {
+  return useState(initialState)[0]
 }

@@ -22,6 +22,7 @@
   "rules": {
     "react/prop-types": "off",
     "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
-    "react-hooks/rules-of-hooks": "error"
+    "react-hooks/rules-of-hooks": "error",
+    "react/display-name": "off"
   }
 }

@@ -11,12 +11,15 @@ describe('<Tippy />', () => {
         <button />
       </Tippy>,
     )
+
     expect(stringContent.container.innerHTML).toBe('<button></button>')
+
     const reactElementContent = render(
       <Tippy content={<div>tooltip</div>}>
         <button />
       </Tippy>,
     )
+
     expect(reactElementContent.container.innerHTML).toBe('<button></button>')
   })
 
@@ -26,16 +29,19 @@ describe('<Tippy />', () => {
         <button />
       </Tippy>,
     )
+
     expect(container.querySelector('button')._tippy).toBeDefined()
   })
 
   test('calls onCreate() on mount, passing the instance back', () => {
     const spy = jest.fn()
+
     render(
       <Tippy content="tooltip" onCreate={spy}>
         <button />
       </Tippy>,
     )
+
     expect(spy).toHaveBeenCalledTimes(1)
     const arg = spy.mock.calls[0][0]
     expect(arg.reference).toBeDefined()
@@ -49,6 +55,7 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const instance = container.querySelector('button')._tippy
+
     expect(instance.popper.querySelector('strong')).not.toBeNull()
   })
 
@@ -60,6 +67,7 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const instance = container.querySelector('button')._tippy
+
     expect(instance.popper.querySelector(`.${className}`)).not.toBeNull()
   })
 
@@ -71,6 +79,7 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const instance = container.querySelector('button')._tippy
+
     expect(instance.popper.querySelector('.hello')).not.toBeNull()
     expect(instance.popper.querySelector('.world')).not.toBeNull()
   })
@@ -83,7 +92,8 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const { tooltip } = container.querySelector('button')._tippy.popperChildren
-    expect(tooltip.className).toBe('tippy-tooltip dark-theme hello world')
+
+    expect(tooltip.className).toBe('tippy-tooltip hello world')
   })
 
   test('props.className: updating does not leave stale className behind', () => {
@@ -93,12 +103,15 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const { tooltip } = container.querySelector('button')._tippy.popperChildren
+
     expect(tooltip.classList.contains('one')).toBe(true)
+
     rerender(
       <Tippy content="tooltip" className="two">
         <button />
       </Tippy>,
     )
+
     expect(tooltip.classList.contains('one')).toBe(false)
     expect(tooltip.classList.contains('two')).toBe(true)
   })
@@ -110,7 +123,9 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const button = container.querySelector('button')
+
     unmount()
+
     expect(button._tippy).toBeUndefined()
   })
 
@@ -126,27 +141,35 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const div = container.querySelector('div')
+
     rerender(
       <Tippy content="tooltip">
         <span />
       </Tippy>,
     )
+
     const span = container.querySelector('span')
+
     expect(div._tippy).toBeUndefined()
     expect(span._tippy).toBeDefined()
+
     rerender(
       <Tippy content="tooltip">
         <Component1 />
       </Tippy>,
     )
+
     const button = container.querySelector('button')
+
     expect(span._tippy).toBeUndefined()
     expect(button._tippy).toBeDefined()
+
     rerender(
       <Tippy content="tooltip">
         <Component2 />
       </Tippy>,
     )
+
     expect(button._tippy).toBeUndefined()
     expect(container.querySelector('main')._tippy).toBeDefined()
   })
@@ -158,12 +181,15 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const instance = container.querySelector('button')._tippy
+
     expect(instance.props.arrow).toBe(false)
+
     rerender(
       <Tippy content="tooltip" arrow={true}>
         <button />
       </Tippy>,
     )
+
     expect(instance.props.arrow).toBe(true)
   })
 
@@ -176,17 +202,23 @@ describe('<Tippy />', () => {
         <Child />
       </Tippy>,
     )
+
     expect(container.querySelector('button')._tippy).toBeDefined()
   })
 
   test('refs are preserved on the child', done => {
     class App extends React.Component {
-      refObject = React.createRef()
+      constructor(props) {
+        super(props)
+        this.refObject = React.createRef()
+      }
+
       componentDidMount() {
         expect(this.callbackRef instanceof Element).toBe(true)
         expect(this.refObject.current instanceof Element).toBe(true)
         done()
       }
+
       render() {
         return (
           <>
@@ -200,19 +232,21 @@ describe('<Tippy />', () => {
         )
       }
     }
+
     render(<App />)
   })
 
   test('nesting', () => {
     render(
-      <Tippy content="tooltip" placement="bottom" isVisible>
-        <Tippy content="tooltip" placement="left" isVisible>
-          <Tippy content="tooltip" isVisible>
+      <Tippy content="tooltip" placement="bottom" visible>
+        <Tippy content="tooltip" placement="left" visible>
+          <Tippy content="tooltip" visible>
             <button>Text</button>
           </Tippy>
         </Tippy>
       </Tippy>,
     )
+
     expect(document.querySelectorAll('.tippy-popper').length).toBe(3)
   })
 
@@ -223,28 +257,15 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const instance = container.querySelector('button')._tippy
+
     expect(instance.state.isEnabled).toBe(true)
+
     rerender(
       <Tippy content="tooltip" enabled={false}>
         <button />
       </Tippy>,
     )
-    expect(instance.state.isEnabled).toBe(false)
-  })
 
-  test('props.isEnabled initially `true`', () => {
-    const { container, rerender } = render(
-      <Tippy content="tooltip" isEnabled={true}>
-        <button />
-      </Tippy>,
-    )
-    const instance = container.querySelector('button')._tippy
-    expect(instance.state.isEnabled).toBe(true)
-    rerender(
-      <Tippy content="tooltip" isEnabled={false}>
-        <button />
-      </Tippy>,
-    )
     expect(instance.state.isEnabled).toBe(false)
   })
 
@@ -255,28 +276,15 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const instance = container.querySelector('button')._tippy
+
     expect(instance.state.isEnabled).toBe(false)
+
     rerender(
       <Tippy content="tooltip" enabled={true}>
         <button />
       </Tippy>,
     )
-    expect(instance.state.isEnabled).toBe(true)
-  })
 
-  test('props.isEnabled initially `false`', () => {
-    const { container, rerender } = render(
-      <Tippy content="tooltip" isEnabled={false}>
-        <button />
-      </Tippy>,
-    )
-    const instance = container.querySelector('button')._tippy
-    expect(instance.state.isEnabled).toBe(false)
-    rerender(
-      <Tippy content="tooltip" isEnabled={true}>
-        <button />
-      </Tippy>,
-    )
     expect(instance.state.isEnabled).toBe(true)
   })
 
@@ -287,28 +295,15 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const instance = container.querySelector('button')._tippy
+
     expect(instance.state.isVisible).toBe(true)
+
     rerender(
       <Tippy content="tooltip" visible={false}>
         <button />
       </Tippy>,
     )
-    expect(instance.state.isVisible).toBe(false)
-  })
 
-  test('props.isVisible initially `true`', () => {
-    const { container, rerender } = render(
-      <Tippy content="tooltip" isVisible={true}>
-        <button />
-      </Tippy>,
-    )
-    const instance = container.querySelector('button')._tippy
-    expect(instance.state.isVisible).toBe(true)
-    rerender(
-      <Tippy content="tooltip" isVisible={false}>
-        <button />
-      </Tippy>,
-    )
     expect(instance.state.isVisible).toBe(false)
   })
 
@@ -319,28 +314,15 @@ describe('<Tippy />', () => {
       </Tippy>,
     )
     const instance = container.querySelector('button')._tippy
+
     expect(instance.state.isVisible).toBe(false)
+
     rerender(
       <Tippy content="tooltip" visible={true}>
         <button />
       </Tippy>,
     )
-    expect(instance.state.isVisible).toBe(true)
-  })
 
-  test('props.isVisible initially `false`', () => {
-    const { container, rerender } = render(
-      <Tippy content="tooltip" isVisible={false}>
-        <button />
-      </Tippy>,
-    )
-    const instance = container.querySelector('button')._tippy
-    expect(instance.state.isVisible).toBe(false)
-    rerender(
-      <Tippy content="tooltip" isVisible={true}>
-        <button />
-      </Tippy>,
-    )
     expect(instance.state.isVisible).toBe(true)
   })
 })

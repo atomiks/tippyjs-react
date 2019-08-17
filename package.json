@@ -1,10 +1,10 @@
 {
   "name": "@tippy.js/react",
-  "version": "2.2.2",
+  "version": "3.0.0",
   "description": "React component for Tippy.js",
-  "main": "./umd/index.js",
-  "module": "./esm/index.js",
-  "unpkg": "./umd/index.min.js",
+  "main": "dist/tippy-react.umd.js",
+  "module": "dist/tippy-react.esm.js",
+  "unpkg": "dist/tippy-react.umd.min.js",
   "types": "index.d.ts",
   "sideEffects": false,
   "scripts": {
@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "tippy.js": "^4.3.4"
+    "tippy.js": "^5.0.0-beta.1"
   },
   "peerDependencies": {
     "react": ">=16.8",

@@ -3,7 +3,7 @@ import { terser } from 'rollup-plugin-terser'
 import resolve from 'rollup-plugin-node-resolve'
 import replace from 'rollup-plugin-replace'
 
-const pluginBabel = babel({ exclude: 'node_modules/**' })
+const pluginBabel = babel()
 const pluginMinify = terser()
 const pluginResolve = resolve()
 const pluginReplaceEnvProduction = replace({
@@ -12,7 +12,7 @@ const pluginReplaceEnvProduction = replace({
 
 const COMMON_INPUT = {
   input: './src/index.js',
-  external: ['react', 'react-dom', 'prop-types', 'tippy.js'],
+  external: ['react', 'react-dom', 'prop-types', 'tippy.js', 'tippy.js/addons'],
 }
 
 const COMMON_OUTPUT = {
@@ -24,6 +24,7 @@ const COMMON_OUTPUT = {
     'react-dom': 'ReactDOM',
     'prop-types': 'PropTypes',
     'tippy.js': 'tippy',
+    'tippy.js/addons': 'tippy',
   },
 }
 
@@ -34,7 +35,7 @@ export default [
     output: {
       ...COMMON_OUTPUT,
       format: 'umd',
-      file: './umd/index.js',
+      file: './dist/tippy-react.umd.js',
     },
   },
   {
@@ -48,7 +49,7 @@ export default [
     output: {
       ...COMMON_OUTPUT,
       format: 'umd',
-      file: './umd/index.min.js',
+      file: './dist/tippy-react.umd.min.js',
     },
   },
   {
@@ -57,16 +58,7 @@ export default [
     output: {
       ...COMMON_OUTPUT,
       format: 'esm',
-      file: './esm/index.js',
-    },
-  },
-  {
-    ...COMMON_INPUT,
-    plugins: [pluginBabel, pluginResolve, pluginMinify],
-    output: {
-      ...COMMON_OUTPUT,
-      format: 'esm',
-      file: './esm/index.min.js',
+      file: './dist/tippy-react.esm.js',
     },
   },
 ]

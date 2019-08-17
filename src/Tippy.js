@@ -2,54 +2,46 @@ import React, {
   forwardRef,
   cloneElement,
   useState,
-  useEffect,
   useLayoutEffect,
+  useEffect,
 } from 'react'
-import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
-import tippy from 'tippy.js'
+import { createPortal } from 'react-dom'
+import tippyBase from 'tippy.js'
 import {
+  useThis,
   isBrowser,
-  ssrSafeCreateDiv,
   preserveRef,
+  ssrSafeCreateDiv,
   updateClassName,
 } from './utils'
 
-// React currently throws a warning when using useLayoutEffect on the server. To
-// get around it, we can conditionally useEffect on the server (no-op) and
-// useLayoutEffect in the browser. We need useLayoutEffect because we want Tippy
-// to perform sync mutations to the DOM elements after renders to prevent
-// jitters/jumps, especially when updating content.
-const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect
+let tippy = tippyBase
+export function setTippy(customTippy) {
+  tippy = customTippy
+}
+
+var useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect
 
 function Tippy({
   children,
   content,
   className,
+  onBeforeUpdate,
+  onAfterUpdate,
   onCreate,
-  isVisible, // deprecated
-  isEnabled, // deprecated
   visible,
-  enabled,
-  ignoreAttributes = true,
+  enabled = true,
   multiple = true,
+  ignoreAttributes = true,
   ...restOfNativeProps
 }) {
-  // `isVisible` / `isEnabled` renamed to `visible` / `enabled`
-  enabled =
-    enabled !== undefined ? enabled : isEnabled !== undefined ? isEnabled : true
-  visible = visible !== undefined ? visible : isVisible
-
   const isControlledMode = visible !== undefined
 
   const [mounted, setMounted] = useState(false)
-  // useImperativeInstance
-  const $this = useState({
-    container: ssrSafeCreateDiv(),
-    renders: 1,
-  })[0]
+  const $this = useThis({ container: ssrSafeCreateDiv(), renders: 1 })
 
-  const options = {
+  const props = {
     ignoreAttributes,
     multiple,
     ...restOfNativeProps,
@@ -57,11 +49,12 @@ function Tippy({
   }
 
   if (isControlledMode) {
-    options.trigger = 'manual'
+    props.trigger = 'manual'
   }
 
+  // CREATE
   useIsomorphicLayoutEffect(() => {
-    const instance = tippy($this.ref, options)
+    const instance = tippy($this.reference, props)
 
     $this.instance = instance
 
@@ -84,35 +77,44 @@ function Tippy({
     }
   }, [children.type])
 
+  // UPDATE
   useIsomorphicLayoutEffect(() => {
-    // Prevent this effect from running on 1st + 2nd render (setMounted())
+    // Prevent this effect from running on the initial render, and the render
+    // caused by setMounted().
     if ($this.renders < 3) {
       $this.renders++
       return
     }
 
-    const { instance } = $this
+    if (onBeforeUpdate) {
+      onBeforeUpdate($this.instance)
+    }
 
-    instance.set(options)
+    $this.instance.setProps(props)
+
+    if (onAfterUpdate) {
+      onAfterUpdate($this.instance)
+    }
 
     if (enabled) {
-      instance.enable()
+      $this.instance.enable()
     } else {
-      instance.disable()
+      $this.instance.disable()
     }
 
     if (isControlledMode) {
       if (visible) {
-        instance.show()
+        $this.instance.show()
       } else {
-        instance.hide()
+        $this.instance.hide()
       }
     }
   })
 
+  // UPDATE className
   useIsomorphicLayoutEffect(() => {
     if (className) {
-      const { tooltip } = $this.instance.popperChildren
+      const tooltip = $this.instance.popperChildren.tooltip
       updateClassName(tooltip, 'add', className)
       return () => {
         updateClassName(tooltip, 'remove', className)
@@ -124,7 +126,7 @@ function Tippy({
     <>
       {cloneElement(children, {
         ref(node) {
-          $this.ref = node
+          $this.reference = node
           preserveRef(children.ref, node)
         },
       })}
@@ -144,12 +146,11 @@ if (process.env.NODE_ENV !== 'production') {
     content: PropTypes.oneOfType([ContentType, PropTypes.arrayOf(ContentType)])
       .isRequired,
     children: PropTypes.element.isRequired,
-    onCreate: PropTypes.func,
-    isVisible: PropTypes.bool, // deprecated
-    isEnabled: PropTypes.bool, // deprecated
     visible: PropTypes.bool,
     enabled: PropTypes.bool,
     className: PropTypes.string,
+    onBeforeUpdate: PropTypes.func,
+    onAfterUpdate: PropTypes.func,
   }
 }
 
