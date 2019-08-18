@@ -1,17 +1,19 @@
 import { Children, cloneElement, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { createSingleton } from 'tippy.js/addons'
-import { useThis } from './utils'
+import { useInstance } from './utils'
 
 export default function TippySingleton({ children, delay }) {
-  const $this = useThis({ instances: [] })
+  const component = useInstance({ instances: [] })
 
   useEffect(() => {
-    const singleton = createSingleton($this.instances, { delay })
+    const { instances } = component
+    const singleton = createSingleton([...instances], { delay })
     return () => {
       singleton.destroy(false)
+      component.instances = instances.filter(i => !i.state.isDestroyed)
     }
-  }, [delay])
+  }, [delay, children.length])
 
   return Children.map(children, child => {
     return cloneElement(child, {
@@ -20,7 +22,7 @@ export default function TippySingleton({ children, delay }) {
           child.props.onCreate(instance)
         }
 
-        $this.instances.push(instance)
+        component.instances.push(instance)
       },
     })
   })
