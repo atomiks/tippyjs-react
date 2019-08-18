@@ -9,11 +9,11 @@ import PropTypes from 'prop-types'
 import { createPortal } from 'react-dom'
 import tippyBase from 'tippy.js'
 import {
-  useThis,
   isBrowser,
   preserveRef,
   ssrSafeCreateDiv,
   updateClassName,
+  useInstance,
 } from './utils'
 
 let tippy = tippyBase
@@ -44,13 +44,16 @@ function Tippy({
   const isControlledMode = visible !== undefined
 
   const [mounted, setMounted] = useState(false)
-  const $this = useThis({ container: ssrSafeCreateDiv(), renders: 1 })
+  const component = useInstance(() => ({
+    container: ssrSafeCreateDiv(),
+    renders: 1,
+  }))
 
   const props = {
     ignoreAttributes,
     multiple,
     ...restOfNativeProps,
-    content: $this.container,
+    content: component.container,
   }
 
   if (isControlledMode) {
@@ -59,9 +62,9 @@ function Tippy({
 
   // CREATE
   useIsomorphicLayoutEffect(() => {
-    const instance = tippy($this.reference, props)
+    const instance = tippy(component.reference, props)
 
-    $this.instance = instance
+    component.instance = instance
 
     if (onCreate) {
       onCreate(instance)
@@ -86,32 +89,34 @@ function Tippy({
   useIsomorphicLayoutEffect(() => {
     // Prevent this effect from running on the initial render, and the render
     // caused by setMounted().
-    if ($this.renders < 3) {
-      $this.renders++
+    if (component.renders < 3) {
+      component.renders++
       return
     }
 
+    const { instance } = component
+
     if (onBeforeUpdate) {
-      onBeforeUpdate($this.instance)
+      onBeforeUpdate(instance)
     }
 
-    $this.instance.setProps(props)
+    instance.setProps(props)
 
     if (onAfterUpdate) {
-      onAfterUpdate($this.instance)
+      onAfterUpdate(instance)
     }
 
     if (enabled) {
-      $this.instance.enable()
+      instance.enable()
     } else {
-      $this.instance.disable()
+      instance.disable()
     }
 
     if (isControlledMode) {
       if (visible) {
-        $this.instance.show()
+        instance.show()
       } else {
-        $this.instance.hide()
+        instance.hide()
       }
     }
   })
@@ -119,7 +124,7 @@ function Tippy({
   // UPDATE className
   useIsomorphicLayoutEffect(() => {
     if (className) {
-      const tooltip = $this.instance.popperChildren.tooltip
+      const tooltip = component.instance.popperChildren.tooltip
       updateClassName(tooltip, 'add', className)
       return () => {
         updateClassName(tooltip, 'remove', className)
@@ -131,11 +136,11 @@ function Tippy({
     <>
       {cloneElement(children, {
         ref(node) {
-          $this.reference = node
+          component.reference = node
           preserveRef(children.ref, node)
         },
       })}
-      {mounted && createPortal(content, $this.container)}
+      {mounted && createPortal(content, component.container)}
     </>
   )
 }
