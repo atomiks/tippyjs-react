@@ -72,8 +72,8 @@ function Singleton() {
   let children = []
   for (let i = 0; i < count; i++) {
     children.push(
-      <Tippy content="Tooltip">
-        <button>one</button>
+      <Tippy key={i} content="Tooltip">
+        <button>{i}</button>
       </Tippy>,
     )
   }
