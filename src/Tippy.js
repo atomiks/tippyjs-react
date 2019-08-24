@@ -85,8 +85,8 @@ function Tippy({
   }, [children.type])
 
   useIsomorphicLayoutEffect(() => {
-    // Prevent this effect from running on 1st + 2nd render (setMounted())
-    if ($this.renders < 3) {
+    // Prevent this effect from running on 1st render
+    if ($this.renders === 1) {
       $this.renders++
       return
     }
