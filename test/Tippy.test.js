@@ -202,12 +202,17 @@ describe('<Tippy />', () => {
 
   test('refs are preserved on the child', done => {
     class App extends React.Component {
-      refObject = React.createRef()
+      constructor(props) {
+        super(props)
+        this.refObject = React.createRef()
+      }
+
       componentDidMount() {
         expect(this.callbackRef instanceof Element).toBe(true)
         expect(this.refObject.current instanceof Element).toBe(true)
         done()
       }
+
       render() {
         return (
           <>
