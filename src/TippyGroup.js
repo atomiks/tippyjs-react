@@ -1,13 +1,13 @@
-import { Children, cloneElement, useState, useEffect } from 'react'
+import { Children, cloneElement, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import tippy from 'tippy.js'
+import { useInstance } from './utils'
 
 export default function TippyGroup({ children, ...props }) {
-  // useImperativeInstance
-  const $this = useState({ instances: [] })[0]
+  const component = useInstance({ instances: [] })
 
   useEffect(() => {
-    tippy.group($this.instances, props)
+    tippy.group(component.instances, props)
   })
 
   return Children.map(children, child => {
@@ -17,7 +17,7 @@ export default function TippyGroup({ children, ...props }) {
           child.props.onCreate(instance)
         }
 
-        $this.instances.push(instance)
+        component.instances.push(instance)
       },
     })
   })

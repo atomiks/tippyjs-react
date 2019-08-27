@@ -13,6 +13,7 @@ import {
   ssrSafeCreateDiv,
   preserveRef,
   updateClassName,
+  useInstance,
 } from './utils'
 
 // React currently throws a warning when using useLayoutEffect on the server. To
@@ -43,17 +44,16 @@ function Tippy({
   const isControlledMode = visible !== undefined
 
   const [mounted, setMounted] = useState(false)
-  // useImperativeInstance
-  const $this = useState({
+  const component = useInstance(() => ({
     container: ssrSafeCreateDiv(),
     renders: 1,
-  })[0]
+  }))
 
   const options = {
     ignoreAttributes,
     multiple,
     ...restOfNativeProps,
-    content: $this.container,
+    content: component.container,
   }
 
   if (isControlledMode) {
@@ -61,9 +61,9 @@ function Tippy({
   }
 
   useIsomorphicLayoutEffect(() => {
-    const instance = tippy($this.ref, options)
+    const instance = tippy(component.ref, options)
 
-    $this.instance = instance
+    component.instance = instance
 
     if (onCreate) {
       onCreate(instance)
@@ -86,12 +86,12 @@ function Tippy({
 
   useIsomorphicLayoutEffect(() => {
     // Prevent this effect from running on 1st render
-    if ($this.renders === 1) {
-      $this.renders++
+    if (component.renders === 1) {
+      component.renders++
       return
     }
 
-    const { instance } = $this
+    const { instance } = component
 
     instance.set(options)
 
@@ -112,7 +112,7 @@ function Tippy({
 
   useIsomorphicLayoutEffect(() => {
     if (className) {
-      const { tooltip } = $this.instance.popperChildren
+      const { tooltip } = component.instance.popperChildren
       updateClassName(tooltip, 'add', className)
       return () => {
         updateClassName(tooltip, 'remove', className)
@@ -124,11 +124,11 @@ function Tippy({
     <>
       {cloneElement(children, {
         ref(node) {
-          $this.ref = node
+          component.ref = node
           preserveRef(children.ref, node)
         },
       })}
-      {mounted && createPortal(content, $this.container)}
+      {mounted && createPortal(content, component.container)}
     </>
   )
 }

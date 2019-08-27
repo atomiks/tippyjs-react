@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 export const isBrowser =
   typeof window !== 'undefined' && typeof document !== 'undefined'
 
@@ -22,4 +24,17 @@ export function updateClassName(tooltip, action, classNames) {
       tooltip.classList[action](name)
     }
   })
+}
+
+export function useInstance(initialValue = {}) {
+  // Using refs instead of state as it's recommended to not store imperative
+  // values in state due to memory problems in React(?)
+  const ref = useRef()
+
+  if (!ref.current) {
+    ref.current =
+      typeof initialValue === 'function' ? initialValue() : initialValue
+  }
+
+  return ref.current
 }
