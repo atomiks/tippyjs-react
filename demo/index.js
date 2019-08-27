@@ -1,190 +1,105 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import Tippy, { TippyGroup } from '../src'
 import './index.css'
 
-Tippy.defaultProps = {
-  content: 'Tooltip',
-  animateFill: false,
-  hideOnClick: false,
+function ContentString() {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    setInterval(() => {
+      setCount(count => count + 1)
+    }, 1000)
+  }, [])
+
+  return (
+    <Tippy content={count}>
+      <button>ContentString</button>
+    </Tippy>
+  )
 }
 
-class FetchExample extends React.Component {
-  state = {
-    image: null,
-    isFetching: false,
-    canFetch: true,
-    isVisible: false,
+function ContentElement() {
+  const colors = ['red', 'orange', 'yellow', 'green', 'cyan', 'purple', 'pink']
+  const [index, setIndex] = useState(0)
+
+  function renderNextColor() {
+    setIndex(index === colors.length - 1 ? 0 : index + 1)
   }
 
-  static loadingContent = 'Loading new image...'
+  return (
+    <Tippy
+      content={
+        <>
+          <button onClick={renderNextColor}>Next color</button>
+          <span style={{ color: colors[index] }}>Hello</span>
+        </>
+      }
+      interactive={true}
+    >
+      <button>ContentElement</button>
+    </Tippy>
+  )
+}
 
-  fetchRandomImage = () => {
-    this.setState({ isVisible: true })
+function EnabledProp() {
+  const [enabled, setEnabled] = useState(true)
 
-    if (this.state.isFetching || !this.state.canFetch) return
+  return (
+    <Tippy content="Tooltip" enabled={enabled}>
+      <button onClick={() => setEnabled(enabled => !enabled)}>
+        enabled: {String(enabled)}
+      </button>
+    </Tippy>
+  )
+}
 
-    this.setState({
-      isFetching: true,
-      canFetch: false,
-    })
+function VisibleProp() {
+  const [visible, setVisible] = useState(false)
 
-    fetch('https://unsplash.it/200/?random')
-      .then(response => response.blob())
-      .then(blob => {
-        if (this.state.isVisible) {
-          this.setState({
-            image: URL.createObjectURL(blob),
-          })
-        }
-        this.setState({
-          isFetching: false,
-        })
-      })
-  }
+  return (
+    <Tippy content="Tooltip" visible={visible} hideOnClick={false}>
+      <button onClick={() => setVisible(visible => !visible)}>
+        visible: {String(visible)}
+      </button>
+    </Tippy>
+  )
+}
 
-  onHidden = () => {
-    this.setState({ image: null, canFetch: true })
-  }
+function Group() {
+  const [count, setCount] = useState(3)
 
-  onHide = () => {
-    this.setState({ isVisible: false })
-  }
-
-  render() {
-    return (
-      <Tippy
-        onShow={this.fetchRandomImage}
-        onHidden={this.onHidden}
-        onHide={this.onHide}
-        content={
-          <React.Fragment>
-            {this.state.image ? (
-              <img
-                width="200"
-                height="200"
-                src={this.state.image}
-                alt="image"
-              />
-            ) : (
-              FetchExample.loadingContent
-            )}
-          </React.Fragment>
-        }
-      >
-        <button onClick={this.toggleArrow}>Async update</button>
-      </Tippy>
+  let children = []
+  for (let i = 0; i < count; i++) {
+    children.push(
+      <Tippy key={i} content="Tooltip">
+        <button>{i}</button>
+      </Tippy>,
     )
   }
+
+  useEffect(() => {
+    setInterval(() => {
+      setCount(count => (count === 5 ? 1 : count + 1))
+    }, 5000)
+  }, [])
+
+  return <TippyGroup delay={500}>{children}</TippyGroup>
 }
 
-const COLORS = ['red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple']
-
-class InputExample extends React.Component {
-  state = {
-    value: '',
-  }
-
-  onChange = e => {
-    this.setState({ value: e.target.value })
-  }
-
-  render() {
-    return (
-      <Tippy
-        content={
-          <form>
-            <span style={{ color: COLORS[this.state.value.length] }}>
-              Hello
-            </span>
-            <input type="text" onChange={this.onChange} />
-          </form>
-        }
-        interactive={true}
-      >
-        <button>Hover me</button>
-      </Tippy>
-    )
-  }
-}
-
-class ComponentChild extends React.Component {
-  render() {
-    return <button>Component Child</button>
-  }
-}
-
-class App extends React.Component {
-  state = {
-    arrow: false,
-    customClass: 'hello',
-    content: 'hello',
-  }
-
-  toggleArrow = () => {
-    this.setState(state => ({
-      arrow: !state.arrow,
-    }))
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ customClass: 'bye', content: 'testing content update' })
-    }, 2000)
-  }
-
-  render() {
-    return (
-      <main className="container">
-        <h1>Content</h1>
-        <Tippy content="Hello">
-          <button>String content</button>
-        </Tippy>
-        <Tippy content={<strong>Tooltip</strong>}>
-          <button>JSX content</button>
-        </Tippy>
-        <Tippy
-          onCreate={tip => (this.tippyArrowInstance = tip)}
-          arrow={this.state.arrow}
-        >
-          <button onClick={this.toggleArrow}>Toggle arrow</button>
-        </Tippy>
-        <FetchExample />
-        <InputExample />
-        <Tippy>
-          <ComponentChild />
-        </Tippy>
-
-        <h1>Group</h1>
-        <TippyGroup delay={1000}>
-          <Tippy>
-            <button>Text</button>
-          </Tippy>
-          <Tippy>
-            <button>Text</button>
-          </Tippy>
-        </TippyGroup>
-
-        <h1>Multiple</h1>
-        <Tippy placement="bottom" multiple>
-          <Tippy placement="left" multiple>
-            <Tippy>
-              <button>Text</button>
-            </Tippy>
-          </Tippy>
-        </Tippy>
-
-        <h1>Other</h1>
-        <Tippy
-          content={this.state.content}
-          trigger="click"
-          className={this.state.customClass}
-        >
-          <button>Custom class</button>
-        </Tippy>
-      </main>
-    )
-  }
+function App() {
+  return (
+    <>
+      <h2>Content</h2>
+      <ContentString />
+      <ContentElement />
+      <h2>Special</h2>
+      <EnabledProp />
+      <VisibleProp />
+      <h2>Group dynamic children</h2>
+      <Group />
+    </>
+  )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
