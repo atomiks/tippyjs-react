@@ -7,6 +7,7 @@ export default function TippyGroup({ children, ...props }) {
   const component = useInstance({ instances: [] })
 
   useEffect(() => {
+    component.instances = component.instances.filter(i => !i.state.isDestroyed)
     tippy.group(component.instances, props)
   })
 
