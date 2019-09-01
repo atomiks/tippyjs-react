@@ -346,4 +346,44 @@ describe('<Tippy />', () => {
 
     expect(instance.state.isVisible).toBe(true)
   })
+
+  it('props.onBeforeUpdate', () => {
+    const onBeforeUpdate = jest.fn()
+
+    const { rerender } = render(
+      <Tippy content="tooltip" onBeforeUpdate={onBeforeUpdate}>
+        <button />
+      </Tippy>,
+    )
+
+    expect(onBeforeUpdate).toHaveBeenCalledTimes(1)
+
+    rerender(
+      <Tippy content="tooltip" onBeforeUpdate={onBeforeUpdate}>
+        <button />
+      </Tippy>,
+    )
+
+    expect(onBeforeUpdate).toHaveBeenCalledTimes(2)
+  })
+
+  it('props.onAfterUpdate', () => {
+    const onAfterUpdate = jest.fn()
+
+    const { rerender } = render(
+      <Tippy content="tooltip" onAfterUpdate={onAfterUpdate}>
+        <button />
+      </Tippy>,
+    )
+
+    expect(onAfterUpdate).toHaveBeenCalledTimes(1)
+
+    rerender(
+      <Tippy content="tooltip" onAfterUpdate={onAfterUpdate}>
+        <button />
+      </Tippy>,
+    )
+
+    expect(onAfterUpdate).toHaveBeenCalledTimes(2)
+  })
 })
