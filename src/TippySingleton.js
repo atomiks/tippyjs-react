@@ -3,12 +3,17 @@ import PropTypes from 'prop-types'
 import { createSingleton } from 'tippy.js/addons'
 import { useInstance } from './utils'
 
-export default function TippySingleton({ children, delay }) {
+export default function TippySingleton({ children, delay, onCreate }) {
   const component = useInstance({ instances: [] })
 
   useEffect(() => {
     const { instances } = component
     const singleton = createSingleton([...instances], { delay })
+
+    if (onCreate) {
+      onCreate(singleton)
+    }
+
     return () => {
       singleton.destroy(false)
       component.instances = instances.filter(i => !i.state.isDestroyed)
@@ -31,5 +36,6 @@ export default function TippySingleton({ children, delay }) {
 if (process.env.NODE_ENV !== 'production') {
   TippySingleton.propTypes = {
     children: PropTypes.arrayOf(PropTypes.element).isRequired,
+    onCreate: PropTypes.func,
   }
 }
