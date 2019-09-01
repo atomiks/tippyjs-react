@@ -66,7 +66,11 @@ function VisibleProp() {
   )
 }
 
+<<<<<<< HEAD
 function Singleton() {
+=======
+function Group() {
+>>>>>>> master
   const [count, setCount] = useState(3)
 
   let children = []
@@ -84,7 +88,11 @@ function Singleton() {
     }, 5000)
   }, [])
 
+<<<<<<< HEAD
   return <TippySingleton delay={500}>{children}</TippySingleton>
+=======
+  return <TippyGroup delay={500}>{children}</TippyGroup>
+>>>>>>> master
 }
 
 function App() {
@@ -96,8 +104,13 @@ function App() {
       <h2>Special</h2>
       <EnabledProp />
       <VisibleProp />
+<<<<<<< HEAD
       <h2>Singleton dynamic children</h2>
       <Singleton />
+=======
+      <h2>Group dynamic children</h2>
+      <Group />
+>>>>>>> master
     </>
   )
 }

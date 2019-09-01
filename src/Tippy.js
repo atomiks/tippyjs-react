@@ -62,7 +62,7 @@ function Tippy({
 
   // CREATE
   useIsomorphicLayoutEffect(() => {
-    const instance = tippy(component.reference, props)
+    const instance = tippy(component.ref, props)
 
     component.instance = instance
 
@@ -87,9 +87,8 @@ function Tippy({
 
   // UPDATE
   useIsomorphicLayoutEffect(() => {
-    // Prevent this effect from running on the initial render, and the render
-    // caused by setMounted().
-    if (component.renders < 3) {
+    // Prevent this effect from running on 1st render
+    if (component.renders === 1) {
       component.renders++
       return
     }
@@ -124,7 +123,7 @@ function Tippy({
   // UPDATE className
   useIsomorphicLayoutEffect(() => {
     if (className) {
-      const tooltip = component.instance.popperChildren.tooltip
+      const { tooltip } = component.instance.popperChildren
       updateClassName(tooltip, 'add', className)
       return () => {
         updateClassName(tooltip, 'remove', className)
@@ -136,7 +135,7 @@ function Tippy({
     <>
       {cloneElement(children, {
         ref(node) {
-          component.reference = node
+          component.ref = node
           preserveRef(children.ref, node)
         },
       })}

@@ -193,6 +193,27 @@ describe('<Tippy />', () => {
     expect(instance.props.arrow).toBe(true)
   })
 
+  test('props containing refs updates the tippy instance on mount', () => {
+    const App = () => {
+      const [triggerTarget, setTriggerTarget] = React.useState(null)
+      return (
+        <div ref={el => setTriggerTarget(el)}>
+          Trigger Target
+          <Tippy content="tooltip" triggerTarget={triggerTarget}>
+            <button />
+          </Tippy>
+        </div>
+      )
+    }
+
+    const { container } = render(<App />)
+
+    const instanceNode = container.querySelector('button')
+    const instance = instanceNode._tippy
+
+    expect(instance.props.triggerTarget).toBe(instanceNode.parentNode)
+  })
+
   test('component as a child', () => {
     const Child = React.forwardRef(function Comp(_, ref) {
       return <button ref={ref} />
