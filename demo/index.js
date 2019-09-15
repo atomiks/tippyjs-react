@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import Tippy, { TippySingleton } from '../src'
+import Tippy, { TippySingleton, tippy, setTippy } from '../src'
 import './index.css'
+import enhance, { followCursor } from 'tippy.js/extra-props'
+
+setTippy(enhance(tippy, [followCursor]))
 
 function ContentString() {
   const [count, setCount] = useState(0)
@@ -87,6 +90,14 @@ function Singleton() {
   return <TippySingleton delay={500}>{children}</TippySingleton>
 }
 
+function FollowCursor() {
+  return (
+    <Tippy content="hi" followCursor={true}>
+      <button>followCursor</button>
+    </Tippy>
+  )
+}
+
 function App() {
   return (
     <>
@@ -98,6 +109,8 @@ function App() {
       <VisibleProp />
       <h2>Singleton dynamic children</h2>
       <Singleton />
+      <h2>Extra props via setTippy()</h2>
+      <FollowCursor />
     </>
   )
 }
