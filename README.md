@@ -209,6 +209,29 @@ function App() {
 > **Note**: You should also set the `hideOnClick` prop to `false` if you don't
 > want the tippy to hide when the user clicks on the document somewhere.
 
+### Extra props
+
+Tippy.js splits certain props into separate pieces of code to enable
+treeshaking, so that users who don't need the prop's functionality are not
+burdened with the cost of it.
+
+The `followCursor` prop requires a fair amount of code to function, which
+increases your bundle size. To use it (and other future extra props), call the
+`setTippy` function exported from the package with an enhanced `tippy`
+constructor:
+
+```js
+import Tippy, { tippy, setTippy } from '@tippy.js/react'
+import enhance, { followCursor } from 'tippy.js/extra-props'
+import 'tippy.js/dist/tippy.css'
+
+setTippy(enhance(tippy, [followCursor]))
+
+// Now you can use `<Tippy followCursor />`
+```
+
+[Read more about extra-props](https://atomiks.github.io/tippyjs/extra-props).
+
 ### Default props
 
 You can create a new component file that exports a wrapper component that has
