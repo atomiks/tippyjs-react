@@ -20,6 +20,7 @@
 and popover library powered by Popper.js. This is a lightweight wrapper that
 lets you use it declaratively in React.
 
+<!--
 ## 💎 Examples
 
 ### Tooltips
@@ -30,6 +31,7 @@ lets you use it declaratively in React.
 ### Popovers
 
 - [Accessible Emoji Reaction Picker](https://codesandbox.io/s/1vzvoo9mwl)
+-->
 
 ## 🚀 Installation
 
