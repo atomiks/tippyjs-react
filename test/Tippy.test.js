@@ -347,7 +347,7 @@ describe('<Tippy />', () => {
     expect(instance.state.isVisible).toBe(true)
   })
 
-  it('props.onBeforeUpdate', () => {
+  test('props.onBeforeUpdate', () => {
     const onBeforeUpdate = jest.fn()
 
     const { rerender } = render(
@@ -367,7 +367,7 @@ describe('<Tippy />', () => {
     expect(onBeforeUpdate).toHaveBeenCalledTimes(2)
   })
 
-  it('props.onAfterUpdate', () => {
+  test('props.onAfterUpdate', () => {
     const onAfterUpdate = jest.fn()
 
     const { rerender } = render(

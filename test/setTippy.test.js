@@ -1,12 +1,12 @@
 import React from 'react'
-import enhance, { followCursor } from 'tippy.js/extra-props'
-import Tippy, { tippy, setTippy } from '../src'
+import Tippy, { tippy, setTippy } from '../src/Tippy'
 import { render, cleanup } from '@testing-library/react'
+import enhance, { followCursor } from 'tippy.js/extra-props'
 
 afterEach(cleanup)
 
 describe('setTippy()', () => {
-  it('not called with enhanced tippy', () => {
+  test('without being called', () => {
     const spy = jest.spyOn(console, 'warn')
 
     render(
@@ -20,7 +20,7 @@ describe('setTippy()', () => {
     spy.mockRestore()
   })
 
-  it('called with enhanced tippy', () => {
+  test('<Tippy /> uses enhanced tippy', () => {
     setTippy(enhance(tippy, [followCursor]))
 
     const spy = jest.spyOn(console, 'warn')
