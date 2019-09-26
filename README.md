@@ -105,16 +105,11 @@ element as a workaround.
 
 ```jsx
 <Tippy content="Tooltip">
-  <span>
-    <LegacyComponent>Unfortunately</LegacyComponent>
+  <span tabindex="0">
+    <LegacyComponent>Content</LegacyComponent>
   </span>
 </Tippy>
 ```
-
-> Although Tippy will add `tabindex` for you on the `<span>` which allows it to
-> receive focus, it may affect accessibility with regards to screenreaders,
-> since `<span>` is not traditionally focusable (unlike a `<button>` for
-> example).
 
 ## 🧬 Props
 
