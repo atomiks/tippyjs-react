@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import Tippy, { TippySingleton, tippy, setTippy } from '../src'
-import './index.css'
-import enhance, { followCursor } from 'tippy.js/extra-props'
+import Tippy, { TippySingleton } from '../src'
+import { followCursor } from 'tippy.js'
 
-setTippy(enhance(tippy, [followCursor]))
+import 'tippy.js/dist/tippy.css'
+import './index.css'
 
 function ContentString() {
   const [count, setCount] = useState(0)
@@ -92,7 +92,7 @@ function Singleton() {
 
 function FollowCursor() {
   return (
-    <Tippy content="hi" followCursor={true}>
+    <Tippy content="hi" followCursor={true} plugins={[followCursor]}>
       <button>followCursor</button>
     </Tippy>
   )
@@ -109,7 +109,7 @@ function App() {
       <VisibleProp />
       <h2>Singleton dynamic children</h2>
       <Singleton />
-      <h2>Extra props via setTippy()</h2>
+      <h2>Plugins</h2>
       <FollowCursor />
     </>
   )

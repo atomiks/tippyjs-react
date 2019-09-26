@@ -1,10 +1,16 @@
 import React from 'react'
-import Tippy from '../src/Tippy'
+import TippyBase from '../src/Tippy'
 import { render, cleanup } from '@testing-library/react'
 
 afterEach(cleanup)
 
 describe('<Tippy />', () => {
+  let instance
+
+  function Tippy(props) {
+    return <TippyBase {...props} onCreate={i => (instance = i)} />
+  }
+
   test('renders only the child element', () => {
     const stringContent = render(
       <Tippy content="tooltip">
@@ -24,61 +30,45 @@ describe('<Tippy />', () => {
   })
 
   test('adds a tippy instance to the child node', () => {
-    const { container } = render(
+    render(
       <Tippy content="tooltip">
         <button />
       </Tippy>,
     )
 
-    expect(container.querySelector('button')._tippy).toBeDefined()
-  })
-
-  test('calls onCreate() on mount, passing the instance back', () => {
-    const spy = jest.fn()
-
-    render(
-      <Tippy content="tooltip" onCreate={spy}>
-        <button />
-      </Tippy>,
-    )
-
-    expect(spy).toHaveBeenCalledTimes(1)
-    const arg = spy.mock.calls[0][0]
-    expect(arg.reference).toBeDefined()
-    expect(arg.popper).toBeDefined()
+    expect(instance).toBeDefined()
   })
 
   test('renders react element content inside the content prop', () => {
-    const { container } = render(
+    render(
       <Tippy content={<strong>tooltip</strong>}>
         <button />
       </Tippy>,
     )
-    const instance = container.querySelector('button')._tippy
 
     expect(instance.popper.querySelector('strong')).not.toBeNull()
   })
 
   test('props.className: single name is added to tooltip', () => {
     const className = 'hello'
-    const { container } = render(
+
+    render(
       <Tippy content="tooltip" className={className}>
         <button />
       </Tippy>,
     )
-    const instance = container.querySelector('button')._tippy
 
     expect(instance.popper.querySelector(`.${className}`)).not.toBeNull()
   })
 
   test('props.className: multiple names are added to tooltip', () => {
     const classNames = 'hello world'
-    const { container } = render(
+
+    render(
       <Tippy content="tooltip" className={classNames}>
         <button />
       </Tippy>,
     )
-    const instance = container.querySelector('button')._tippy
 
     expect(instance.popper.querySelector('.hello')).not.toBeNull()
     expect(instance.popper.querySelector('.world')).not.toBeNull()
@@ -86,23 +76,26 @@ describe('<Tippy />', () => {
 
   test('props.className: extra whitespace is ignored', () => {
     const className = ' hello world  '
-    const { container } = render(
+
+    render(
       <Tippy content="tooltip" className={className}>
         <button />
       </Tippy>,
     )
-    const { tooltip } = container.querySelector('button')._tippy.popperChildren
+
+    const { tooltip } = instance.popperChildren
 
     expect(tooltip.className).toBe('tippy-tooltip hello world')
   })
 
   test('props.className: updating does not leave stale className behind', () => {
-    const { container, rerender } = render(
+    const { rerender } = render(
       <Tippy content="tooltip" className="one">
         <button />
       </Tippy>,
     )
-    const { tooltip } = container.querySelector('button')._tippy.popperChildren
+
+    const { tooltip } = instance.popperChildren
 
     expect(tooltip.classList.contains('one')).toBe(true)
 
@@ -127,6 +120,7 @@ describe('<Tippy />', () => {
     unmount()
 
     expect(button._tippy).toBeUndefined()
+    expect(instance.state.isDestroyed).toBe(true)
   })
 
   test('updating children destroys old instance and creates new one', () => {
@@ -175,12 +169,11 @@ describe('<Tippy />', () => {
   })
 
   test('updating props updates the tippy instance', () => {
-    const { container, rerender } = render(
+    const { rerender } = render(
       <Tippy content="tooltip" arrow={false}>
         <button />
       </Tippy>,
     )
-    const instance = container.querySelector('button')._tippy
 
     expect(instance.props.arrow).toBe(false)
 
@@ -218,13 +211,14 @@ describe('<Tippy />', () => {
     const Child = React.forwardRef(function Comp(_, ref) {
       return <button ref={ref} />
     })
-    const { container } = render(
+
+    render(
       <Tippy content="tooltip">
         <Child />
       </Tippy>,
     )
 
-    expect(container.querySelector('button')._tippy).toBeDefined()
+    expect(instance).toBeDefined()
   })
 
   test('refs are preserved on the child', done => {
@@ -259,25 +253,24 @@ describe('<Tippy />', () => {
 
   test('nesting', () => {
     render(
-      <Tippy content="tooltip" placement="bottom" visible>
-        <Tippy content="tooltip" placement="left" visible>
-          <Tippy content="tooltip" visible>
+      <TippyBase content="tooltip" placement="bottom" visible>
+        <TippyBase content="tooltip" placement="left" visible>
+          <TippyBase content="tooltip" visible>
             <button>Text</button>
-          </Tippy>
-        </Tippy>
-      </Tippy>,
+          </TippyBase>
+        </TippyBase>
+      </TippyBase>,
     )
 
     expect(document.querySelectorAll('.tippy-popper').length).toBe(3)
   })
 
   test('props.enabled initially `true`', () => {
-    const { container, rerender } = render(
+    const { rerender } = render(
       <Tippy content="tooltip" enabled={true}>
         <button />
       </Tippy>,
     )
-    const instance = container.querySelector('button')._tippy
 
     expect(instance.state.isEnabled).toBe(true)
 
@@ -291,12 +284,11 @@ describe('<Tippy />', () => {
   })
 
   test('props.enabled initially `false`', () => {
-    const { container, rerender } = render(
+    const { rerender } = render(
       <Tippy content="tooltip" enabled={false}>
         <button />
       </Tippy>,
     )
-    const instance = container.querySelector('button')._tippy
 
     expect(instance.state.isEnabled).toBe(false)
 
@@ -310,12 +302,11 @@ describe('<Tippy />', () => {
   })
 
   test('props.visible initially `true`', () => {
-    const { container, rerender } = render(
+    const { rerender } = render(
       <Tippy content="tooltip" visible={true}>
         <button />
       </Tippy>,
     )
-    const instance = container.querySelector('button')._tippy
 
     expect(instance.state.isVisible).toBe(true)
 
@@ -329,12 +320,11 @@ describe('<Tippy />', () => {
   })
 
   test('props.visible initially `false`', () => {
-    const { container, rerender } = render(
+    const { rerender } = render(
       <Tippy content="tooltip" visible={false}>
         <button />
       </Tippy>,
     )
-    const instance = container.querySelector('button')._tippy
 
     expect(instance.state.isVisible).toBe(false)
 
@@ -347,43 +337,41 @@ describe('<Tippy />', () => {
     expect(instance.state.isVisible).toBe(true)
   })
 
-  test('props.onBeforeUpdate', () => {
-    const onBeforeUpdate = jest.fn()
+  test('props.plugins', () => {
+    const plugins = [{ fn: () => ({}) }]
 
-    const { rerender } = render(
-      <Tippy content="tooltip" onBeforeUpdate={onBeforeUpdate}>
+    render(
+      <Tippy content="tooltip" plugins={plugins}>
         <button />
       </Tippy>,
     )
 
-    expect(onBeforeUpdate).toHaveBeenCalledTimes(1)
+    expect(instance.plugins).toEqual(plugins)
+  })
+})
 
-    rerender(
-      <Tippy content="tooltip" onBeforeUpdate={onBeforeUpdate}>
-        <button />
-      </Tippy>,
-    )
+describe('Tippy.propTypes', () => {
+  const originalEnv = process.env.NODE_ENV
 
-    expect(onBeforeUpdate).toHaveBeenCalledTimes(2)
+  beforeEach(() => {
+    jest.resetModules()
   })
 
-  test('props.onAfterUpdate', () => {
-    const onAfterUpdate = jest.fn()
+  afterEach(() => {
+    process.env.NODE_ENV = originalEnv
+  })
 
-    const { rerender } = render(
-      <Tippy content="tooltip" onAfterUpdate={onAfterUpdate}>
-        <button />
-      </Tippy>,
-    )
+  test('is defined if NODE_ENV=development', () => {
+    process.env.NODE_ENV = 'development'
 
-    expect(onAfterUpdate).toHaveBeenCalledTimes(1)
+    const Tippy = require('../src/Tippy').Tippy
+    expect(Tippy.propTypes).toBeDefined()
+  })
 
-    rerender(
-      <Tippy content="tooltip" onAfterUpdate={onAfterUpdate}>
-        <button />
-      </Tippy>,
-    )
+  test('is undefined if NODE_ENV=production', () => {
+    process.env.NODE_ENV = 'production'
 
-    expect(onAfterUpdate).toHaveBeenCalledTimes(2)
+    const Tippy = require('../src/Tippy').Tippy
+    expect(Tippy.propTypes).toBeUndefined()
   })
 })

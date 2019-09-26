@@ -1,40 +1,15 @@
-import React, {
-  forwardRef,
-  cloneElement,
-  useState,
-  useLayoutEffect,
-  useEffect,
-} from 'react'
+import React, { forwardRef, cloneElement, useState } from 'react'
 import PropTypes from 'prop-types'
 import { createPortal } from 'react-dom'
-import tippyBase from 'tippy.js'
-import {
-  isBrowser,
-  preserveRef,
-  ssrSafeCreateDiv,
-  updateClassName,
-  useInstance,
-} from './utils'
+import tippy from 'tippy.js'
+import { preserveRef, ssrSafeCreateDiv, updateClassName } from './utils'
+import { useInstance, useIsomorphicLayoutEffect } from './hooks'
 
-let tippy = tippyBase
-export function setTippy(customTippy) {
-  tippy = customTippy
-}
-
-// React currently throws a warning when using useLayoutEffect on the server. To
-// get around it, we can conditionally useEffect on the server (no-op) and
-// useLayoutEffect in the browser. We need useLayoutEffect because we want Tippy
-// to perform sync mutations to the DOM elements after renders to prevent
-// jitters/jumps, especially when updating content.
-const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect
-
-function Tippy({
+export function Tippy({
   children,
   content,
   className,
-  onBeforeUpdate,
-  onAfterUpdate,
-  onCreate,
+  plugins,
   visible,
   enabled = true,
   multiple = true,
@@ -62,13 +37,9 @@ function Tippy({
 
   // CREATE
   useIsomorphicLayoutEffect(() => {
-    const instance = tippy(component.ref, props)
+    const instance = tippy(component.ref, props, plugins)
 
     component.instance = instance
-
-    if (onCreate) {
-      onCreate(instance)
-    }
 
     if (!enabled) {
       instance.disable()
@@ -95,15 +66,7 @@ function Tippy({
 
     const { instance } = component
 
-    if (onBeforeUpdate) {
-      onBeforeUpdate(instance)
-    }
-
     instance.setProps(props)
-
-    if (onAfterUpdate) {
-      onAfterUpdate(instance)
-    }
 
     if (enabled) {
       instance.enable()
@@ -158,8 +121,6 @@ if (process.env.NODE_ENV !== 'production') {
     visible: PropTypes.bool,
     enabled: PropTypes.bool,
     className: PropTypes.string,
-    onBeforeUpdate: PropTypes.func,
-    onAfterUpdate: PropTypes.func,
   }
 }
 

@@ -1,27 +1,40 @@
-import { Children, cloneElement, useEffect } from 'react'
+import { Children, cloneElement } from 'react'
 import PropTypes from 'prop-types'
-import { createSingleton } from 'tippy.js/addons'
-import { useInstance } from './utils'
+import { createSingleton } from 'tippy.js'
+import { useIsomorphicLayoutEffect, useInstance } from './hooks'
 
-export default function TippySingleton({ children, delay, onCreate }) {
-  const component = useInstance({ instances: [] })
+export default function TippySingleton({ children, ...props }) {
+  const component = useInstance({
+    instances: [],
+    renders: 1,
+  })
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const { instances } = component
-    const singleton = createSingleton([...instances], { delay })
+    const singleton = createSingleton(instances, props)
 
-    if (onCreate) {
-      onCreate(singleton)
-    }
+    component.singleton = singleton
 
     return () => {
-      singleton.destroy(false)
+      singleton.destroy()
+      singleton.clearDelayTimeouts()
+
       component.instances = instances.filter(i => !i.state.isDestroyed)
     }
-  }, [delay, children.length])
+  }, [children.length])
+
+  useIsomorphicLayoutEffect(() => {
+    if (component.renders === 1) {
+      component.renders++
+      return
+    }
+
+    component.singleton.setProps(props)
+  })
 
   return Children.map(children, child => {
     return cloneElement(child, {
+      enabled: false,
       onCreate(instance) {
         if (child.props.onCreate) {
           child.props.onCreate(instance)
@@ -36,6 +49,5 @@ export default function TippySingleton({ children, delay, onCreate }) {
 if (process.env.NODE_ENV !== 'production') {
   TippySingleton.propTypes = {
     children: PropTypes.arrayOf(PropTypes.element).isRequired,
-    onCreate: PropTypes.func,
   }
 }

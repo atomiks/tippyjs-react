@@ -58,7 +58,7 @@ describe('<TippySingleton />', () => {
     )
 
     instances.forEach(instance => {
-      expect(instance.__singleton).toBe(true)
+      expect(instance.state.isEnabled).toBe(false)
     })
   })
 
@@ -122,5 +122,31 @@ describe('<TippySingleton />', () => {
 
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy.mock.calls[0][0].popper).toBeDefined()
+  })
+})
+
+describe('TippySingleton.propTypes', () => {
+  const originalEnv = process.env.NODE_ENV
+
+  beforeEach(() => {
+    jest.resetModules()
+  })
+
+  afterEach(() => {
+    process.env.NODE_ENV = originalEnv
+  })
+
+  test('is defined if NODE_ENV=development', () => {
+    process.env.NODE_ENV = 'development'
+
+    const Tippy = require('../src/TippySingleton').default
+    expect(Tippy.propTypes).toBeDefined()
+  })
+
+  test('is undefined if NODE_ENV=production', () => {
+    process.env.NODE_ENV = 'production'
+
+    const Tippy = require('../src/TippySingleton').default
+    expect(Tippy.propTypes).toBeUndefined()
   })
 })
