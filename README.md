@@ -210,7 +210,7 @@ Tippy.js splits certain props into separate pieces of code called plugins to
 enable treeshaking, so that users who don't need the prop's functionality are
 not burdened with the cost of it.
 
-```js
+```jsx
 import Tippy from '@tippy.js/react'
 import { followCursor } from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
@@ -321,7 +321,7 @@ function App() {
 <img src="https://img.shields.io/bundlephobia/minzip/@tippy.js/react.svg?color=%2373bd4b&style=for-the-badge" alt="Bundle size">
 
 - `popper.js` ≈ 7 kB
-- `tippy.js` ≈ 6 kB (including CSS)
+- `tippy.js` ≈ 5.5 kB (including CSS)
 - `@tippy.js/react` ≈ 1 kB
 
 If you're using Popper.js for other parts of your app, the added cost becomes
