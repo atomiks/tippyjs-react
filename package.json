@@ -23,8 +23,7 @@
     "react"
   ],
   "files": [
-    "esm",
-    "umd",
+    "dist/",
     "index.d.ts"
   ],
   "jest": {
