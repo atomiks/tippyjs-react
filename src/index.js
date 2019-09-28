@@ -1,6 +1,6 @@
 import tippy from 'tippy.js'
 import Tippy from './Tippy'
-import TippyGroup from './TippyGroup'
+import TippySingleton from './TippySingleton'
 
 export default Tippy
-export { TippyGroup, tippy }
+export { TippySingleton, tippy }

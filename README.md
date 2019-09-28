@@ -20,6 +20,7 @@
 and popover library powered by Popper.js. This is a lightweight wrapper that
 lets you use it declaratively in React.
 
+<!--
 ## 💎 Examples
 
 ### Tooltips
@@ -30,6 +31,7 @@ lets you use it declaratively in React.
 ### Popovers
 
 - [Accessible Emoji Reaction Picker](https://codesandbox.io/s/1vzvoo9mwl)
+-->
 
 ## 🚀 Installation
 
@@ -47,12 +49,14 @@ Requires React 16.8+
 
 ## 🖲 Usage
 
-Wrap the `<Tippy />` component around the element, supplying the tooltip's
-content as the `content` prop. It can take a string or a tree of React elements.
+Import the `Tippy` component and the core CSS. Wrap the `<Tippy />` component
+around the element, supplying the tooltip's content as the `content` prop. It
+can take a string or a tree of React elements.
 
 ```jsx
 import React from 'react'
 import Tippy from '@tippy.js/react'
+import 'tippy.js/dist/tippy.css'
 
 const StringContent = () => (
   <Tippy content="Hello">
@@ -101,22 +105,17 @@ element as a workaround.
 
 ```jsx
 <Tippy content="Tooltip">
-  <span>
-    <LegacyComponent>Unfortunately</LegacyComponent>
+  <span tabindex="0">
+    <LegacyComponent>Content</LegacyComponent>
   </span>
 </Tippy>
 ```
 
-> Although Tippy will add `tabindex` for you on the `<span>` which allows it to
-> receive focus, it may affect accessibility with regards to screenreaders,
-> since `<span>` is not traditionally focusable (unlike a `<button>` for
-> example).
-
 ## 🧬 Props
 
-All of the native Tippy.js options can be passed as props.
+All of the native Tippy.js props can be passed to the component.
 
-Visit [All Options](https://atomiks.github.io/tippyjs/all-options/) to view the
+Visit [All Props](https://atomiks.github.io/tippyjs/all-props/) to view the
 complete table.
 
 ```jsx
@@ -132,9 +131,9 @@ complete table.
 </Tippy>
 ```
 
-In addition, there are 4 more props added specifically for the React component.
+In addition, there are 3 more props added specifically for the React component.
 
-### `className?: string` (v2.1)
+### `className?: string`
 
 A React alternative to the `theme` prop. The className gets added to the tooltip
 element's class list as expected, without adding `-theme` as a suffix.
@@ -205,27 +204,27 @@ function App() {
 > **Note**: You should also set the `hideOnClick` prop to `false` if you don't
 > want the tippy to hide when the user clicks on the document somewhere.
 
-### `onCreate?: (instance: Instance) => void`
+### Plugins
 
-Callback invoked when the tippy instance has been created. Use this when you
-need to store the tippy instance on the component.
-
-This should only be done for advanced (imperative) manipulation of the tippy
-instance – in most cases using props should suffice.
+Tippy.js splits certain props into separate pieces of code called plugins to
+enable treeshaking, so that users who don't need the prop's functionality are
+not burdened with the cost of it.
 
 ```jsx
+import Tippy from '@tippy.js/react'
+import { followCursor } from 'tippy.js'
+import 'tippy.js/dist/tippy.css'
+
 function App() {
-  const tippyInstance = useRef()
   return (
-    <Tippy
-      content="Tooltip"
-      onCreate={instance => (tippyInstance.current = instance)}
-    >
+    <Tippy content="Tooltip" followCursor={true} plugins={[followCursor]}>
       <button />
     </Tippy>
   )
 }
 ```
+
+[Read more about plugins here](https://atomiks.github.io/tippyjs/plugins/).
 
 ### Default props
 
@@ -264,7 +263,6 @@ export function Tooltip(props) {
 export function Popover(props) {
   return (
     <Tippy
-      animateFill={false}
       interactive={true}
       interactiveBorder={10}
       animation="scale"
@@ -295,24 +293,25 @@ You can nest the components like so:
 </Tippy>
 ```
 
-## 📚 `<TippyGroup />`
+## 📚 `<TippySingleton />`
 
-Wraps the [`tippy.group()`](https://atomiks.github.io/tippyjs/misc/#groups)
+Wraps the
+[`createSingleton()`](https://atomiks.github.io/tippyjs/addons/#singleton)
 method.
 
 ```jsx
-import Tippy, { TippyGroup } from '@tippy.js/react'
+import Tippy, { TippySingleton } from '@tippy.js/react'
 
 function App() {
   return (
-    <TippyGroup delay={1000}>
+    <TippySingleton delay={1000}>
       <Tippy content="a">
         <button />
       </Tippy>
       <Tippy content="b">
         <button />
       </Tippy>
-    </TippyGroup>
+    </TippySingleton>
   )
 }
 ```
@@ -322,7 +321,7 @@ function App() {
 <img src="https://img.shields.io/bundlephobia/minzip/@tippy.js/react.svg?color=%2373bd4b&style=for-the-badge" alt="Bundle size">
 
 - `popper.js` ≈ 7 kB
-- `tippy.js` ≈ 7.5 kB (including CSS)
+- `tippy.js` ≈ 5.5 kB (including CSS)
 - `@tippy.js/react` ≈ 1 kB
 
 If you're using Popper.js for other parts of your app, the added cost becomes

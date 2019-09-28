@@ -1,46 +1,21 @@
-import React, {
-  forwardRef,
-  cloneElement,
-  useState,
-  useEffect,
-  useLayoutEffect,
-} from 'react'
-import { createPortal } from 'react-dom'
+import React, { forwardRef, cloneElement, useState } from 'react'
 import PropTypes from 'prop-types'
+import { createPortal } from 'react-dom'
 import tippy from 'tippy.js'
-import {
-  isBrowser,
-  ssrSafeCreateDiv,
-  preserveRef,
-  updateClassName,
-  useInstance,
-} from './utils'
+import { preserveRef, ssrSafeCreateDiv, updateClassName } from './utils'
+import { useInstance, useIsomorphicLayoutEffect } from './hooks'
 
-// React currently throws a warning when using useLayoutEffect on the server. To
-// get around it, we can conditionally useEffect on the server (no-op) and
-// useLayoutEffect in the browser. We need useLayoutEffect because we want Tippy
-// to perform sync mutations to the DOM elements after renders to prevent
-// jitters/jumps, especially when updating content.
-const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect
-
-function Tippy({
+export function Tippy({
   children,
   content,
   className,
-  onCreate,
-  isVisible, // deprecated
-  isEnabled, // deprecated
+  plugins,
   visible,
-  enabled,
-  ignoreAttributes = true,
+  enabled = true,
   multiple = true,
+  ignoreAttributes = true,
   ...restOfNativeProps
 }) {
-  // `isVisible` / `isEnabled` renamed to `visible` / `enabled`
-  enabled =
-    enabled !== undefined ? enabled : isEnabled !== undefined ? isEnabled : true
-  visible = visible !== undefined ? visible : isVisible
-
   const isControlledMode = visible !== undefined
 
   const [mounted, setMounted] = useState(false)
@@ -49,7 +24,7 @@ function Tippy({
     renders: 1,
   }))
 
-  const options = {
+  const props = {
     ignoreAttributes,
     multiple,
     ...restOfNativeProps,
@@ -57,17 +32,14 @@ function Tippy({
   }
 
   if (isControlledMode) {
-    options.trigger = 'manual'
+    props.trigger = 'manual'
   }
 
+  // CREATE
   useIsomorphicLayoutEffect(() => {
-    const instance = tippy(component.ref, options)
+    const instance = tippy(component.ref, props, plugins)
 
     component.instance = instance
-
-    if (onCreate) {
-      onCreate(instance)
-    }
 
     if (!enabled) {
       instance.disable()
@@ -84,6 +56,7 @@ function Tippy({
     }
   }, [children.type])
 
+  // UPDATE
   useIsomorphicLayoutEffect(() => {
     // Prevent this effect from running on 1st render
     if (component.renders === 1) {
@@ -93,7 +66,7 @@ function Tippy({
 
     const { instance } = component
 
-    instance.set(options)
+    instance.setProps(props)
 
     if (enabled) {
       instance.enable()
@@ -110,6 +83,7 @@ function Tippy({
     }
   })
 
+  // UPDATE className
   useIsomorphicLayoutEffect(() => {
     if (className) {
       const { tooltip } = component.instance.popperChildren
@@ -144,9 +118,6 @@ if (process.env.NODE_ENV !== 'production') {
     content: PropTypes.oneOfType([ContentType, PropTypes.arrayOf(ContentType)])
       .isRequired,
     children: PropTypes.element.isRequired,
-    onCreate: PropTypes.func,
-    isVisible: PropTypes.bool, // deprecated
-    isEnabled: PropTypes.bool, // deprecated
     visible: PropTypes.bool,
     enabled: PropTypes.bool,
     className: PropTypes.string,

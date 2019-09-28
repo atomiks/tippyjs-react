@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import Tippy, { TippyGroup } from '../src'
+import Tippy, { TippySingleton } from '../src'
+import { followCursor } from 'tippy.js'
+
+import 'tippy.js/dist/tippy.css'
 import './index.css'
 
 function ContentString() {
@@ -66,7 +69,7 @@ function VisibleProp() {
   )
 }
 
-function Group() {
+function Singleton() {
   const [count, setCount] = useState(3)
 
   let children = []
@@ -84,7 +87,15 @@ function Group() {
     }, 5000)
   }, [])
 
-  return <TippyGroup delay={500}>{children}</TippyGroup>
+  return <TippySingleton delay={500}>{children}</TippySingleton>
+}
+
+function FollowCursor() {
+  return (
+    <Tippy content="hi" followCursor={true} plugins={[followCursor]}>
+      <button>followCursor</button>
+    </Tippy>
+  )
 }
 
 function App() {
@@ -96,8 +107,10 @@ function App() {
       <h2>Special</h2>
       <EnabledProp />
       <VisibleProp />
-      <h2>Group dynamic children</h2>
-      <Group />
+      <h2>Singleton dynamic children</h2>
+      <Singleton />
+      <h2>Plugins</h2>
+      <FollowCursor />
     </>
   )
 }
