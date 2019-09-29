@@ -318,8 +318,6 @@ function App() {
 
 ## 📦 Bundle size
 
-<img src="https://img.shields.io/bundlephobia/minzip/@tippy.js/react.svg?color=%2373bd4b&style=for-the-badge" alt="Bundle size">
-
 - `popper.js` ≈ 7 kB
 - `tippy.js` ≈ 5.5 kB (including CSS)
 - `@tippy.js/react` ≈ 1 kB
