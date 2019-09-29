@@ -1,10 +1,10 @@
-import React from 'react'
-import Tippy, { TippySingleton } from '../src'
-import { render, cleanup } from '@testing-library/react'
+import React from 'react';
+import Tippy, {TippySingleton} from '../src';
+import {render, cleanup} from '@testing-library/react';
 
-jest.useFakeTimers()
+jest.useFakeTimers();
 
-afterEach(cleanup)
+afterEach(cleanup);
 
 describe('<TippySingleton />', () => {
   it('renders without crashing', () => {
@@ -17,11 +17,11 @@ describe('<TippySingleton />', () => {
           <button />
         </Tippy>
       </TippySingleton>,
-    )
-  })
+    );
+  });
 
   it('preserves <Tippy /> `onCreate` prop', () => {
-    const spy = jest.fn()
+    const spy = jest.fn();
 
     render(
       <TippySingleton>
@@ -32,18 +32,18 @@ describe('<TippySingleton />', () => {
           <button />
         </Tippy>
       </TippySingleton>,
-    )
+    );
 
-    expect(spy).toHaveBeenCalledTimes(2)
-    expect(spy.mock.calls[0][0].popper).toBeDefined()
-    expect(spy.mock.calls[1][0].popper).toBeDefined()
-  })
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy.mock.calls[0][0].popper).toBeDefined();
+    expect(spy.mock.calls[1][0].popper).toBeDefined();
+  });
 
   it('indicates the instances have been combined into a singleton', () => {
-    let instances = []
+    let instances = [];
 
     function onCreate(instance) {
-      instances.push(instance)
+      instances.push(instance);
     }
 
     render(
@@ -55,15 +55,15 @@ describe('<TippySingleton />', () => {
           <button />
         </Tippy>
       </TippySingleton>,
-    )
+    );
 
     instances.forEach(instance => {
-      expect(instance.state.isEnabled).toBe(false)
-    })
-  })
+      expect(instance.state.isEnabled).toBe(false);
+    });
+  });
 
   it('handles dynamic children without crashing', () => {
-    const { rerender } = render(
+    const {rerender} = render(
       <TippySingleton>
         <Tippy content="tooltip">
           <button />
@@ -75,7 +75,7 @@ describe('<TippySingleton />', () => {
           <button />
         </Tippy>
       </TippySingleton>,
-    )
+    );
 
     rerender(
       <TippySingleton>
@@ -92,7 +92,7 @@ describe('<TippySingleton />', () => {
           <button />
         </Tippy>
       </TippySingleton>,
-    )
+    );
 
     rerender(
       <TippySingleton>
@@ -103,11 +103,11 @@ describe('<TippySingleton />', () => {
           <button />
         </Tippy>
       </TippySingleton>,
-    )
-  })
+    );
+  });
 
   it('uses `onCreate` prop', () => {
-    const spy = jest.fn()
+    const spy = jest.fn();
 
     render(
       <TippySingleton onCreate={spy}>
@@ -118,35 +118,35 @@ describe('<TippySingleton />', () => {
           <button />
         </Tippy>
       </TippySingleton>,
-    )
+    );
 
-    expect(spy).toHaveBeenCalledTimes(1)
-    expect(spy.mock.calls[0][0].popper).toBeDefined()
-  })
-})
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy.mock.calls[0][0].popper).toBeDefined();
+  });
+});
 
 describe('TippySingleton.propTypes', () => {
-  const originalEnv = process.env.NODE_ENV
+  const originalEnv = process.env.NODE_ENV;
 
   beforeEach(() => {
-    jest.resetModules()
-  })
+    jest.resetModules();
+  });
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv
-  })
+    process.env.NODE_ENV = originalEnv;
+  });
 
   test('is defined if NODE_ENV=development', () => {
-    process.env.NODE_ENV = 'development'
+    process.env.NODE_ENV = 'development';
 
-    const Tippy = require('../src/TippySingleton').default
-    expect(Tippy.propTypes).toBeDefined()
-  })
+    const Tippy = require('../src/TippySingleton').default;
+    expect(Tippy.propTypes).toBeDefined();
+  });
 
   test('is undefined if NODE_ENV=production', () => {
-    process.env.NODE_ENV = 'production'
+    process.env.NODE_ENV = 'production';
 
-    const Tippy = require('../src/TippySingleton').default
-    expect(Tippy.propTypes).toBeUndefined()
-  })
-})
+    const Tippy = require('../src/TippySingleton').default;
+    expect(Tippy.propTypes).toBeUndefined();
+  });
+});

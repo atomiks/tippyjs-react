@@ -54,21 +54,21 @@ around the element, supplying the tooltip's content as the `content` prop. It
 can take a string or a tree of React elements.
 
 ```jsx
-import React from 'react'
-import Tippy from '@tippy.js/react'
-import 'tippy.js/dist/tippy.css'
+import React from 'react';
+import Tippy from '@tippy.js/react';
+import 'tippy.js/dist/tippy.css';
 
 const StringContent = () => (
   <Tippy content="Hello">
     <button>My button</button>
   </Tippy>
-)
+);
 
 const JSXContent = () => (
   <Tippy content={<span>Tooltip</span>}>
     <button>My button</button>
   </Tippy>
-)
+);
 ```
 
 ### Component children
@@ -77,22 +77,22 @@ If you want to use a component element as a child, ensure you forward the ref to
 the DOM node:
 
 ```jsx
-import React, { forwardRef } from 'react'
+import React, {forwardRef} from 'react';
 
 function ThisWontWork() {
-  return <button>Text</button>
+  return <button>Text</button>;
 }
 
 const ThisWillWork = forwardRef((props, ref) => {
-  return <button ref={ref}>Text</button>
-})
+  return <button ref={ref}>Text</button>;
+});
 
 function App() {
   return (
     <Tippy content="Tooltip">
       <ThisWillWork />
     </Tippy>
-  )
+  );
 }
 ```
 
@@ -157,7 +157,7 @@ const PurpleTippy = styled(Tippy)`
       border-top-color: purple;
     }
   }
-`
+`;
 ```
 
 See [themes](https://atomiks.github.io/tippyjs/themes/) for more information.
@@ -174,12 +174,12 @@ this when you want to temporarily disable a tippy from showing.
 
 ```jsx
 function App() {
-  const [enabled, setEnabled] = useState(true)
+  const [enabled, setEnabled] = useState(true);
   return (
     <Tippy content="Tooltip" enabled={enabled}>
       <button />
     </Tippy>
-  )
+  );
 }
 ```
 
@@ -192,12 +192,12 @@ state.
 
 ```jsx
 function App() {
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(true);
   return (
     <Tippy content="Tooltip" visible={visible}>
       <button />
     </Tippy>
-  )
+  );
 }
 ```
 
@@ -211,16 +211,16 @@ enable treeshaking, so that users who don't need the prop's functionality are
 not burdened with the cost of it.
 
 ```jsx
-import Tippy from '@tippy.js/react'
-import { followCursor } from 'tippy.js'
-import 'tippy.js/dist/tippy.css'
+import Tippy from '@tippy.js/react';
+import {followCursor} from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
 
 function App() {
   return (
     <Tippy content="Tooltip" followCursor={true} plugins={[followCursor]}>
       <button />
     </Tippy>
-  )
+  );
 }
 ```
 
@@ -232,11 +232,11 @@ You can create a new component file that exports a wrapper component that has
 its own default props.
 
 ```js
-import Tippy from '@tippy.js/react'
+import Tippy from '@tippy.js/react';
 
 // When importing Tippy from this file instead, it will have the fade animation
 // by default
-export default props => <Tippy animation="fade" {...props} />
+export default props => <Tippy animation="fade" {...props} />;
 ```
 
 ### Proxy components
@@ -257,7 +257,7 @@ export function Tooltip(props) {
       delay={150}
       {...props}
     />
-  )
+  );
 }
 
 export function Popover(props) {
@@ -270,11 +270,11 @@ export function Popover(props) {
       trigger="click"
       {...props}
     />
-  )
+  );
 }
 
 // In another file
-import { Tooltip, Popover } from './Tippy'
+import {Tooltip, Popover} from './Tippy';
 ```
 
 ## 🌈 Multiple tippys on a single element
@@ -300,7 +300,7 @@ Wraps the
 method.
 
 ```jsx
-import Tippy, { TippySingleton } from '@tippy.js/react'
+import Tippy, {TippySingleton} from '@tippy.js/react';
 
 function App() {
   return (
@@ -312,7 +312,7 @@ function App() {
         <button />
       </Tippy>
     </TippySingleton>
-  )
+  );
 }
 ```
 
