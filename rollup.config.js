@@ -1,19 +1,19 @@
-import babel from 'rollup-plugin-babel'
-import { terser } from 'rollup-plugin-terser'
-import resolve from 'rollup-plugin-node-resolve'
-import replace from 'rollup-plugin-replace'
+import babel from 'rollup-plugin-babel';
+import {terser} from 'rollup-plugin-terser';
+import resolve from 'rollup-plugin-node-resolve';
+import replace from 'rollup-plugin-replace';
 
-const pluginBabel = babel()
-const pluginMinify = terser()
-const pluginResolve = resolve()
+const pluginBabel = babel();
+const pluginMinify = terser();
+const pluginResolve = resolve();
 const pluginReplaceEnvProduction = replace({
   'process.env.NODE_ENV': JSON.stringify('production'),
-})
+});
 
 const COMMON_INPUT = {
   input: './src/index.js',
   external: ['react', 'react-dom', 'prop-types', 'tippy.js', 'tippy.js/addons'],
-}
+};
 
 const COMMON_OUTPUT = {
   name: 'Tippy',
@@ -26,7 +26,7 @@ const COMMON_OUTPUT = {
     'tippy.js': 'tippy',
     'tippy.js/addons': 'tippy',
   },
-}
+};
 
 export default [
   {
@@ -61,4 +61,4 @@ export default [
       file: './dist/tippy-react.esm.js',
     },
   },
-]
+];

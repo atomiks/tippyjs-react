@@ -3,9 +3,9 @@ global.window.document.createRange = function createRange() {
     setEnd: () => {},
     setStart: () => {},
     getBoundingClientRect: () => {
-      return { right: 0 }
+      return {right: 0};
     },
     getClientRects: () => [],
     commonAncestorContainer: document.createElement('div'),
-  }
-}
+  };
+};

@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import Tippy, { TippySingleton } from '../src'
-import { followCursor } from 'tippy.js'
+import React, {useState, useEffect} from 'react';
+import ReactDOM from 'react-dom';
+import Tippy, {TippySingleton} from '../src';
+import {followCursor} from 'tippy.js';
 
-import 'tippy.js/dist/tippy.css'
-import './index.css'
+import 'tippy.js/dist/tippy.css';
+import './index.css';
 
 function ContentString() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     setInterval(() => {
-      setCount(count => count + 1)
-    }, 1000)
-  }, [])
+      setCount(count => count + 1);
+    }, 1000);
+  }, []);
 
   return (
     <Tippy content={count}>
       <button>ContentString</button>
     </Tippy>
-  )
+  );
 }
 
 function ContentElement() {
-  const colors = ['red', 'orange', 'yellow', 'green', 'cyan', 'purple', 'pink']
-  const [index, setIndex] = useState(0)
+  const colors = ['red', 'orange', 'yellow', 'green', 'cyan', 'purple', 'pink'];
+  const [index, setIndex] = useState(0);
 
   function renderNextColor() {
-    setIndex(index === colors.length - 1 ? 0 : index + 1)
+    setIndex(index === colors.length - 1 ? 0 : index + 1);
   }
 
   return (
@@ -35,18 +35,18 @@ function ContentElement() {
       content={
         <>
           <button onClick={renderNextColor}>Next color</button>
-          <span style={{ color: colors[index] }}>Hello</span>
+          <span style={{color: colors[index]}}>Hello</span>
         </>
       }
       interactive={true}
     >
       <button>ContentElement</button>
     </Tippy>
-  )
+  );
 }
 
 function EnabledProp() {
-  const [enabled, setEnabled] = useState(true)
+  const [enabled, setEnabled] = useState(true);
 
   return (
     <Tippy content="Tooltip" enabled={enabled}>
@@ -54,11 +54,11 @@ function EnabledProp() {
         enabled: {String(enabled)}
       </button>
     </Tippy>
-  )
+  );
 }
 
 function VisibleProp() {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
   return (
     <Tippy content="Tooltip" visible={visible} hideOnClick={false}>
@@ -66,28 +66,28 @@ function VisibleProp() {
         visible: {String(visible)}
       </button>
     </Tippy>
-  )
+  );
 }
 
 function Singleton() {
-  const [count, setCount] = useState(3)
+  const [count, setCount] = useState(3);
 
-  let children = []
+  let children = [];
   for (let i = 0; i < count; i++) {
     children.push(
       <Tippy key={i} content="Tooltip">
         <button>{i}</button>
       </Tippy>,
-    )
+    );
   }
 
   useEffect(() => {
     setInterval(() => {
-      setCount(count => (count === 5 ? 1 : count + 1))
-    }, 5000)
-  }, [])
+      setCount(count => (count === 5 ? 1 : count + 1));
+    }, 5000);
+  }, []);
 
-  return <TippySingleton delay={500}>{children}</TippySingleton>
+  return <TippySingleton delay={500}>{children}</TippySingleton>;
 }
 
 function FollowCursor() {
@@ -95,7 +95,7 @@ function FollowCursor() {
     <Tippy content="hi" followCursor={true} plugins={[followCursor]}>
       <button>followCursor</button>
     </Tippy>
-  )
+  );
 }
 
 function App() {
@@ -112,7 +112,7 @@ function App() {
       <h2>Plugins</h2>
       <FollowCursor />
     </>
-  )
+  );
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'));
