@@ -17,6 +17,7 @@ export const tippy: typeof tippyCore;
 
 export interface TippySingletonProps extends Partial<Props> {
   children: Array<React.ReactElement<any>>;
+  className?: string;
 }
 
 export const TippySingleton: React.FunctionComponent<TippySingletonProps>;
