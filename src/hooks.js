@@ -5,7 +5,7 @@ export const useIsomorphicLayoutEffect = isBrowser
   ? useLayoutEffect
   : useEffect;
 
-export function useUpdateClassName(component, className) {
+export function useUpdateClassName(component, className, childrenDep) {
   useIsomorphicLayoutEffect(() => {
     const {tooltip} = component.instance.popperChildren;
     if (className) {
@@ -14,7 +14,7 @@ export function useUpdateClassName(component, className) {
         updateClassName(tooltip, 'remove', className);
       };
     }
-  }, [className]);
+  }, [className, childrenDep]);
 }
 
 export function useInstance(initialValue) {

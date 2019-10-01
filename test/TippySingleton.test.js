@@ -196,6 +196,37 @@ describe('<TippySingleton />', () => {
     expect(tooltip.classList.contains('one')).toBe(false);
     expect(tooltip.classList.contains('two')).toBe(true);
   });
+
+  test('props.className: syncs with children.length', () => {
+    const {rerender} = render(
+      <TippySingleton className="one">
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    rerender(
+      <TippySingleton className="one">
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    const {tooltip} = instance.popperChildren;
+
+    expect(tooltip.classList.contains('one')).toBe(true);
+  });
 });
 
 describe('TippySingleton.propTypes', () => {
