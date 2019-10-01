@@ -2,8 +2,12 @@ import React, {forwardRef, cloneElement, useState} from 'react';
 import PropTypes from 'prop-types';
 import {createPortal} from 'react-dom';
 import tippy from 'tippy.js';
-import {preserveRef, ssrSafeCreateDiv, updateClassName} from './utils';
-import {useInstance, useIsomorphicLayoutEffect} from './hooks';
+import {preserveRef, ssrSafeCreateDiv} from './utils';
+import {
+  useInstance,
+  useIsomorphicLayoutEffect,
+  useUpdateClassName,
+} from './hooks';
 
 export function Tippy({
   children,
@@ -83,16 +87,7 @@ export function Tippy({
     }
   });
 
-  // UPDATE className
-  useIsomorphicLayoutEffect(() => {
-    if (className) {
-      const {tooltip} = component.instance.popperChildren;
-      updateClassName(tooltip, 'add', className);
-      return () => {
-        updateClassName(tooltip, 'remove', className);
-      };
-    }
-  }, [className]);
+  useUpdateClassName(component, className);
 
   return (
     <>

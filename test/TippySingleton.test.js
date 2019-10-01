@@ -1,5 +1,5 @@
 import React from 'react';
-import Tippy, {TippySingleton} from '../src';
+import Tippy, {TippySingleton as TippySingletonBase} from '../src';
 import {render, cleanup} from '@testing-library/react';
 
 jest.useFakeTimers();
@@ -7,6 +7,12 @@ jest.useFakeTimers();
 afterEach(cleanup);
 
 describe('<TippySingleton />', () => {
+  let instance;
+
+  function TippySingleton(props) {
+    return <TippySingletonBase {...props} onCreate={i => (instance = i)} />;
+  }
+
   it('renders without crashing', () => {
     render(
       <TippySingleton delay={100}>
@@ -106,11 +112,11 @@ describe('<TippySingleton />', () => {
     );
   });
 
-  it('uses `onCreate` prop', () => {
-    const spy = jest.fn();
+  test('props.className: single name is added to tooltip', () => {
+    const className = 'hello';
 
     render(
-      <TippySingleton onCreate={spy}>
+      <TippySingleton className={className}>
         <Tippy content="tooltip">
           <button />
         </Tippy>
@@ -120,8 +126,75 @@ describe('<TippySingleton />', () => {
       </TippySingleton>,
     );
 
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy.mock.calls[0][0].popper).toBeDefined();
+    expect(instance.popper.querySelector(`.${className}`)).not.toBeNull();
+  });
+
+  test('props.className: multiple names are added to tooltip', () => {
+    const classNames = 'hello world';
+
+    render(
+      <TippySingleton className={classNames}>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    expect(instance.popper.querySelector('.hello')).not.toBeNull();
+    expect(instance.popper.querySelector('.world')).not.toBeNull();
+  });
+
+  test('props.className: extra whitespace is ignored', () => {
+    const className = ' hello world  ';
+
+    render(
+      <TippySingleton className={className}>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    const {tooltip} = instance.popperChildren;
+
+    expect(tooltip.className).toBe('tippy-tooltip hello world');
+  });
+
+  test('props.className: updating does not leave stale className behind', () => {
+    const {rerender} = render(
+      <TippySingleton className="one">
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    const {tooltip} = instance.popperChildren;
+
+    expect(tooltip.classList.contains('one')).toBe(true);
+
+    rerender(
+      <TippySingleton className="two">
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    expect(tooltip.classList.contains('one')).toBe(false);
+    expect(tooltip.classList.contains('two')).toBe(true);
   });
 });
 

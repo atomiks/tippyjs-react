@@ -1,23 +1,36 @@
 import {Children, cloneElement} from 'react';
 import PropTypes from 'prop-types';
 import {createSingleton} from 'tippy.js';
-import {useIsomorphicLayoutEffect, useInstance} from './hooks';
+import {
+  useIsomorphicLayoutEffect,
+  useInstance,
+  useUpdateClassName,
+} from './hooks';
 
-export default function TippySingleton({children, ...props}) {
+export default function TippySingleton({
+  children,
+  className,
+  ignoreAttributes = true,
+  ...restOfNativeProps
+}) {
   const component = useInstance({
     instances: [],
     renders: 1,
   });
 
+  const props = {
+    ignoreAttributes,
+    ...restOfNativeProps,
+  };
+
   useIsomorphicLayoutEffect(() => {
     const {instances} = component;
-    const singleton = createSingleton(instances, props);
+    const instance = createSingleton(instances, props);
 
-    component.singleton = singleton;
+    component.instance = instance;
 
     return () => {
-      singleton.destroy();
-
+      instance.destroy();
       component.instances = instances.filter(i => !i.state.isDestroyed);
     };
   }, [children.length]);
@@ -28,8 +41,10 @@ export default function TippySingleton({children, ...props}) {
       return;
     }
 
-    component.singleton.setProps(props);
+    component.instance.setProps(props);
   });
+
+  useUpdateClassName(component, className);
 
   return Children.map(children, child => {
     return cloneElement(child, {
