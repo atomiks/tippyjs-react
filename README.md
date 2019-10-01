@@ -105,7 +105,7 @@ element as a workaround.
 
 ```jsx
 <Tippy content="Tooltip">
-  <span tabindex="0">
+  <span tabIndex="0">
     <LegacyComponent>Content</LegacyComponent>
   </span>
 </Tippy>
