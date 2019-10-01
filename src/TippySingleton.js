@@ -17,7 +17,6 @@ export default function TippySingleton({children, ...props}) {
 
     return () => {
       singleton.destroy();
-      singleton.clearDelayTimeouts();
 
       component.instances = instances.filter(i => !i.state.isDestroyed);
     };
