@@ -12,7 +12,7 @@
     "build": "rollup --config",
     "test": "jest --coverage --silent",
     "lint": "eslint \"{src,test}/**/*.js\"",
-    "format": "prettier --write \"./**/*.{js,json,css,md}\""
+    "format": "prettier --write \"{src,test,demo}/**/*.{js,ts,json,css,md}\""
   },
   "author": "atomiks",
   "license": "MIT",
@@ -40,7 +40,7 @@
     }
   },
   "lint-staged": {
-    "{src,test}/**/*.{js,json,css,md}": [
+    "{src,test,demo}/**/*.{js,ts,json,css,md}": [
       "prettier --write",
       "git add"
     ],
