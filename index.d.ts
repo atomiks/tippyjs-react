@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {default as tippyCore, Instance, Props, Plugin} from 'tippy.js';
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
 export interface TippyProps extends Omit<Partial<Props>, 'content'> {
   content: React.ReactChild | React.ReactChild[];
   children: React.ReactElement<any>;
@@ -17,10 +15,8 @@ export default Tippy;
 
 export const tippy: typeof tippyCore;
 
-export interface TippySingletonProps extends Props {
+export interface TippySingletonProps extends Partial<Props> {
   children: Array<React.ReactElement<any>>;
 }
 
-export const TippySingleton: React.FunctionComponent<
-  Partial<TippySingletonProps>
->;
+export const TippySingleton: React.FunctionComponent<TippySingletonProps>;
