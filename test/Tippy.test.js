@@ -109,6 +109,24 @@ describe('<Tippy />', () => {
     expect(tooltip.classList.contains('two')).toBe(true);
   });
 
+  test('props.className: syncs with children.type', () => {
+    const {rerender} = render(
+      <Tippy content="tooltip" className="one">
+        <button />
+      </Tippy>,
+    );
+
+    rerender(
+      <Tippy content="tooltip" className="one">
+        <span />
+      </Tippy>,
+    );
+
+    const {tooltip} = instance.popperChildren;
+
+    expect(tooltip.classList.contains('one')).toBe(true);
+  });
+
   test('unmount destroys the tippy instance and allows garbage collection', () => {
     const {container, unmount} = render(
       <Tippy content="tooltip">

@@ -44,7 +44,7 @@ export default function TippySingleton({
     component.instance.setProps(props);
   });
 
-  useUpdateClassName(component, className);
+  useUpdateClassName(component, className, children.length);
 
   return Children.map(children, child => {
     return cloneElement(child, {

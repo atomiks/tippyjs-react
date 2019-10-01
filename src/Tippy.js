@@ -87,7 +87,7 @@ export function Tippy({
     }
   });
 
-  useUpdateClassName(component, className);
+  useUpdateClassName(component, className, children.type);
 
   return (
     <>
