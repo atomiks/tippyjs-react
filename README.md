@@ -25,7 +25,7 @@ lets you use it declaratively in React.
 ### Tooltips
 
 - [Bootstrap 4 Style](https://codesandbox.io/s/mm61w3rrqx)
-- [Google Style](https://codesandbox.io/s/0y6pj161wp)
+- [Material Style](https://codesandbox.io/s/0y6pj161wp)
 
 ### Popovers
 
