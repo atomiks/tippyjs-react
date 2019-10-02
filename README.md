@@ -150,7 +150,7 @@ const PurpleTippy = styled(Tippy)`
   background: purple;
 
   /* Styling the arrow for different placements */
-  &[x-placement^='top'] {
+  &[data-placement^='top'] {
     .tippy-arrow {
       border-top-color: purple;
     }
