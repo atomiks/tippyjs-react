@@ -1,5 +1,6 @@
 import {isBrowser, updateClassName} from './utils';
 import {useLayoutEffect, useEffect, useRef} from 'react';
+import {createSingleton} from 'tippy.js';
 
 export const useIsomorphicLayoutEffect = isBrowser
   ? useLayoutEffect
@@ -28,4 +29,47 @@ export function useInstance(initialValue) {
   }
 
   return ref.current;
+}
+
+export function useSingleton({
+  className,
+  ignoreAttributes = true,
+  ...restOfNativeProps
+}) {
+  const component = useInstance({
+    instance: null,
+    instances: [],
+    renders: 1,
+  });
+
+  const props = {
+    ignoreAttributes,
+    ...restOfNativeProps,
+  };
+
+  useIsomorphicLayoutEffect(() => {
+    component.instance = createSingleton(component.instances, props);
+
+    return () => {
+      component.instance.destroy();
+      component.instances = component.instances.filter(
+        i => !i.state.isDestroyed,
+      );
+    };
+  }, [component.instances.length]);
+
+  useIsomorphicLayoutEffect(() => {
+    if (component.renders === 1) {
+      component.renders++;
+      return;
+    }
+
+    component.instance.setProps(props);
+  });
+
+  useUpdateClassName(component, className, component.instances.length);
+
+  return instance => {
+    component.instances.push(instance);
+  };
 }
