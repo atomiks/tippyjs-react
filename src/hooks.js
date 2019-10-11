@@ -48,13 +48,14 @@ export function useSingleton({
   };
 
   useIsomorphicLayoutEffect(() => {
-    component.instance = createSingleton(component.instances, props);
+    const {instances} = component;
+    const instance = createSingleton(instances, props);
+
+    component.instance = instance;
 
     return () => {
-      component.instance.destroy();
-      component.instances = component.instances.filter(
-        i => !i.state.isDestroyed,
-      );
+      instance.destroy();
+      component.instances = instances.filter(i => !i.state.isDestroyed);
     };
   }, [component.instances.length]);
 
