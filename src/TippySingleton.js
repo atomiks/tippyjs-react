@@ -10,6 +10,7 @@ import {
 export default function TippySingleton({
   children,
   className,
+  plugins,
   ignoreAttributes = true,
   ...restOfNativeProps
 }) {
@@ -25,7 +26,7 @@ export default function TippySingleton({
 
   useIsomorphicLayoutEffect(() => {
     const {instances} = component;
-    const instance = createSingleton(instances, props);
+    const instance = createSingleton(instances, props, plugins);
 
     component.instance = instance;
 

@@ -227,6 +227,23 @@ describe('<TippySingleton />', () => {
 
     expect(tooltip.classList.contains('one')).toBe(true);
   });
+
+  test('props.plugins', () => {
+    const plugins = [{fn: () => ({})}];
+
+    render(
+      <TippySingleton plugins={plugins}>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    expect(instance.plugins).toEqual(plugins);
+  });
 });
 
 describe('TippySingleton.propTypes', () => {

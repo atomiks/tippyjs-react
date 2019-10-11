@@ -201,4 +201,30 @@ describe('The useSingleton hook', () => {
       singletonInstance.popperChildren.tooltip.classList.contains('one'),
     ).toBe(true);
   });
+
+  test('props.plugins', () => {
+    const plugins = [{fn: () => ({})}];
+
+    function App() {
+      const singleton = useSingleton({
+        plugins,
+        onCreate(instance) {
+          expect(instance.plugins).toEqual(plugins);
+        },
+      });
+
+      return (
+        <>
+          <Tippy content="tooltip" singleton={singleton}>
+            <button />
+          </Tippy>
+          <Tippy content="tooltip" singleton={singleton}>
+            <button />
+          </Tippy>
+        </>
+      );
+    }
+
+    render(<App />);
+  });
 });
