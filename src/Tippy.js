@@ -15,12 +15,14 @@ export function Tippy({
   className,
   plugins,
   visible,
+  singleton,
   enabled = true,
   multiple = true,
   ignoreAttributes = true,
   ...restOfNativeProps
 }) {
   const isControlledMode = visible !== undefined;
+  const isSingletonMode = singleton !== undefined;
 
   const [mounted, setMounted] = useState(false);
   const component = useInstance(() => ({
@@ -39,6 +41,10 @@ export function Tippy({
     props.trigger = 'manual';
   }
 
+  if (isSingletonMode) {
+    enabled = false;
+  }
+
   // CREATE
   useIsomorphicLayoutEffect(() => {
     const instance = tippy(component.ref, props, plugins);
@@ -51,6 +57,10 @@ export function Tippy({
 
     if (visible) {
       instance.show();
+    }
+
+    if (isSingletonMode) {
+      singleton(instance);
     }
 
     setMounted(true);
@@ -116,6 +126,7 @@ if (process.env.NODE_ENV !== 'production') {
     visible: PropTypes.bool,
     enabled: PropTypes.bool,
     className: PropTypes.string,
+    singleton: PropTypes.func,
   };
 }
 
