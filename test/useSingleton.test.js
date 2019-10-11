@@ -1,5 +1,5 @@
 import React from 'react';
-import Tippy, {useSingleton as useSingletonBase} from '../src';
+import TippyBase, {useSingleton as useSingletonBase} from '../src';
 import {render, cleanup} from '@testing-library/react';
 
 jest.useFakeTimers();
@@ -7,14 +7,29 @@ jest.useFakeTimers();
 afterEach(cleanup);
 
 describe('The useSingleton hook', () => {
-  let component;
+  let singletonInstance;
+  let instances = [];
 
-  const useSingleton = config => {
+  const useSingleton = ({onCreate = noop => noop, ...config} = {}) => {
     return useSingletonBase({
-      onComponent: c => (component = c),
+      onCreate: instance => {
+        singletonInstance = instance;
+        onCreate(instance);
+      },
       ...config,
     });
   };
+
+  const Tippy = ({onCreate = noop => noop, ...props} = {}) => {
+    return (
+      <TippyBase {...props} onCreate={i => instances.push(i) && onCreate(i)} />
+    );
+  };
+
+  beforeEach(() => {
+    singletonInstance = null;
+    instances = [];
+  });
 
   it('renders without crashing', () => {
     function TestComponent() {
@@ -52,7 +67,7 @@ describe('The useSingleton hook', () => {
 
     render(<TestComponent />);
 
-    component.instances.forEach(instance => {
+    instances.forEach(instance => {
       expect(instance.state.isEnabled).toBe(false);
     });
   });
@@ -78,7 +93,7 @@ describe('The useSingleton hook', () => {
     render(<TestComponent />);
 
     expect(
-      component.instance.popper.querySelector(`.${className}`),
+      singletonInstance.popper.querySelector(`.${className}`),
     ).not.toBeNull();
   });
 
@@ -102,8 +117,8 @@ describe('The useSingleton hook', () => {
 
     render(<TestComponent />);
 
-    expect(component.instance.popper.querySelector('.hello')).not.toBeNull();
-    expect(component.instance.popper.querySelector('.world')).not.toBeNull();
+    expect(singletonInstance.popper.querySelector('.hello')).not.toBeNull();
+    expect(singletonInstance.popper.querySelector('.world')).not.toBeNull();
   });
 
   test('props.className: extra whitespace is ignored', () => {
@@ -126,7 +141,7 @@ describe('The useSingleton hook', () => {
 
     render(<TestComponent />);
 
-    const {tooltip} = component.instance.popperChildren;
+    const {tooltip} = singletonInstance.popperChildren;
 
     expect(tooltip.className).toBe('tippy-tooltip hello world');
   });
@@ -150,16 +165,16 @@ describe('The useSingleton hook', () => {
     const {rerender} = render(<TestComponent className="one" />);
 
     expect(
-      component.instance.popperChildren.tooltip.classList.contains('one'),
+      singletonInstance.popperChildren.tooltip.classList.contains('one'),
     ).toBe(true);
 
     rerender(<TestComponent className="two" />);
 
     expect(
-      component.instance.popperChildren.tooltip.classList.contains('one'),
+      singletonInstance.popperChildren.tooltip.classList.contains('one'),
     ).toBe(false);
     expect(
-      component.instance.popperChildren.tooltip.classList.contains('two'),
+      singletonInstance.popperChildren.tooltip.classList.contains('two'),
     ).toBe(true);
   });
 
@@ -183,7 +198,7 @@ describe('The useSingleton hook', () => {
     rerender(<TestComponent count={3} />);
 
     expect(
-      component.instance.popperChildren.tooltip.classList.contains('one'),
+      singletonInstance.popperChildren.tooltip.classList.contains('one'),
     ).toBe(true);
   });
 });

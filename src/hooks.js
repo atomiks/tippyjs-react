@@ -34,7 +34,6 @@ export function useInstance(initialValue) {
 export function useSingleton({
   className,
   ignoreAttributes = true,
-  onComponent = noop => noop,
   ...restOfNativeProps
 } = {}) {
   const component = useInstance({
@@ -50,8 +49,6 @@ export function useSingleton({
 
   useIsomorphicLayoutEffect(() => {
     component.instance = createSingleton(component.instances, props);
-
-    onComponent(component);
 
     return () => {
       component.instance.destroy();
