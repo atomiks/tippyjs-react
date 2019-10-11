@@ -297,15 +297,18 @@ Wraps the
 [`createSingleton()`](https://atomiks.github.io/tippyjs/addons/#singleton)
 method.
 
-  1. If each of your reference elements are adjacent to one another with no nesting in the tree, 
-     import the `<TippySingleton />` component:
+Depending on your component tree, you can use one of the following:
+
+### `<TippySingleton />`
+
+If each of your reference elements are adjacent to one another, with no nesting in the tree.
 
 ```jsx
 import Tippy, {TippySingleton} from '@tippy.js/react';
 
 function App() {
   return (
-    <TippySingleton delay={1000}>
+    <TippySingleton delay={500}>
       <Tippy content="a">
         <button />
       </Tippy>
@@ -317,7 +320,9 @@ function App() {
 }
 ```
 
-  2. If your reference elements are not adjacent, or there is nesting in the tree, import the `useSingleton` hook:
+### `useSingleton()` (v3.1)
+
+If each of your reference elements are not adjacent to one another, or there is nesting in the tree.
 
 ```jsx
 import Tippy, {useSingleton} from '@tippy.js/react';
