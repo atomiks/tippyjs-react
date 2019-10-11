@@ -26,5 +26,5 @@ export const TippySingleton: React.FunctionComponent<TippySingletonProps>;
 export type UseSingletonProps = Omit<TippySingletonProps, 'children'>;
 
 export const useSingleton: (
-  props: UseSingletonProps,
+  props?: UseSingletonProps,
 ) => (instance: Instance) => void;
