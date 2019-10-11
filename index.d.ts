@@ -8,6 +8,7 @@ export interface TippyProps extends Omit<Partial<Props>, 'content'> {
   enabled?: boolean;
   className?: string;
   plugins?: Plugin[];
+  singleton?: (instance: Instance) => void;
 }
 
 declare const Tippy: React.ForwardRefExoticComponent<TippyProps>;
@@ -22,3 +23,9 @@ export interface TippySingletonProps extends Partial<Props> {
 }
 
 export const TippySingleton: React.FunctionComponent<TippySingletonProps>;
+
+export type UseSingletonProps = Omit<TippySingletonProps, 'children'>;
+
+export const useSingleton: (
+  props?: UseSingletonProps,
+) => (instance: Instance) => void;
