@@ -8,6 +8,7 @@ export interface TippyProps extends Omit<Partial<Props>, 'content'> {
   enabled?: boolean;
   className?: string;
   plugins?: Plugin[];
+  singleton?: (instance: Instance) => void;
 }
 
 declare const Tippy: React.ForwardRefExoticComponent<TippyProps>;
