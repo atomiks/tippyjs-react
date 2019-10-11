@@ -22,3 +22,9 @@ export interface TippySingletonProps extends Partial<Props> {
 }
 
 export const TippySingleton: React.FunctionComponent<TippySingletonProps>;
+
+export type UseSingletonProps = Omit<TippySingletonProps, 'children'>;
+
+export const useSingleton: (
+  props: UseSingletonProps,
+) => (instance: Instance) => void;
