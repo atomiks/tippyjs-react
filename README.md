@@ -291,11 +291,14 @@ You can nest the components like so:
 </Tippy>
 ```
 
-## 📚 `<TippySingleton />`
+## 📚 Singleton
 
 Wraps the
 [`createSingleton()`](https://atomiks.github.io/tippyjs/addons/#singleton)
 method.
+
+  1. If each of your reference elements are adjacent to one another with no nesting in the tree, 
+     import the `<TippySingleton />` component:
 
 ```jsx
 import Tippy, {TippySingleton} from '@tippy.js/react';
@@ -310,6 +313,30 @@ function App() {
         <button />
       </Tippy>
     </TippySingleton>
+  );
+}
+```
+
+  2. If your reference elements are not adjacent, or there is nesting in the tree, import the `useSingleton` hook:
+
+```jsx
+import Tippy, {useSingleton} from '@tippy.js/react';
+
+function App() {
+  const singleton = useSingleton({delay: 500});
+
+  return (
+    <>
+      <Tippy content="a" singleton={singleton}>
+        <button />
+      </Tippy>
+      <button />
+      <div>
+        <Tippy content="b" singleton={singleton}>
+          <button />
+        </Tippy>
+      </div>
+    </>
   );
 }
 ```
