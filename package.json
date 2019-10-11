@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "tippy.js": "^5.0.1"
+    "tippy.js": "^5.0.2"
   },
   "peerDependencies": {
     "react": ">=16.8",

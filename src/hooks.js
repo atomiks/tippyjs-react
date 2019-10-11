@@ -33,6 +33,7 @@ export function useInstance(initialValue) {
 
 export function useSingleton({
   className,
+  plugins,
   ignoreAttributes = true,
   ...restOfNativeProps
 } = {}) {
@@ -49,7 +50,7 @@ export function useSingleton({
 
   useIsomorphicLayoutEffect(() => {
     const {instances} = component;
-    const instance = createSingleton(instances, props);
+    const instance = createSingleton(instances, props, plugins);
 
     component.instance = instance;
 
