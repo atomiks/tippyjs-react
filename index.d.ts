@@ -1,7 +1,15 @@
 import * as React from 'react';
 import {default as tippyCore, Instance, Props, Plugin} from 'tippy.js';
 
-export interface TippyProps extends Omit<Partial<Props>, 'content'> {
+type KnownKeys<T> = {
+  [K in keyof T]: string extends K ? never : number extends K ? never : K;
+} extends {[_ in keyof T]: infer U}
+  ? U
+  : never;
+
+export type KnownProps = Pick<Props, KnownKeys<Props>>;
+
+export interface TippyProps extends Omit<Partial<KnownProps>, 'content'> {
   content: React.ReactChild | React.ReactChild[];
   children: React.ReactElement<any>;
   visible?: boolean;
@@ -16,7 +24,7 @@ export default Tippy;
 
 export const tippy: typeof tippyCore;
 
-export interface TippySingletonProps extends Partial<Props> {
+export interface TippySingletonProps extends Partial<KnownProps> {
   children: Array<React.ReactElement<any>>;
   className?: string;
   plugins?: Plugin[];
