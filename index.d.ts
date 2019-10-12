@@ -17,6 +17,7 @@ export interface TippyProps extends Omit<Partial<KnownProps>, 'content'> {
   className?: string;
   plugins?: Plugin[];
   singleton?: (instance: Instance) => void;
+  [key: string]: any;
 }
 
 declare const Tippy: React.ForwardRefExoticComponent<TippyProps>;
@@ -28,6 +29,7 @@ export interface TippySingletonProps extends Partial<KnownProps> {
   children: Array<React.ReactElement<any>>;
   className?: string;
   plugins?: Plugin[];
+  [key: string]: any;
 }
 
 export const TippySingleton: React.FunctionComponent<TippySingletonProps>;
