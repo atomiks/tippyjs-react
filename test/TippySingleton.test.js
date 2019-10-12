@@ -228,6 +228,62 @@ describe('<TippySingleton />', () => {
     expect(tooltip.classList.contains('one')).toBe(true);
   });
 
+  test('props.enabled initially `true`', () => {
+    const {rerender} = render(
+      <TippySingleton enabled={true}>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    expect(instance.state.isEnabled).toBe(true);
+
+    rerender(
+      <TippySingleton enabled={false}>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    expect(instance.state.isEnabled).toBe(false);
+  });
+
+  test('props.enabled initially `false`', () => {
+    const {rerender} = render(
+      <TippySingleton enabled={false}>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    expect(instance.state.isEnabled).toBe(false);
+
+    rerender(
+      <TippySingleton enabled={true}>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+        <Tippy content="tooltip">
+          <button />
+        </Tippy>
+      </TippySingleton>,
+    );
+
+    expect(instance.state.isEnabled).toBe(true);
+  });
+
   test('props.plugins', () => {
     const plugins = [{fn: () => ({})}];
 
