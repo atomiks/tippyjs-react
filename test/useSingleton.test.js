@@ -202,6 +202,60 @@ describe('The useSingleton hook', () => {
     ).toBe(true);
   });
 
+  test('props.enabled initially `true`', () => {
+    let instance;
+
+    function App({enabled}) {
+      const singleton = useSingleton({
+        enabled,
+        onCreate(i) {
+          instance = i;
+        },
+      });
+
+      return (
+        <Tippy singleton={singleton}>
+          <button />
+        </Tippy>
+      );
+    }
+
+    const {rerender} = render(<App enabled={true} />);
+
+    expect(instance.state.isEnabled).toBe(true);
+
+    rerender(<App enabled={false} />);
+
+    expect(instance.state.isEnabled).toBe(false);
+  });
+
+  test('props.enabled initially `false`', () => {
+    let instance;
+
+    function App({enabled}) {
+      const singleton = useSingleton({
+        enabled,
+        onCreate(i) {
+          instance = i;
+        },
+      });
+
+      return (
+        <Tippy singleton={singleton}>
+          <button />
+        </Tippy>
+      );
+    }
+
+    const {rerender} = render(<App enabled={false} />);
+
+    expect(instance.state.isEnabled).toBe(false);
+
+    rerender(<App enabled={true} />);
+
+    expect(instance.state.isEnabled).toBe(true);
+  });
+
   test('props.plugins', () => {
     const plugins = [{fn: () => ({})}];
 

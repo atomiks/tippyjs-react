@@ -1,39 +1,14 @@
-import {isBrowser, updateClassName} from './utils';
-import {useLayoutEffect, useEffect, useRef} from 'react';
-import {createSingleton} from 'tippy.js';
-
-export const useIsomorphicLayoutEffect = isBrowser
-  ? useLayoutEffect
-  : useEffect;
-
-export function useUpdateClassName(component, className, childrenDep) {
-  useIsomorphicLayoutEffect(() => {
-    const {tooltip} = component.instance.popperChildren;
-    if (className) {
-      updateClassName(tooltip, 'add', className);
-      return () => {
-        updateClassName(tooltip, 'remove', className);
-      };
-    }
-  }, [className, childrenDep]);
-}
-
-export function useInstance(initialValue) {
-  // Using refs instead of state as it's recommended to not store imperative
-  // values in state due to memory problems in React(?)
-  const ref = useRef();
-
-  if (!ref.current) {
-    ref.current =
-      typeof initialValue === 'function' ? initialValue() : initialValue;
-  }
-
-  return ref.current;
-}
+import {
+  useInstance,
+  useSingletonCreate,
+  useSingletonUpdate,
+  useUpdateClassName,
+} from './util-hooks';
 
 export function useSingleton({
   className,
   plugins,
+  enabled = true,
   ignoreAttributes = true,
   ...restOfNativeProps
 } = {}) {
@@ -48,28 +23,11 @@ export function useSingleton({
     ...restOfNativeProps,
   };
 
-  useIsomorphicLayoutEffect(() => {
-    const {instances} = component;
-    const instance = createSingleton(instances, props, plugins);
+  const deps = [component.instances.length];
 
-    component.instance = instance;
-
-    return () => {
-      instance.destroy();
-      component.instances = instances.filter(i => !i.state.isDestroyed);
-    };
-  }, [component.instances.length]);
-
-  useIsomorphicLayoutEffect(() => {
-    if (component.renders === 1) {
-      component.renders++;
-      return;
-    }
-
-    component.instance.setProps(props);
-  });
-
-  useUpdateClassName(component, className, component.instances.length);
+  useSingletonCreate(component, props, plugins, enabled, deps);
+  useSingletonUpdate(component, props, enabled);
+  useUpdateClassName(component, className, deps);
 
   return instance => {
     component.instances.push(instance);

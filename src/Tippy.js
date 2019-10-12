@@ -7,7 +7,7 @@ import {
   useInstance,
   useIsomorphicLayoutEffect,
   useUpdateClassName,
-} from './hooks';
+} from './util-hooks';
 
 export function Tippy({
   children,

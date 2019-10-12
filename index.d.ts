@@ -27,6 +27,7 @@ export const tippy: typeof tippyCore;
 
 export interface TippySingletonProps extends Partial<KnownProps> {
   children: Array<React.ReactElement<any>>;
+  enabled?: boolean;
   className?: string;
   plugins?: Plugin[];
   [key: string]: any;
