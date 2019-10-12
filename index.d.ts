@@ -34,7 +34,15 @@ export interface TippySingletonProps extends Partial<KnownProps> {
 
 export const TippySingleton: React.FunctionComponent<TippySingletonProps>;
 
-export type UseSingletonProps = Omit<TippySingletonProps, 'children'>;
+type KnownSingletonProps = Pick<
+  TippySingletonProps,
+  KnownKeys<TippySingletonProps>
+>;
+
+export interface UseSingletonProps
+  extends Omit<KnownSingletonProps, 'children'> {
+  [key: string]: any;
+}
 
 export const useSingleton: (
   props?: UseSingletonProps,
