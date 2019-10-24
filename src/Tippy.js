@@ -19,6 +19,11 @@ export function Tippy({
   enabled = true,
   multiple = true,
   ignoreAttributes = true,
+  // Filter React development reserved props
+  // added by babel-preset-react dev plugins:
+  // transform-react-jsx-self and transform-react-jsx-source
+  __source,
+  __self,
   ...restOfNativeProps
 }) {
   const isControlledMode = visible !== undefined;
