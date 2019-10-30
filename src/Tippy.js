@@ -50,6 +50,8 @@ export function Tippy({
     enabled = false;
   }
 
+  const deps = [children.type];
+
   // CREATE
   useIsomorphicLayoutEffect(() => {
     const instance = tippy(component.ref, props, plugins);
@@ -73,7 +75,7 @@ export function Tippy({
     return () => {
       instance.destroy();
     };
-  }, [children.type]);
+  }, deps);
 
   // UPDATE
   useIsomorphicLayoutEffect(() => {
@@ -102,7 +104,7 @@ export function Tippy({
     }
   });
 
-  useUpdateClassName(component, className, children.type);
+  useUpdateClassName(component, className, deps);
 
   return (
     <>
