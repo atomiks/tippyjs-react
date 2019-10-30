@@ -226,7 +226,7 @@ function App() {
 
 ### Performance
 
-`popperInstance`-related props that aren't primitive values should be memoized or hoisted to a static constant, so that the `popperInstance` is not recreated on every render:
+Props that the `popperInstance` depends on that aren't primitive values should be memoized or hoisted to a static constant, so that the `popperInstance` is not recreated on every render:
 
 - `popperOptions`
 - `flipBehavior`
