@@ -15,7 +15,6 @@ export interface TippyProps extends Omit<Partial<KnownProps>, 'content'> {
   visible?: boolean;
   enabled?: boolean;
   className?: string;
-  plugins?: Plugin[];
   singleton?: (instance: Instance) => void;
   [key: string]: any;
 }
@@ -29,7 +28,6 @@ export interface TippySingletonProps extends Partial<KnownProps> {
   children: Array<React.ReactElement<any>>;
   enabled?: boolean;
   className?: string;
-  plugins?: Plugin[];
   [key: string]: any;
 }
 
