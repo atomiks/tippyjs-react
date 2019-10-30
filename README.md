@@ -224,6 +224,35 @@ function App() {
 
 [Read more about plugins here](https://atomiks.github.io/tippyjs/plugins/).
 
+### Performance
+
+`popperInstance`-related props that aren't primitive values should be memoized or hoisted to a static constant, so that the `popperInstance` is not recreated on every render:
+
+- `popperOptions`
+- `flipBehavior`
+
+```jsx
+// static constant if it doesn't change
+const popperOptions = {};
+
+function App() {
+  const [placement, setPlacement] = useState('right');
+  // memoized value if it's dynamic
+  const flipBehavior = useMemo(() => [placement, 'bottom'], [placement]);
+
+  return (
+    <Tippy
+      content="Tooltip"
+      placement={placement}
+      flipBehavior={flipBehavior}
+      popperOptions={popperOptions}
+    >
+      <button />
+    </Tippy>
+  );
+}
+```
+
 ### Default props
 
 You can create a new component file that exports a wrapper component that has
