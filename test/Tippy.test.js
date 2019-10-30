@@ -5,7 +5,11 @@ import {render, cleanup} from '@testing-library/react';
 afterEach(cleanup);
 
 describe('<Tippy />', () => {
-  let instance;
+  let instance = null;
+
+  afterEach(() => {
+    instance = null;
+  });
 
   function Tippy(props) {
     return <TippyBase {...props} onCreate={i => (instance = i)} />;
@@ -36,7 +40,7 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    expect(instance).toBeDefined();
+    expect(instance).not.toBeNull();
   });
 
   test('renders react element content inside the content prop', () => {
@@ -236,7 +240,7 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    expect(instance).toBeDefined();
+    expect(instance).not.toBeNull();
   });
 
   test('refs are preserved on the child', done => {
