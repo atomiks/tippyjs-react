@@ -31,10 +31,10 @@ export function useInstance(initialValue) {
   return ref.current;
 }
 
-export function useSingletonCreate(component, props, plugins, enabled, deps) {
+export function useSingletonCreate(component, props, enabled, deps) {
   useIsomorphicLayoutEffect(() => {
     const {instances} = component;
-    const instance = createSingleton(instances, props, plugins);
+    const instance = createSingleton(instances, props);
 
     component.instance = instance;
 

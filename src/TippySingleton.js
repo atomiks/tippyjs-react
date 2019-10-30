@@ -10,7 +10,6 @@ import {
 export default function TippySingleton({
   children,
   className,
-  plugins,
   enabled = true,
   ignoreAttributes = true,
   ...restOfNativeProps
@@ -27,7 +26,7 @@ export default function TippySingleton({
 
   const deps = [children.length];
 
-  useSingletonCreate(component, props, plugins, enabled, deps);
+  useSingletonCreate(component, props, enabled, deps);
   useSingletonUpdate(component, props, enabled);
   useUpdateClassName(component, className, deps);
 

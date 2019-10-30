@@ -7,7 +7,6 @@ import {
 
 export function useSingleton({
   className,
-  plugins,
   enabled = true,
   ignoreAttributes = true,
   ...restOfNativeProps
@@ -25,7 +24,7 @@ export function useSingleton({
 
   const deps = [component.instances.length];
 
-  useSingletonCreate(component, props, plugins, enabled, deps);
+  useSingletonCreate(component, props, enabled, deps);
   useSingletonUpdate(component, props, enabled);
   useUpdateClassName(component, className, deps);
 

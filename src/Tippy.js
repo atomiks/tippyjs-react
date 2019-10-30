@@ -13,7 +13,6 @@ export function Tippy({
   children,
   content,
   className,
-  plugins,
   visible,
   singleton,
   enabled = true,
@@ -54,7 +53,7 @@ export function Tippy({
 
   // CREATE
   useIsomorphicLayoutEffect(() => {
-    const instance = tippy(component.ref, props, plugins);
+    const instance = tippy(component.ref, props);
 
     component.instance = instance;
 
