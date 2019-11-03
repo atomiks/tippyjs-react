@@ -298,7 +298,7 @@ describe('<TippySingleton />', () => {
       </TippySingleton>,
     );
 
-    expect(instance.plugins).toEqual(plugins);
+    expect(instance.plugins.slice(1)).toEqual(plugins);
   });
 });
 
