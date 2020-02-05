@@ -35,10 +35,10 @@ lets you use it declaratively in React.
 
 ```bash
 # npm
-npm i @tippy.js/react
+npm i '@tippy.js/react'
 
 # Yarn
-yarn add @tippy.js/react
+yarn add '@tippy.js/react'
 ```
 
 CDN: https://unpkg.com/@tippy.js/react
