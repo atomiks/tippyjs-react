@@ -15,15 +15,10 @@ export default Tippy;
 
 export const tippy: typeof tippyCore;
 
-export interface TippySingletonProps extends Partial<Props> {
-  children: Array<React.ReactElement<any>>;
+export interface UseSingletonProps extends Partial<Props> {
   enabled?: boolean;
   className?: string;
 }
-
-export const TippySingleton: React.FunctionComponent<TippySingletonProps>;
-
-export type UseSingletonProps = Omit<TippySingletonProps, 'children'>;
 
 export const useSingleton: (
   props?: UseSingletonProps,
