@@ -87,9 +87,9 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    const {tooltip} = instance.popperChildren;
+    const box = instance.popper.firstElementChild;
 
-    expect(tooltip.className).toBe('tippy-tooltip hello world');
+    expect(box.className).toBe('tippy-box hello world');
   });
 
   test('props.className: updating does not leave stale className behind', () => {
@@ -99,9 +99,9 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    const {tooltip} = instance.popperChildren;
+    const box = instance.popper.firstElementChild;
 
-    expect(tooltip.classList.contains('one')).toBe(true);
+    expect(box.classList.contains('one')).toBe(true);
 
     rerender(
       <Tippy content="tooltip" className="two">
@@ -109,8 +109,8 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    expect(tooltip.classList.contains('one')).toBe(false);
-    expect(tooltip.classList.contains('two')).toBe(true);
+    expect(box.classList.contains('one')).toBe(false);
+    expect(box.classList.contains('two')).toBe(true);
   });
 
   test('props.className: syncs with children.type', () => {
@@ -126,9 +126,9 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    const {tooltip} = instance.popperChildren;
+    const box = instance.popper.firstElementChild;
 
-    expect(tooltip.classList.contains('one')).toBe(true);
+    expect(box.classList.contains('one')).toBe(true);
   });
 
   test('unmount destroys the tippy instance and allows garbage collection', () => {
@@ -284,7 +284,7 @@ describe('<Tippy />', () => {
       </TippyBase>,
     );
 
-    expect(document.querySelectorAll('.tippy-popper').length).toBe(3);
+    expect(document.querySelectorAll('.tippy-box').length).toBe(3);
   });
 
   test('props.enabled initially `true`', () => {
@@ -368,7 +368,7 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    expect(instance.plugins).toEqual(plugins);
+    expect(instance.plugins).toMatchSnapshot();
   });
 });
 

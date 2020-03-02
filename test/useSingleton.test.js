@@ -141,9 +141,9 @@ describe('The useSingleton hook', () => {
 
     render(<TestComponent />);
 
-    const {tooltip} = singletonInstance.popperChildren;
+    const box = singletonInstance.popper.firstElementChild;
 
-    expect(tooltip.className).toBe('tippy-tooltip hello world');
+    expect(box.className).toBe('tippy-box hello world');
   });
 
   test('props.className: updating does not leave stale className behind', () => {
@@ -165,16 +165,16 @@ describe('The useSingleton hook', () => {
     const {rerender} = render(<TestComponent className="one" />);
 
     expect(
-      singletonInstance.popperChildren.tooltip.classList.contains('one'),
+      singletonInstance.popper.firstElementChild.classList.contains('one'),
     ).toBe(true);
 
     rerender(<TestComponent className="two" />);
 
     expect(
-      singletonInstance.popperChildren.tooltip.classList.contains('one'),
+      singletonInstance.popper.firstElementChild.classList.contains('one'),
     ).toBe(false);
     expect(
-      singletonInstance.popperChildren.tooltip.classList.contains('two'),
+      singletonInstance.popper.firstElementChild.classList.contains('two'),
     ).toBe(true);
   });
 
@@ -198,7 +198,7 @@ describe('The useSingleton hook', () => {
     rerender(<TestComponent count={3} />);
 
     expect(
-      singletonInstance.popperChildren.tooltip.classList.contains('one'),
+      singletonInstance.popper.firstElementChild.classList.contains('one'),
     ).toBe(true);
   });
 
@@ -263,7 +263,7 @@ describe('The useSingleton hook', () => {
       const singleton = useSingleton({
         plugins,
         onCreate(instance) {
-          expect(instance.plugins.slice(1)).toEqual(plugins);
+          expect(instance.plugins.slice(1)).toMatchSnapshot();
         },
       });
 

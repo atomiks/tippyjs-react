@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The useSingleton hook props.plugins 1`] = `
+Array [
+  Object {
+    "defaultValue": false,
+    "fn": [Function],
+    "name": "followCursor",
+  },
+  Object {
+    "defaultValue": false,
+    "fn": [Function],
+    "name": "inlinePositioning",
+  },
+  Object {
+    "defaultValue": false,
+    "fn": [Function],
+    "name": "sticky",
+  },
+  Object {
+    "fn": [Function],
+  },
+  Object {
+    "fn": [Function],
+  },
+]
+`;
