@@ -1,5 +1,5 @@
 import React from 'react';
-import TippyBase from '../src/Tippy';
+import TippyBase from '../src';
 import {render, cleanup} from '@testing-library/react';
 
 afterEach(cleanup);
@@ -386,14 +386,14 @@ describe('Tippy.propTypes', () => {
   test('is defined if NODE_ENV=development', () => {
     process.env.NODE_ENV = 'development';
 
-    const Tippy = require('../src/Tippy').Tippy;
-    expect(Tippy.propTypes).toBeDefined();
+    const TippyGenerator = require('../src/Tippy').default;
+    expect(TippyGenerator().propTypes).toBeDefined();
   });
 
   test('is undefined if NODE_ENV=production', () => {
     process.env.NODE_ENV = 'production';
 
-    const Tippy = require('../src/Tippy').Tippy;
-    expect(Tippy.propTypes).toBeUndefined();
+    const TippyGenerator = require('../src/Tippy').default;
+    expect(TippyGenerator().propTypes).toBeUndefined();
   });
 });

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import Tippy, {useSingleton} from '../src';
 import {followCursor} from 'tippy.js';
+import TippyHeadless from '../src/headless';
 
 import 'tippy.js/dist/tippy.css';
 import './index.css';
@@ -99,6 +100,14 @@ function FollowCursor() {
   );
 }
 
+function Template() {
+  return (
+    <TippyHeadless template={<div>Hello</div>}>
+      <button>Template prop</button>
+    </TippyHeadless>
+  );
+}
+
 function App() {
   return (
     <>
@@ -112,6 +121,8 @@ function App() {
       <SingletonHook />
       <h2>Plugins</h2>
       <FollowCursor />
+      <h2>Headless Tippy</h2>
+      <Template />
     </>
   );
 }

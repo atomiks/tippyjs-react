@@ -1,5 +1,5 @@
 import React, {cloneElement, forwardRef} from 'react';
-import tippy from 'tippy.js';
+import tippy from 'tippy.js/headless';
 import {useSingleton} from './hooks';
 import TippyGenerator from './Tippy';
 import {preserveRef} from './utils';
