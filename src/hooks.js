@@ -1,9 +1,9 @@
 import {
   useInstance,
-  useSingletonCreate,
-  useSingletonUpdate,
   useUpdateClassName,
+  useIsomorphicLayoutEffect,
 } from './util-hooks';
+import {createSingleton} from 'tippy.js';
 
 export function useSingleton({
   className,
@@ -24,8 +24,39 @@ export function useSingleton({
 
   const deps = [component.instances.length];
 
-  useSingletonCreate(component, props, enabled, deps);
-  useSingletonUpdate(component, props, enabled);
+  useIsomorphicLayoutEffect(() => {
+    const {instances} = component;
+    const instance = createSingleton(instances, props);
+
+    component.instance = instance;
+
+    if (!enabled) {
+      instance.disable();
+    }
+
+    return () => {
+      instance.destroy();
+      component.instances = instances.filter(i => !i.state.isDestroyed);
+    };
+  }, deps);
+
+  useIsomorphicLayoutEffect(() => {
+    if (component.renders === 1) {
+      component.renders++;
+      return;
+    }
+
+    const {instance} = component;
+
+    instance.setProps(props);
+
+    if (enabled) {
+      instance.enable();
+    } else {
+      instance.disable();
+    }
+  });
+
   useUpdateClassName(component, className, deps);
 
   return instance => {
