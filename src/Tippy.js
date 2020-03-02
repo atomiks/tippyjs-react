@@ -16,7 +16,6 @@ export function Tippy({
   visible,
   singleton,
   enabled = true,
-  multiple = true,
   ignoreAttributes = true,
   // Filter React development reserved props
   // added by babel-preset-react dev plugins:
@@ -36,7 +35,6 @@ export function Tippy({
 
   const props = {
     ignoreAttributes,
-    multiple,
     ...restOfNativeProps,
     content: component.container,
   };

@@ -8,11 +8,11 @@ export const useIsomorphicLayoutEffect = isBrowser
 
 export function useUpdateClassName(component, className, deps) {
   useIsomorphicLayoutEffect(() => {
-    const {tooltip} = component.instance.popperChildren;
+    const box = component.instance.popper.firstElementChild;
     if (className) {
-      updateClassName(tooltip, 'add', className);
+      updateClassName(box, 'add', className);
       return () => {
-        updateClassName(tooltip, 'remove', className);
+        updateClassName(box, 'remove', className);
       };
     }
   }, [className, ...deps]);
