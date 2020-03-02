@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import Tippy, {TippySingleton, useSingleton} from '../src';
+import Tippy, {useSingleton} from '../src';
 import {followCursor} from 'tippy.js';
 
 import 'tippy.js/dist/tippy.css';
@@ -69,27 +69,6 @@ function VisibleProp() {
   );
 }
 
-function Singleton() {
-  const [count, setCount] = useState(3);
-
-  let children = [];
-  for (let i = 0; i < count; i++) {
-    children.push(
-      <Tippy key={i} content="Tooltip">
-        <button>{i}</button>
-      </Tippy>,
-    );
-  }
-
-  useEffect(() => {
-    setInterval(() => {
-      setCount(count => (count === 5 ? 1 : count + 1));
-    }, 5000);
-  }, []);
-
-  return <TippySingleton delay={500}>{children}</TippySingleton>;
-}
-
 function SingletonHook() {
   const singleton = useSingleton({delay: 500});
   const [count, setCount] = useState(3);
@@ -129,8 +108,6 @@ function App() {
       <h2>Special</h2>
       <EnabledProp />
       <VisibleProp />
-      <h2>Singleton dynamic children</h2>
-      <Singleton />
       <h2>Singleton (via useSingleton hook)</h2>
       <SingletonHook />
       <h2>Plugins</h2>
