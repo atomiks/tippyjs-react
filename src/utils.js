@@ -23,3 +23,19 @@ export function updateClassName(tooltip, action, classNames) {
     }
   });
 }
+
+export function toDataAttributes(attrs) {
+  const dataAttrs = {
+    'data-placement': attrs.placement,
+  };
+
+  if (attrs.referenceHidden) {
+    dataAttrs['data-reference-hidden'] = '';
+  }
+
+  if (attrs.escaped) {
+    dataAttrs['data-escaped'] = '';
+  }
+
+  return dataAttrs;
+}

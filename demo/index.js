@@ -124,7 +124,12 @@ function Template() {
 
   return (
     <TippyHeadless
-      template={<Box style={props}>Hello</Box>}
+      render={attrs => (
+        <Box style={props} {...attrs}>
+          Hello
+        </Box>
+      )}
+      trigger="click"
       animation={true}
       onMount={() => {
         stop();

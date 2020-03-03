@@ -1,13 +1,24 @@
 import * as React from 'react';
-import {default as tippyCore, Instance, Props, Plugin} from 'tippy.js';
+import {
+  default as tippyCore,
+  Instance,
+  Props,
+  Plugin,
+  Placement,
+} from 'tippy.js';
 
-export interface TippyProps extends Omit<Partial<Props>, 'content'> {
+export interface TippyProps extends Omit<Partial<Props>, 'content' | 'render'> {
   content: React.ReactChild | React.ReactChild[];
   children: React.ReactElement<any>;
   visible?: boolean;
   disabled?: boolean;
   className?: string;
   singleton?: (instance: Instance) => void;
+  render?: (attrs: {
+    'data-placement': Placement;
+    'data-reference-hidden'?: string;
+    'data-escaped'?: string;
+  }) => React.ReactNode;
 }
 
 declare const Tippy: React.ForwardRefExoticComponent<TippyProps>;

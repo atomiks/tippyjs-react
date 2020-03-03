@@ -1,7 +1,7 @@
 import React, {cloneElement, useState} from 'react';
 import PropTypes from 'prop-types';
 import {createPortal} from 'react-dom';
-import {preserveRef, ssrSafeCreateDiv} from './utils';
+import {preserveRef, ssrSafeCreateDiv, toDataAttributes} from './utils';
 import {
   useInstance,
   useIsomorphicLayoutEffect,
@@ -17,7 +17,7 @@ export default function TippyGenerator(tippy) {
     singleton,
     disabled = false,
     ignoreAttributes = true,
-    template,
+    render,
     // Filter React development reserved props
     // added by babel-preset-react dev plugins:
     // transform-react-jsx-self and transform-react-jsx-source
@@ -28,6 +28,7 @@ export default function TippyGenerator(tippy) {
     const isControlledMode = visible !== undefined;
     const isSingletonMode = singleton !== undefined;
 
+    const [attrs, setAttrs] = useState({placement: 'top'});
     const [mounted, setMounted] = useState(false);
     const component = useInstance(() => ({
       container: ssrSafeCreateDiv(),
@@ -54,7 +55,7 @@ export default function TippyGenerator(tippy) {
     useIsomorphicLayoutEffect(() => {
       const instance = tippy(
         component.ref,
-        template
+        render
           ? {...props, render: () => ({popper: component.container})}
           : props,
       );
@@ -107,6 +108,44 @@ export default function TippyGenerator(tippy) {
       }
     });
 
+    useIsomorphicLayoutEffect(() => {
+      if (!render) {
+        return;
+      }
+
+      component.instance.setProps({
+        popperOptions: {
+          ...props.popperOptions,
+          modifiers: [
+            ...(props.popperOptions?.modifiers || []),
+            {
+              name: '$$tippyReact',
+              enabled: true,
+              phase: 'beforeWrite',
+              requires: ['computeStyles'],
+              fn({state}) {
+                const hideData = state.modifiersData?.hide;
+
+                if (
+                  attrs.placement !== state.placement ||
+                  attrs.referenceHidden !== hideData?.isReferenceHidden ||
+                  attrs.escaped !== hideData?.hasPopperEscaped
+                ) {
+                  setAttrs({
+                    placement: state.placement,
+                    referenceHidden: hideData?.isReferenceHidden,
+                    escaped: hideData?.hasPopperEscaped,
+                  });
+                }
+
+                state.attributes.popper = {};
+              },
+            },
+          ],
+        },
+      });
+    }, [attrs.placement, attrs.referenceHidden, attrs.escaped]);
+
     useUpdateClassName(component, className, deps);
 
     return (
@@ -117,7 +156,11 @@ export default function TippyGenerator(tippy) {
             preserveRef(children.ref, node);
           },
         })}
-        {mounted && createPortal(template || content, component.container)}
+        {mounted &&
+          createPortal(
+            render ? render(toDataAttributes(attrs)) : content,
+            component.container,
+          )}
       </>
     );
   }
