@@ -14,6 +14,8 @@ const Box = styled(animated.div)`
   color: white;
   padding: 5px 10px;
   border-radius: 4px;
+  visibility: visible;
+  transform-origin: bottom;
 `;
 
 function ContentString() {
@@ -122,22 +124,8 @@ function Template() {
 
   return (
     <TippyHeadless
-      template={
-        <Box
-          style={{
-            ...props,
-            transformOrigin: 'bottom',
-          }}
-        >
-          Hello
-        </Box>
-      }
+      template={<Box style={props}>Hello</Box>}
       animation={true}
-      /* 
-        We need to release a patch in tippy v6 to prevent Headless Tippy
-        from setting visibility style prop 
-      */
-      moveTransition="transform 0.2s ease-out, visibility 0.5s"
       onMount={() => {
         stop();
         set({
