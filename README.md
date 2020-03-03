@@ -5,11 +5,11 @@
 <div align="center">
   <h1>Tippy.js for React</h1>
   <p>The complete tooltip and popover solution for React apps</p>
-  <a href="https://www.npmjs.com/package/@tippy.js/react">
-   <img src="https://img.shields.io/npm/dm/@tippy.js/react.svg?color=%235599ff&style=for-the-badge" alt="npm downloads per month">
+  <a href="https://www.npmjs.com/package/@tippyjs/react">
+   <img src="https://img.shields.io/npm/dm/@tippyjs/react.svg?color=%235599ff&style=for-the-badge" alt="npm downloads per month">
   <a>
   <a href="https://github.com/atomiks/tippy.js-react/blob/master/LICENSE">
-    <img src="https://img.shields.io/npm/l/@tippy.js/react.svg?color=%23c677cf&style=for-the-badge" alt="MIT License">
+    <img src="https://img.shields.io/npm/l/@tippyjs/react.svg?color=%23c677cf&style=for-the-badge" alt="MIT License">
   </a>
   <br>
 </div>
@@ -51,9 +51,9 @@ Requires React 16.8+
 
 There are two ways to use this component:
 
-- With the built-in DOM rendering and optionally its CSS (Default Tippy)
-- With React's DOM rendering for better usage with CSS-in-JS, `react-spring`,
-  etc (Headless Tippy)
+- **Default**: With the built-in DOM rendering and optionally the default CSS
+- **Headless**: With React's DOM rendering for better usage with CSS-in-JS and
+  spring libraries e.g. `react-spring`
 
 ### Default Tippy
 
@@ -171,8 +171,8 @@ function App() {
 }
 ```
 
-`styled-components` v4 does this for you automatically, so it should be seamless
-when using the `styled` constructor.
+`styled-components` v4+ does this for you automatically, so it should be
+seamless when using the `styled` constructor.
 
 If you're using a library that doesn't `forwardRef` for you, and doesn't give
 access to the ref via `innerRef` or similar, you can use a wrapper `<span>`
@@ -210,6 +210,8 @@ In addition, there are 3 more props added specifically for the React component.
 
 ### `className?: string`
 
+> **Note**: This does not apply if using Headless Tippy
+
 A React alternative to the `theme` prop. The className gets added to the tooltip
 element's class list as expected, without adding `-theme` as a suffix.
 
@@ -237,16 +239,15 @@ const PurpleTippy = styled(Tippy)`
 
 See [themes](https://atomiks.github.io/tippyjs/v6/themes/) for more information.
 
-### `enabled?: boolean`
+### `disabled?: boolean`
 
-Prop to control the `tippy.enable()` / `tippy.disable()` instance methods. Use
-this when you want to temporarily disable a tippy from showing.
+Use this when you want to temporarily disable a tippy from showing.
 
 ```jsx
 function App() {
-  const [enabled, setEnabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   return (
-    <Tippy content="Tooltip" enabled={enabled}>
+    <Tippy content="Tooltip" disabled={disabled}>
       <button />
     </Tippy>
   );
@@ -255,10 +256,7 @@ function App() {
 
 ### `visible?: boolean`
 
-Prop to control the `tippy.show()` / `tippy.hide()` instance methods. Use this
-when you want to programmatically show or hide the tippy instead of relying on
-UI events. This puts the tippy in controlled mode so it will only respond to
-state.
+Programmatically show or hide the tippy instead of relying on events.
 
 ```jsx
 function App() {
@@ -283,7 +281,6 @@ not burdened with the cost of it.
 ```jsx
 import Tippy from '@tippyjs/react';
 import {followCursor} from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
 
 function App() {
   return (
@@ -294,9 +291,9 @@ function App() {
 }
 ```
 
-[Read more about plugins here](https://atomiks.github.io/tippyjs/plugins/).
+[Read more about plugins here](https://atomiks.github.io/tippyjs/v6/plugins/).
 
-## 🌈 Multiple tippys on a single element
+## 🌈 Multiple tippies on a single element
 
 You can nest the components like so:
 
@@ -312,16 +309,11 @@ You can nest the components like so:
 </Tippy>
 ```
 
-## 📚 Singleton
+## 📚 useSingleton
 
 A Hook for the
-[`createSingleton()`](https://atomiks.github.io/tippyjs/addons/#singleton)
+[`createSingleton()`](https://atomiks.github.io/tippyjs/v6/addons/#singleton)
 addon.
-
-### `useSingleton()` (v3.1)
-
-If each of your reference elements are not adjacent to one another, or there is
-nesting in the tree.
 
 ```jsx
 import Tippy, {useSingleton} from '@tippyjs/react';
@@ -358,7 +350,7 @@ much smaller!
 
 Why should you use this library, and how does it compare to other ones?
 
-[Read all about it here!](https://atomiks.github.io/tippyjs/motivation/)
+[Read all about it here!](https://atomiks.github.io/tippyjs/v6/motivation/)
 
 ## 📝 License
 
