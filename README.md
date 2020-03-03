@@ -110,37 +110,33 @@ const Box = styled(animated.div)`
 `;
 
 function AnimatedHeadlessTippy() {
-  const instanceRef = useRef();
   const [props, set, stop] = useSpring(() => ({
     opacity: 0,
     transform: 'scale(0.5)',
-    onRest: () => instanceRef.current.unmount(),
   }));
 
   return (
     <Tippy
       render={attrs => (
         <Box style={props} {...attrs}>
-          My tippy box
+          Hello
         </Box>
       )}
-      onCreate={instance => (instanceRef.current = instance)}
       animation={true}
       onMount={() => {
         stop();
         set({
           opacity: 1,
           transform: 'scale(1)',
+          onRest() {},
         });
       }}
-      onHide={() => {
+      onHide={({unmount}) => {
         stop();
         set({
           opacity: 0,
           transform: 'scale(0.5)',
-          config: {
-            clamp: true,
-          },
+          onRest: unmount,
         });
       }}
     >

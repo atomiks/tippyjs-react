@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {useSpring, animated} from 'react-spring';
@@ -15,7 +15,14 @@ const Box = styled(animated.div)`
   padding: 5px 10px;
   border-radius: 4px;
   visibility: visible;
-  transform-origin: bottom;
+
+  &[data-placement^='top'] {
+    transform-origin: bottom;
+  }
+
+  &[data-placement^='bottom'] {
+    transform-origin: top;
+  }
 `;
 
 function ContentString() {
@@ -111,14 +118,13 @@ function FollowCursor() {
   );
 }
 
-const springConfig = {
-  tension: 200,
-  friction: 20,
-  mass: 1,
-};
-
 function Template() {
-  const instanceRef = useRef();
+  const springConfig = {
+    tension: 200,
+    friction: 20,
+    mass: 1,
+  };
+
   const [props, set, stop] = useSpring(() => ({
     opacity: 0,
     transform: 'scale(0.5)',
@@ -134,16 +140,16 @@ function Template() {
       )}
       trigger="click"
       animation={true}
-      onCreate={instance => (instanceRef.current = instance)}
       onMount={() => {
         stop();
         set({
           opacity: 1,
           transform: 'scale(1)',
           config: springConfig,
+          onRest() {},
         });
       }}
-      onHide={() => {
+      onHide={({unmount}) => {
         stop();
         set({
           opacity: 0,
@@ -152,6 +158,7 @@ function Template() {
             ...springConfig,
             clamp: true,
           },
+          onRest: unmount,
         });
       }}
     >
