@@ -126,6 +126,8 @@ export default function TippyGenerator(tippy) {
               fn({state}) {
                 const hideData = state.modifiersData?.hide;
 
+                // WARNING: this is a high-risk path that can cause an infinite
+                // loop. This expression _must_ evaluate to false when required
                 if (
                   attrs.placement !== state.placement ||
                   attrs.referenceHidden !== hideData?.isReferenceHidden ||
