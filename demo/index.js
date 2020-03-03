@@ -1,11 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import Tippy, {useSingleton} from '../src';
+import styled from 'styled-components';
+import {useSpring, animated} from 'react-spring';
 import {followCursor} from 'tippy.js';
+import Tippy, {useSingleton} from '../src';
 import TippyHeadless from '../src/headless';
 
 import 'tippy.js/dist/tippy.css';
 import './index.css';
+
+const Box = styled(animated.div)`
+  background: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+`;
 
 function ContentString() {
   const [count, setCount] = useState(0);
@@ -101,8 +110,59 @@ function FollowCursor() {
 }
 
 function Template() {
+  const [props, set, stop] = useSpring(() => ({
+    opacity: 0,
+    transform: 'scale(0.5)',
+    config: {
+      tension: 200,
+      friction: 20,
+      mass: 1,
+    },
+  }));
+
   return (
-    <TippyHeadless template={<div>Hello</div>}>
+    <TippyHeadless
+      template={
+        <Box
+          style={{
+            ...props,
+            transformOrigin: 'bottom',
+          }}
+        >
+          Hello
+        </Box>
+      }
+      animation={true}
+      /* 
+        We need to release a patch in tippy v6 to prevent Headless Tippy
+        from setting visibility style prop 
+      */
+      moveTransition="transform 0.2s ease-out, visibility 0.5s"
+      onMount={() => {
+        stop();
+        set({
+          opacity: 1,
+          transform: 'scale(1)',
+        });
+      }}
+      onHide={instance => {
+        stop();
+        set({
+          opacity: 0,
+          transform: 'scale(0.5)',
+        });
+
+        function hideLoop() {
+          if (props.opacity.value <= 0) {
+            instance.unmount();
+          } else {
+            requestAnimationFrame(hideLoop);
+          }
+        }
+
+        requestAnimationFrame(hideLoop);
+      }}
+    >
       <button>Template prop</button>
     </TippyHeadless>
   );
