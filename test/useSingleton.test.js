@@ -202,12 +202,12 @@ describe('The useSingleton hook', () => {
     ).toBe(true);
   });
 
-  test('props.enabled initially `true`', () => {
+  test('props.disabled initially `false`', () => {
     let instance;
 
-    function App({enabled}) {
+    function App({disabled}) {
       const singleton = useSingleton({
-        enabled,
+        disabled,
         onCreate(i) {
           instance = i;
         },
@@ -220,21 +220,21 @@ describe('The useSingleton hook', () => {
       );
     }
 
-    const {rerender} = render(<App enabled={true} />);
+    const {rerender} = render(<App disabled={false} />);
 
     expect(instance.state.isEnabled).toBe(true);
 
-    rerender(<App enabled={false} />);
+    rerender(<App disabled={true} />);
 
     expect(instance.state.isEnabled).toBe(false);
   });
 
-  test('props.enabled initially `false`', () => {
+  test('props.disabled initially `true`', () => {
     let instance;
 
-    function App({enabled}) {
+    function App({disabled}) {
       const singleton = useSingleton({
-        enabled,
+        disabled,
         onCreate(i) {
           instance = i;
         },
@@ -247,11 +247,11 @@ describe('The useSingleton hook', () => {
       );
     }
 
-    const {rerender} = render(<App enabled={false} />);
+    const {rerender} = render(<App disabled={true} />);
 
     expect(instance.state.isEnabled).toBe(false);
 
-    rerender(<App enabled={true} />);
+    rerender(<App disabled={false} />);
 
     expect(instance.state.isEnabled).toBe(true);
   });

@@ -287,9 +287,9 @@ describe('<Tippy />', () => {
     expect(document.querySelectorAll('.tippy-box').length).toBe(3);
   });
 
-  test('props.enabled initially `true`', () => {
+  test('props.disabled initially `false`', () => {
     const {rerender} = render(
-      <Tippy content="tooltip" enabled={true}>
+      <Tippy content="tooltip" disabled={false}>
         <button />
       </Tippy>,
     );
@@ -297,7 +297,7 @@ describe('<Tippy />', () => {
     expect(instance.state.isEnabled).toBe(true);
 
     rerender(
-      <Tippy content="tooltip" enabled={false}>
+      <Tippy content="tooltip" disabled={true}>
         <button />
       </Tippy>,
     );
@@ -305,9 +305,9 @@ describe('<Tippy />', () => {
     expect(instance.state.isEnabled).toBe(false);
   });
 
-  test('props.enabled initially `false`', () => {
+  test('props.disabled initially `true`', () => {
     const {rerender} = render(
-      <Tippy content="tooltip" enabled={false}>
+      <Tippy content="tooltip" disabled={true}>
         <button />
       </Tippy>,
     );
@@ -315,7 +315,7 @@ describe('<Tippy />', () => {
     expect(instance.state.isEnabled).toBe(false);
 
     rerender(
-      <Tippy content="tooltip" enabled={true}>
+      <Tippy content="tooltip" disabled={false}>
         <button />
       </Tippy>,
     );

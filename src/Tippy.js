@@ -15,7 +15,7 @@ export default function TippyGenerator(tippy) {
     className,
     visible,
     singleton,
-    enabled = true,
+    disabled = false,
     ignoreAttributes = true,
     template,
     // Filter React development reserved props
@@ -45,7 +45,7 @@ export default function TippyGenerator(tippy) {
     }
 
     if (isSingletonMode) {
-      enabled = false;
+      disabled = true;
     }
 
     const deps = [children.type];
@@ -61,7 +61,7 @@ export default function TippyGenerator(tippy) {
 
       component.instance = instance;
 
-      if (!enabled) {
+      if (disabled) {
         instance.disable();
       }
 
@@ -92,10 +92,10 @@ export default function TippyGenerator(tippy) {
 
       instance.setProps(props);
 
-      if (enabled) {
-        instance.enable();
-      } else {
+      if (disabled) {
         instance.disable();
+      } else {
+        instance.enable();
       }
 
       if (isControlledMode) {

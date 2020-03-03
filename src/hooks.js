@@ -7,7 +7,7 @@ import {createSingleton} from 'tippy.js';
 
 export function useSingleton({
   className,
-  enabled = true,
+  disabled = false,
   ignoreAttributes = true,
   ...restOfNativeProps
 } = {}) {
@@ -30,7 +30,7 @@ export function useSingleton({
 
     component.instance = instance;
 
-    if (!enabled) {
+    if (disabled) {
       instance.disable();
     }
 
@@ -50,10 +50,10 @@ export function useSingleton({
 
     instance.setProps(props);
 
-    if (enabled) {
-      instance.enable();
-    } else {
+    if (disabled) {
       instance.disable();
+    } else {
+      instance.enable();
     }
   });
 

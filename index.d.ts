@@ -5,7 +5,7 @@ export interface TippyProps extends Omit<Partial<Props>, 'content'> {
   content: React.ReactChild | React.ReactChild[];
   children: React.ReactElement<any>;
   visible?: boolean;
-  enabled?: boolean;
+  disabled?: boolean;
   className?: string;
   singleton?: (instance: Instance) => void;
 }
@@ -16,7 +16,7 @@ export default Tippy;
 export const tippy: typeof tippyCore;
 
 export interface UseSingletonProps extends Partial<Props> {
-  enabled?: boolean;
+  disabled?: boolean;
   className?: string;
 }
 
