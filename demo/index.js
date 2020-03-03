@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {useSpring, animated} from 'react-spring';
@@ -111,15 +111,18 @@ function FollowCursor() {
   );
 }
 
+const springConfig = {
+  tension: 200,
+  friction: 20,
+  mass: 1,
+};
+
 function Template() {
+  const instanceRef = useRef();
   const [props, set, stop] = useSpring(() => ({
     opacity: 0,
     transform: 'scale(0.5)',
-    config: {
-      tension: 200,
-      friction: 20,
-      mass: 1,
-    },
+    config: springConfig,
   }));
 
   return (
@@ -131,29 +134,25 @@ function Template() {
       )}
       trigger="click"
       animation={true}
+      onCreate={instance => (instanceRef.current = instance)}
       onMount={() => {
         stop();
         set({
           opacity: 1,
           transform: 'scale(1)',
+          config: springConfig,
         });
       }}
-      onHide={instance => {
+      onHide={() => {
         stop();
         set({
           opacity: 0,
           transform: 'scale(0.5)',
+          config: {
+            ...springConfig,
+            clamp: true,
+          },
         });
-
-        function hideLoop() {
-          if (props.opacity.value <= 0) {
-            instance.unmount();
-          } else {
-            requestAnimationFrame(hideLoop);
-          }
-        }
-
-        requestAnimationFrame(hideLoop);
       }}
     >
       <button>Template prop</button>
