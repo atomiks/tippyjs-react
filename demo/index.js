@@ -118,18 +118,27 @@ function FollowCursor() {
   );
 }
 
-function Template() {
-  const springConfig = {
-    tension: 200,
-    friction: 20,
-    mass: 1,
-  };
+function AnimatedHeadlessTippy() {
+  const config = {tension: 300, friction: 15};
+  const initialStyles = {opacity: 0, transform: 'scale(0.5)'};
+  const [props, setSpring] = useSpring(() => initialStyles);
 
-  const [props, set, stop] = useSpring(() => ({
-    opacity: 0,
-    transform: 'scale(0.5)',
-    config: springConfig,
-  }));
+  function onMount() {
+    setSpring({
+      opacity: 1,
+      transform: 'scale(1)',
+      onRest: () => {},
+      config,
+    });
+  }
+
+  function onHide({unmount}) {
+    setSpring({
+      ...initialStyles,
+      onRest: unmount,
+      config: {...config, clamp: true},
+    });
+  }
 
   return (
     <TippyHeadless
@@ -138,31 +147,11 @@ function Template() {
           Hello
         </Box>
       )}
-      trigger="click"
       animation={true}
-      onMount={() => {
-        stop();
-        set({
-          opacity: 1,
-          transform: 'scale(1)',
-          config: springConfig,
-          onRest() {},
-        });
-      }}
-      onHide={({unmount}) => {
-        stop();
-        set({
-          opacity: 0,
-          transform: 'scale(0.5)',
-          config: {
-            ...springConfig,
-            clamp: true,
-          },
-          onRest: unmount,
-        });
-      }}
+      onMount={onMount}
+      onHide={onHide}
     >
-      <button>Template prop</button>
+      <button>react-spring</button>
     </TippyHeadless>
   );
 }
@@ -181,7 +170,7 @@ function App() {
       <h2>Plugins</h2>
       <FollowCursor />
       <h2>Headless Tippy</h2>
-      <Template />
+      <AnimatedHeadlessTippy />
     </>
   );
 }
