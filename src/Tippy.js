@@ -113,11 +113,13 @@ export default function TippyGenerator(tippy) {
         return;
       }
 
-      component.instance.setProps({
+      const {instance} = component;
+
+      instance.setProps({
         popperOptions: {
-          ...props.popperOptions,
+          ...instance.props.popperOptions,
           modifiers: [
-            ...(props.popperOptions?.modifiers || []),
+            ...(instance.props.popperOptions?.modifiers || []),
             {
               name: '$$tippyReact',
               enabled: true,
