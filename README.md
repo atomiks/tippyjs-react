@@ -16,6 +16,10 @@
 
 ---
 
+📢 **v4 is coming very soon, which supports Tippy 6 (Popper 2) + headless rendering!** [You can follow its progress here](https://github.com/atomiks/tippy.js-react/pull/175).
+
+---
+
 [Tippy.js](https://github.com/atomiks/tippyjs/) is a highly customizable tooltip
 and popover library powered by Popper.js. This is a lightweight wrapper that
 lets you use it declaratively in React.
