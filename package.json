@@ -1,5 +1,5 @@
 {
-  "name": "@tippy.js/react",
+  "name": "@tippyjs/react",
   "version": "3.1.1",
   "description": "React component for Tippy.js",
   "main": "dist/tippy-react.umd.js",
@@ -24,6 +24,7 @@
   ],
   "files": [
     "dist/",
+    "headless/",
     "index.d.ts"
   ],
   "jest": {

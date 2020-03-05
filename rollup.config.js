@@ -61,4 +61,36 @@ export default [
       file: './dist/tippy-react.esm.js',
     },
   },
+  {
+    ...COMMON_INPUT,
+    plugins: [pluginBabel, pluginResolve],
+    output: {
+      ...COMMON_OUTPUT,
+      format: 'umd',
+      file: './headless/dist/tippy-react-headless.umd.js',
+    },
+  },
+  {
+    ...COMMON_INPUT,
+    plugins: [
+      pluginBabel,
+      pluginResolve,
+      pluginMinify,
+      pluginReplaceEnvProduction,
+    ],
+    output: {
+      ...COMMON_OUTPUT,
+      format: 'umd',
+      file: './headless/dist/tippy-react-headless.umd.min.js',
+    },
+  },
+  {
+    ...COMMON_INPUT,
+    plugins: [pluginBabel, pluginResolve],
+    output: {
+      ...COMMON_OUTPUT,
+      format: 'esm',
+      file: './headless/dist/tippy-react-headless.esm.js',
+    },
+  },
 ];
