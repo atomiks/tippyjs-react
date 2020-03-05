@@ -177,13 +177,14 @@ export default function TippyGenerator(tippy) {
     ]);
 
     Tippy.propTypes = {
+      children: PropTypes.element.isRequired,
       content: PropTypes.oneOfType([
         ContentType,
         PropTypes.arrayOf(ContentType),
       ]),
-      children: PropTypes.element.isRequired,
+      render: PropTypes.func,
       visible: PropTypes.bool,
-      enabled: PropTypes.bool,
+      disabled: PropTypes.bool,
       className: PropTypes.string,
       singleton: PropTypes.func,
     };
