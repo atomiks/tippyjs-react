@@ -16,7 +16,7 @@
 
 ---
 
-📢 **v4 is coming very soon, which supports Tippy 6 (Popper 2) + headless rendering!** [You can follow its progress here](https://github.com/atomiks/tippy.js-react/pull/175).
+📢 **v4 is coming very soon, which supports Tippy 6 (Popper 2) + headless rendering!** You can [view the docs here](https://github.com/atomiks/tippy.js-react/tree/next) and [follow its progress here](https://github.com/atomiks/tippy.js-react/pull/175).
 
 ---
 
