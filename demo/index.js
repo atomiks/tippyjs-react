@@ -64,13 +64,13 @@ function ContentElement() {
   );
 }
 
-function EnabledProp() {
-  const [enabled, setEnabled] = useState(true);
+function DisabledProp() {
+  const [disabled, setDisabled] = useState(false);
 
   return (
-    <Tippy content="Tooltip" enabled={enabled}>
-      <button onClick={() => setEnabled(enabled => !enabled)}>
-        enabled: {String(enabled)}
+    <Tippy content="Tooltip" disabled={disabled}>
+      <button onClick={() => setDisabled(disabled => !disabled)}>
+        disabled: {String(disabled)}
       </button>
     </Tippy>
   );
@@ -163,7 +163,7 @@ function App() {
       <ContentString />
       <ContentElement />
       <h2>Special</h2>
-      <EnabledProp />
+      <DisabledProp />
       <VisibleProp />
       <h2>Singleton (via useSingleton hook)</h2>
       <SingletonHook />
