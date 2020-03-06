@@ -79,6 +79,8 @@ const JSXContent = () => (
 );
 ```
 
+Default Tippy is very quick to use and setup and "just works" out of the box.
+
 ### Headless Tippy
 
 Render your own tippy element from scratch:
@@ -98,8 +100,8 @@ A more advanced example using `react-spring` & `styled-components`:
 
 ```jsx
 import React from 'react';
+import Tippy from '@tippyjs/react/headless';
 import styled from 'styled-components';
-import TippyHeadless from '@tippyjs/react/headless';
 import {useSpring, animated} from 'react-spring';
 
 const Box = styled(animated.div)`
@@ -107,7 +109,6 @@ const Box = styled(animated.div)`
   color: white;
   padding: 5px 10px;
   border-radius: 4px;
-  visibility: visible;
 `;
 
 function AnimatedHeadlessTippy() {
@@ -133,7 +134,7 @@ function AnimatedHeadlessTippy() {
   }
 
   return (
-    <TippyHeadless
+    <Tippy
       render={attrs => (
         <Box style={props} {...attrs}>
           Hello
@@ -144,10 +145,31 @@ function AnimatedHeadlessTippy() {
       onHide={onHide}
     >
       <button>react-spring</button>
-    </TippyHeadless>
+    </Tippy>
   );
 }
 ```
+
+#### Arrow
+
+To make Popper position your custom arrow, set a `data-popper-arrow` attribute
+on it:
+
+```jsx
+<Tippy
+  render={attrs => (
+    <Box {...attrs}>
+      Hello
+      <Arrow data-popper-arrow="" />
+    </Box>
+  )}
+>
+  <button>Reference</button>
+</Tippy>
+```
+
+For details on styling the arrow from scratch,
+[take a look at the Popper tutorial](https://popper.js.org/docs/v2/tutorial/#arrow).
 
 ### Component children
 
@@ -232,10 +254,8 @@ const PurpleTippy = styled(Tippy)`
   background: purple;
 
   /* Styling the arrow for different placements */
-  &[data-placement^='top'] {
-    .tippy-arrow {
-      border-top-color: purple;
-    }
+  &[data-placement^='top'] > .tippy-arrow::before {
+    border-top-color: purple;
   }
 `;
 ```
@@ -249,6 +269,7 @@ Use this when you want to temporarily disable a tippy from showing.
 ```jsx
 function App() {
   const [disabled, setDisabled] = useState(false);
+
   return (
     <Tippy content="Tooltip" disabled={disabled}>
       <button />
@@ -264,6 +285,7 @@ Programmatically show or hide the tippy instead of relying on events.
 ```jsx
 function App() {
   const [visible, setVisible] = useState(true);
+
   return (
     <Tippy content="Tooltip" visible={visible}>
       <button />
@@ -326,19 +348,26 @@ function App() {
 
   return (
     <>
-      <Tippy singleton={source} />
-      <Tippy content="a" singleton={target}>
-        <button />
+      {/* This is the tippy that gets used as the singleton */}
+      <Tippy singleton={source} delay={500} />
+
+      {/* These become "virtual" */}
+      <Tippy content="Hello" singleton={target}>
+        <button>Reference</button>
       </Tippy>
-      <button />
-      <div>
-        <Tippy content="b" singleton={target}>
-          <button />
-        </Tippy>
-      </div>
+      <Tippy content="Bye" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
     </>
   );
 }
+```
+
+`useSingleton()` takes an optional props argument, currently with one property,
+`disabled`:
+
+```js
+const [source, target] = useSingleton({disabled: true});
 ```
 
 ## 📦 Bundle size
