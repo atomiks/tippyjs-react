@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import {useSpring, animated} from 'react-spring';
 import {followCursor} from 'tippy.js';
 import Tippy, {useSingleton} from '../src';
-import TippyHeadless from '../src/headless';
+import TippyHeadless, {
+  useSingleton as useSingletonHeadless,
+} from '../src/headless';
 
 import 'tippy.js/dist/tippy.css';
 import './index.css';
@@ -88,26 +90,40 @@ function VisibleProp() {
   );
 }
 
-function SingletonHook() {
-  const singleton = useSingleton({delay: 500});
-  const [count, setCount] = useState(3);
+function Singleton() {
+  const [source, target] = useSingleton();
 
-  let children = [];
-  for (let i = 0; i < count; i++) {
-    children.push(
-      <Tippy key={i} singleton={singleton} content="Tooltip">
-        <button>{i}</button>
-      </Tippy>,
-    );
-  }
+  return (
+    <>
+      <Tippy singleton={source} delay={500} />
+      <Tippy content="Hello" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+      <Tippy content="Bye" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+    </>
+  );
+}
 
-  useEffect(() => {
-    setInterval(() => {
-      setCount(count => (count === 5 ? 1 : count + 1));
-    }, 5000);
-  }, []);
+function SingletonHeadless() {
+  const [source, target] = useSingletonHeadless();
 
-  return <>{children}</>;
+  return (
+    <>
+      <Tippy
+        render={(attrs, content) => <Box {...attrs}>{content}</Box>}
+        singleton={source}
+        delay={500}
+      />
+      <Tippy content="Hello" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+      <Tippy content="Bye" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+    </>
+  );
 }
 
 function FollowCursor() {
@@ -165,8 +181,10 @@ function App() {
       <h2>Special</h2>
       <DisabledProp />
       <VisibleProp />
-      <h2>Singleton (via useSingleton hook)</h2>
-      <SingletonHook />
+      <h2>Singleton</h2>
+      <Singleton />
+      <h2>Singleton Headless</h2>
+      <SingletonHeadless />
       <h2>Plugins</h2>
       <FollowCursor />
       <h2>Headless Tippy</h2>

@@ -9,12 +9,10 @@ export default function useSingletonGenerator(createSingleton) {
     className,
     disabled = false,
     ignoreAttributes = true,
-    render,
     ...restOfNativeProps
   } = {}) {
     const component = useInstance({
-      instance: null,
-      instances: [],
+      children: [],
       renders: 1,
     });
 
@@ -23,11 +21,14 @@ export default function useSingletonGenerator(createSingleton) {
       ...restOfNativeProps,
     };
 
-    const deps = [component.instances.length];
+    const deps = [component.children.length];
 
     useIsomorphicLayoutEffect(() => {
-      const {instances} = component;
-      const instance = createSingleton(instances, props);
+      const {children, sourceData} = component;
+      const instance = createSingleton(
+        children.map(child => child.instance),
+        sourceData.props,
+      );
 
       component.instance = instance;
 
@@ -37,7 +38,9 @@ export default function useSingletonGenerator(createSingleton) {
 
       return () => {
         instance.destroy();
-        component.instances = instances.filter(i => !i.state.isDestroyed);
+        component.children = children.filter(
+          ({instance}) => !instance.state.isDestroyed,
+        );
       };
     }, deps);
 
@@ -60,8 +63,19 @@ export default function useSingletonGenerator(createSingleton) {
 
     useUpdateClassName(component, className, deps);
 
-    return instance => {
-      component.instances.push(instance);
+    const source = {
+      data: component,
+      hook(data) {
+        component.sourceData = data;
+      },
     };
+
+    const target = {
+      hook(data) {
+        component.children.push(data);
+      },
+    };
+
+    return [source, target];
   };
 }

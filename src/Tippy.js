@@ -28,8 +28,9 @@ export default function TippyGenerator(tippy) {
     const isControlledMode = visible !== undefined;
     const isSingletonMode = singleton !== undefined;
 
-    const [attrs, setAttrs] = useState({placement: 'top'});
+    const [attrs, setAttrs] = useState({});
     const [mounted, setMounted] = useState(false);
+    const [singletonContent, setSingletonContent] = useState();
     const component = useInstance(() => ({
       container: ssrSafeCreateDiv(),
       renders: 1,
@@ -53,12 +54,30 @@ export default function TippyGenerator(tippy) {
 
     // CREATE
     useIsomorphicLayoutEffect(() => {
-      const instance = tippy(
-        component.ref,
-        render
-          ? {...props, render: () => ({popper: component.container})}
-          : props,
-      );
+      let computedProps = props;
+
+      const plugins = props.plugins || [];
+
+      if (render) {
+        plugins.push({
+          fn: () => ({
+            onTrigger(_, event) {
+              const {content} = singleton.data.children.find(
+                ({instance}) => instance.reference === event.currentTarget,
+              );
+              setSingletonContent(content);
+            },
+          }),
+        });
+
+        computedProps = {
+          ...props,
+          plugins,
+          render: () => ({popper: component.container}),
+        };
+      }
+
+      const instance = tippy(component.ref, computedProps);
 
       component.instance = instance;
 
@@ -71,7 +90,11 @@ export default function TippyGenerator(tippy) {
       }
 
       if (isSingletonMode) {
-        singleton(instance);
+        singleton.hook({
+          instance,
+          content,
+          props: computedProps,
+        });
       }
 
       setMounted(true);
@@ -162,7 +185,9 @@ export default function TippyGenerator(tippy) {
         })}
         {mounted &&
           createPortal(
-            render ? render(toDataAttributes(attrs)) : content,
+            render
+              ? render(toDataAttributes(attrs), singletonContent)
+              : content,
             component.container,
           )}
       </>
@@ -186,7 +211,7 @@ export default function TippyGenerator(tippy) {
       visible: PropTypes.bool,
       disabled: PropTypes.bool,
       className: PropTypes.string,
-      singleton: PropTypes.func,
+      singleton: PropTypes.object,
     };
   }
 
