@@ -322,16 +322,17 @@ addon.
 import Tippy, {useSingleton} from '@tippyjs/react';
 
 function App() {
-  const singleton = useSingleton({delay: 500});
+  const [source, target] = useSingleton();
 
   return (
     <>
-      <Tippy content="a" singleton={singleton}>
+      <Tippy singleton={source} />
+      <Tippy content="a" singleton={target}>
         <button />
       </Tippy>
       <button />
       <div>
-        <Tippy content="b" singleton={singleton}>
+        <Tippy content="b" singleton={target}>
           <button />
         </Tippy>
       </div>
