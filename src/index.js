@@ -1,10 +1,11 @@
 import React, {cloneElement, forwardRef} from 'react';
-import tippy from 'tippy.js';
-import {useSingleton} from './hooks';
+import tippy, {createSingleton} from 'tippy.js/headless';
+import useSingletonGenerator from './useSingleton';
 import TippyGenerator from './Tippy';
 import {preserveRef} from './utils';
 
 const Tippy = TippyGenerator(tippy);
+const useSingleton = useSingletonGenerator(createSingleton);
 
 export default forwardRef(function TippyWrapper({children, ...props}, ref) {
   return (
