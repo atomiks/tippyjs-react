@@ -8,7 +8,7 @@ import {
 } from 'tippy.js';
 
 export interface TippyProps extends Omit<Partial<Props>, 'content' | 'render'> {
-  children: React.ReactElement<any>;
+  children?: React.ReactElement<any>;
   content?: React.ReactChild | React.ReactChild[];
   visible?: boolean;
   disabled?: boolean;
