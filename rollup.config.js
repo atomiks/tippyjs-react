@@ -12,7 +12,13 @@ const pluginReplaceEnvProduction = replace({
 
 const COMMON_INPUT = {
   input: './src/index.js',
-  external: ['react', 'react-dom', 'prop-types', 'tippy.js', 'tippy.js/addons'],
+  external: [
+    'react',
+    'react-dom',
+    'prop-types',
+    'tippy.js',
+    'tippy.js/headless',
+  ],
 };
 
 const COMMON_OUTPUT = {
@@ -24,7 +30,7 @@ const COMMON_OUTPUT = {
     'react-dom': 'ReactDOM',
     'prop-types': 'PropTypes',
     'tippy.js': 'tippy',
-    'tippy.js/addons': 'tippy',
+    'tippy.js/headless': 'tippy',
   },
 };
 
@@ -63,6 +69,7 @@ export default [
   },
   {
     ...COMMON_INPUT,
+    input: './src/headless.js',
     plugins: [pluginBabel, pluginResolve],
     output: {
       ...COMMON_OUTPUT,
@@ -72,6 +79,7 @@ export default [
   },
   {
     ...COMMON_INPUT,
+    input: './src/headless.js',
     plugins: [
       pluginBabel,
       pluginResolve,
@@ -86,6 +94,7 @@ export default [
   },
   {
     ...COMMON_INPUT,
+    input: './src/headless.js',
     plugins: [pluginBabel, pluginResolve],
     output: {
       ...COMMON_OUTPUT,
