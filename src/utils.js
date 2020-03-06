@@ -16,10 +16,10 @@ export function ssrSafeCreateDiv() {
   return isBrowser && document.createElement('div');
 }
 
-export function updateClassName(tooltip, action, classNames) {
+export function updateClassName(box, action, classNames) {
   classNames.split(/\s+/).forEach(name => {
     if (name) {
-      tooltip.classList[action](name);
+      box.classList[action](name);
     }
   });
 }
