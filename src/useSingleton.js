@@ -1,25 +1,11 @@
-import {
-  useInstance,
-  useUpdateClassName,
-  useIsomorphicLayoutEffect,
-} from './util-hooks';
+import {useInstance, useIsomorphicLayoutEffect} from './util-hooks';
 
 export default function useSingletonGenerator(createSingleton) {
-  return function useSingleton({
-    className,
-    disabled = false,
-    ignoreAttributes = true,
-    ...restOfNativeProps
-  } = {}) {
+  return function useSingleton({disabled = false} = {}) {
     const component = useInstance({
       children: [],
       renders: 1,
     });
-
-    const props = {
-      ignoreAttributes,
-      ...restOfNativeProps,
-    };
 
     const deps = [component.children.length];
 
@@ -50,9 +36,9 @@ export default function useSingletonGenerator(createSingleton) {
         return;
       }
 
-      const {instance} = component;
+      const {instance, sourceData} = component;
 
-      instance.setProps(props);
+      instance.setProps(sourceData.props);
 
       if (disabled) {
         instance.disable();
@@ -60,8 +46,6 @@ export default function useSingletonGenerator(createSingleton) {
         instance.enable();
       }
     });
-
-    useUpdateClassName(component, className, deps);
 
     const source = {
       data: component,

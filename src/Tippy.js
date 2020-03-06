@@ -50,33 +50,32 @@ export default function TippyGenerator(tippy) {
       disabled = true;
     }
 
+    let computedProps = props;
+    const plugins = props.plugins || [];
+
+    if (render) {
+      plugins.push({
+        fn: () => ({
+          onTrigger(_, event) {
+            const {content} = singleton.data.children.find(
+              ({instance}) => instance.reference === event.currentTarget,
+            );
+            setSingletonContent(content);
+          },
+        }),
+      });
+
+      computedProps = {
+        ...props,
+        plugins,
+        render: () => ({popper: component.container}),
+      };
+    }
+
     const deps = [children.type];
 
     // CREATE
     useIsomorphicLayoutEffect(() => {
-      let computedProps = props;
-
-      const plugins = props.plugins || [];
-
-      if (render) {
-        plugins.push({
-          fn: () => ({
-            onTrigger(_, event) {
-              const {content} = singleton.data.children.find(
-                ({instance}) => instance.reference === event.currentTarget,
-              );
-              setSingletonContent(content);
-            },
-          }),
-        });
-
-        computedProps = {
-          ...props,
-          plugins,
-          render: () => ({popper: component.container}),
-        };
-      }
-
       const instance = tippy(component.ref, computedProps);
 
       component.instance = instance;
@@ -128,6 +127,14 @@ export default function TippyGenerator(tippy) {
         } else {
           instance.hide();
         }
+      }
+
+      if (isSingletonMode) {
+        singleton.hook({
+          instance,
+          content,
+          props: computedProps,
+        });
       }
     });
 
