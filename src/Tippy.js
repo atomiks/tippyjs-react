@@ -54,16 +54,18 @@ export default function TippyGenerator(tippy) {
     const plugins = props.plugins || [];
 
     if (render) {
-      plugins.push({
-        fn: () => ({
-          onTrigger(_, event) {
-            const {content} = singleton.data.children.find(
-              ({instance}) => instance.reference === event.currentTarget,
-            );
-            setSingletonContent(content);
-          },
-        }),
-      });
+      if (isSingletonMode) {
+        plugins.push({
+          fn: () => ({
+            onTrigger(_, event) {
+              const {content} = singleton.data.children.find(
+                ({instance}) => instance.reference === event.currentTarget,
+              );
+              setSingletonContent(content);
+            },
+          }),
+        });
+      }
 
       computedProps = {
         ...props,
