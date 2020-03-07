@@ -2,6 +2,8 @@ import React from 'react';
 import TippyBase from '../src';
 import {render, cleanup} from '@testing-library/react';
 
+jest.useFakeTimers();
+
 afterEach(cleanup);
 
 describe('<Tippy />', () => {
@@ -369,6 +371,18 @@ describe('<Tippy />', () => {
     );
 
     expect(instance.plugins).toMatchSnapshot();
+  });
+
+  test('render prop', () => {
+    render(
+      <Tippy render={attrs => <div {...attrs}>Hello</div>} showOnCreate={true}>
+        <button />
+      </Tippy>,
+    );
+
+    jest.runAllTimers();
+
+    expect(instance.popper).toMatchSnapshot();
   });
 });
 

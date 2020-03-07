@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "parcel demo/index.html -d .devserver --no-cache",
     "build": "rollup --config",
-    "test": "jest --coverage --silent",
+    "test": "jest --coverage",
     "lint": "eslint \"{src,test}/**/*.js\"",
     "format": "prettier --write \"{src,test,demo}/**/*.{js,ts,json,css,md}\""
   },

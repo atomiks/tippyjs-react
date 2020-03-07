@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useSingleton headless mode updates content correctly 1`] = `
+<div
+  data-tippy-root=""
+  id="tippy-1"
+  style="pointer-events: none; transition: none; position: absolute; left: 0px; top: 0px; margin: 0px;"
+>
+  <div>
+    a
+  </div>
+</div>
+`;
+
+exports[`useSingleton headless mode updates content correctly 2`] = `
+<div
+  data-tippy-root=""
+  id="tippy-1"
+  style="pointer-events: none; transition: none; position: absolute; left: 0px; top: 0px; margin: 0px;"
+>
+  <div>
+    b
+  </div>
+</div>
+`;
