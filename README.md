@@ -221,7 +221,7 @@ complete list.
 ```jsx
 <Tippy
   content="Tooltip"
-  arrow={true}
+  arrow={false}
   animation="scale"
   duration={0}
   delay={[300, 0]}
