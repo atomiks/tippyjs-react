@@ -370,6 +370,35 @@ function App() {
 const [source, target] = useSingleton({disabled: true});
 ```
 
+### Headless singleton
+
+The `render` prop takes the singleton content as a second parameter:
+
+```jsx
+import Tippy, {useSingleton} from '@tippyjs/react/headless';
+
+function App() {
+  const [source, target] = useSingleton();
+
+  return (
+    <>
+      <Tippy
+        singleton={source}
+        render={(attrs, content) => <div {...attrs}>{content}</div>}
+        delay={500}
+      />
+
+      <Tippy content="Hello" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+      <Tippy content="Bye" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+    </>
+  );
+}
+```
+
 ## 📦 Bundle size
 
 - `@popperjs/core` ≈ 6 kB
