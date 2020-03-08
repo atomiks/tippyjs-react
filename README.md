@@ -4,7 +4,7 @@
 
 <div align="center">
   <h1>Tippy.js for React</h1>
-  <p>The complete tooltip, popover, dropdown, menu, combobox etc. solution for React apps</p>
+  <p>The complete tooltip, popover, dropdown, and menu solution for React apps</p>
   <a href="https://www.npmjs.com/package/@tippyjs/react">
    <img src="https://img.shields.io/npm/dm/@tippyjs/react.svg?color=%235599ff&style=for-the-badge" alt="npm downloads per month">
   <a>
@@ -16,11 +16,11 @@
 
 ---
 
-[Tippy.js](https://github.com/atomiks/tippyjs/) is a highly customizable tooltip
-and popover library powered by Popper. It handles the logic and optionally the
-styling involved in all types of elements that pop out from the flow of the
-document and get overlaid on top of the UI — think tooltips, popovers,
-dropdowns, menus, comboxes, popups, and more.
+[Tippy.js](https://github.com/atomiks/tippyjs/) is the complete tooltip,
+popover, dropdown, and menu solution for the web, powered by Popper.js. It
+provides the logic and styling involved in all types of elements that pop out
+from the flow of the document and get overlaid on top of the UI, positioned next
+to a reference element.
 
 This is a lightweight wrapper that lets you use it declaratively in React.
 
