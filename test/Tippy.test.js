@@ -1,6 +1,8 @@
 import React from 'react';
-import TippyBase from '../src/Tippy';
+import TippyBase from '../src';
 import {render, cleanup} from '@testing-library/react';
+
+jest.useFakeTimers();
 
 afterEach(cleanup);
 
@@ -87,9 +89,9 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    const {tooltip} = instance.popperChildren;
+    const box = instance.popper.firstElementChild;
 
-    expect(tooltip.className).toBe('tippy-tooltip hello world');
+    expect(box.className).toBe('tippy-box hello world');
   });
 
   test('props.className: updating does not leave stale className behind', () => {
@@ -99,9 +101,9 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    const {tooltip} = instance.popperChildren;
+    const box = instance.popper.firstElementChild;
 
-    expect(tooltip.classList.contains('one')).toBe(true);
+    expect(box.classList.contains('one')).toBe(true);
 
     rerender(
       <Tippy content="tooltip" className="two">
@@ -109,8 +111,8 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    expect(tooltip.classList.contains('one')).toBe(false);
-    expect(tooltip.classList.contains('two')).toBe(true);
+    expect(box.classList.contains('one')).toBe(false);
+    expect(box.classList.contains('two')).toBe(true);
   });
 
   test('props.className: syncs with children.type', () => {
@@ -126,9 +128,9 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    const {tooltip} = instance.popperChildren;
+    const box = instance.popper.firstElementChild;
 
-    expect(tooltip.classList.contains('one')).toBe(true);
+    expect(box.classList.contains('one')).toBe(true);
   });
 
   test('unmount destroys the tippy instance and allows garbage collection', () => {
@@ -284,12 +286,12 @@ describe('<Tippy />', () => {
       </TippyBase>,
     );
 
-    expect(document.querySelectorAll('.tippy-popper').length).toBe(3);
+    expect(document.querySelectorAll('.tippy-box').length).toBe(3);
   });
 
-  test('props.enabled initially `true`', () => {
+  test('props.disabled initially `false`', () => {
     const {rerender} = render(
-      <Tippy content="tooltip" enabled={true}>
+      <Tippy content="tooltip" disabled={false}>
         <button />
       </Tippy>,
     );
@@ -297,7 +299,7 @@ describe('<Tippy />', () => {
     expect(instance.state.isEnabled).toBe(true);
 
     rerender(
-      <Tippy content="tooltip" enabled={false}>
+      <Tippy content="tooltip" disabled={true}>
         <button />
       </Tippy>,
     );
@@ -305,9 +307,9 @@ describe('<Tippy />', () => {
     expect(instance.state.isEnabled).toBe(false);
   });
 
-  test('props.enabled initially `false`', () => {
+  test('props.disabled initially `true`', () => {
     const {rerender} = render(
-      <Tippy content="tooltip" enabled={false}>
+      <Tippy content="tooltip" disabled={true}>
         <button />
       </Tippy>,
     );
@@ -315,7 +317,7 @@ describe('<Tippy />', () => {
     expect(instance.state.isEnabled).toBe(false);
 
     rerender(
-      <Tippy content="tooltip" enabled={true}>
+      <Tippy content="tooltip" disabled={false}>
         <button />
       </Tippy>,
     );
@@ -368,7 +370,19 @@ describe('<Tippy />', () => {
       </Tippy>,
     );
 
-    expect(instance.plugins).toEqual(plugins);
+    expect(instance.plugins).toMatchSnapshot();
+  });
+
+  test('render prop', () => {
+    render(
+      <Tippy render={attrs => <div {...attrs}>Hello</div>} showOnCreate={true}>
+        <button />
+      </Tippy>,
+    );
+
+    jest.runAllTimers();
+
+    expect(instance.popper).toMatchSnapshot();
   });
 });
 
@@ -386,14 +400,14 @@ describe('Tippy.propTypes', () => {
   test('is defined if NODE_ENV=development', () => {
     process.env.NODE_ENV = 'development';
 
-    const Tippy = require('../src/Tippy').Tippy;
-    expect(Tippy.propTypes).toBeDefined();
+    const TippyGenerator = require('../src/Tippy').default;
+    expect(TippyGenerator().propTypes).toBeDefined();
   });
 
   test('is undefined if NODE_ENV=production', () => {
     process.env.NODE_ENV = 'production';
 
-    const Tippy = require('../src/Tippy').Tippy;
-    expect(Tippy.propTypes).toBeUndefined();
+    const TippyGenerator = require('../src/Tippy').default;
+    expect(TippyGenerator().propTypes).toBeUndefined();
   });
 });

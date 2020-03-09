@@ -1,4 +1,4 @@
-import tippy, {createSingleton} from 'tippy.js';
+import tippy, {createSingleton} from 'tippy.js/headless';
 import TippyGenerator from './Tippy';
 import useSingletonGenerator from './useSingleton';
 import forwardRef from './forwardRef';

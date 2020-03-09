@@ -4,26 +4,27 @@
 
 <div align="center">
   <h1>Tippy.js for React</h1>
-  <p>The complete tooltip and popover solution for React apps</p>
-  <a href="https://www.npmjs.com/package/@tippy.js/react">
-   <img src="https://img.shields.io/npm/dm/@tippy.js/react.svg?color=%235599ff&style=for-the-badge" alt="npm downloads per month">
+  <p>The complete tooltip, popover, dropdown, and menu solution for React apps</p>
+  <a href="https://www.npmjs.com/package/@tippyjs/react">
+   <img src="https://img.shields.io/npm/dm/@tippyjs/react.svg?color=%235599ff&style=for-the-badge" alt="npm downloads per month">
   <a>
   <a href="https://github.com/atomiks/tippy.js-react/blob/master/LICENSE">
-    <img src="https://img.shields.io/npm/l/@tippy.js/react.svg?color=%23c677cf&style=for-the-badge" alt="MIT License">
+    <img src="https://img.shields.io/npm/l/@tippyjs/react.svg?color=%23c677cf&style=for-the-badge" alt="MIT License">
   </a>
   <br>
 </div>
 
 ---
 
-📢 **v4 is coming very soon, which supports Tippy 6 (Popper 2) + headless rendering!** You can [view the docs here](https://github.com/atomiks/tippy.js-react/tree/next) and [follow its progress here](https://github.com/atomiks/tippy.js-react/pull/175).
+[Tippy.js](https://github.com/atomiks/tippyjs/) is the complete tooltip,
+popover, dropdown, and menu solution for the web, powered by Popper.js. It
+provides the logic and styling involved in all types of elements that pop out
+from the flow of the document and get overlaid on top of the UI, positioned next
+to a reference element.f
 
----
+This is a lightweight wrapper that lets you use it declaratively in React.
 
-[Tippy.js](https://github.com/atomiks/tippyjs/) is a highly customizable tooltip
-and popover library powered by Popper.js. This is a lightweight wrapper that
-lets you use it declaratively in React.
-
+<!--
 ## 💎 Examples
 
 ### Tooltips
@@ -34,31 +35,40 @@ lets you use it declaratively in React.
 ### Popovers
 
 - [Accessible Emoji Reaction Picker](https://codesandbox.io/s/1vzvoo9mwl)
+-->
 
 ## 🚀 Installation
 
 ```bash
 # npm
-npm i '@tippy.js/react'
+npm i @tippyjs/react
 
 # Yarn
-yarn add '@tippy.js/react'
+yarn add @tippyjs/react
 ```
 
-CDN: https://unpkg.com/@tippy.js/react
+CDN: https://unpkg.com/@tippyjs/react
 
 Requires React 16.8+
 
 ## 🖲 Usage
 
-Import the `Tippy` component and the core CSS. Wrap the `<Tippy />` component
-around the element, supplying the tooltip's content as the `content` prop. It
-can take a string or a tree of React elements.
+There are two ways to use this component:
+
+- **Default**: With the built-in DOM rendering and optionally the default CSS
+- **Headless**: With React's DOM rendering for better usage with CSS-in-JS and
+  spring libraries e.g. `react-spring`
+
+### Default Tippy
+
+Import the `Tippy` component and (optionally) the core CSS. Wrap the `<Tippy />`
+component around the element, supplying the tooltip's content as the `content`
+prop. It can take a string or a tree of React elements.
 
 ```jsx
 import React from 'react';
-import Tippy from '@tippy.js/react';
-import 'tippy.js/dist/tippy.css';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css'; // optional
 
 const StringContent = () => (
   <Tippy content="Hello">
@@ -72,6 +82,98 @@ const JSXContent = () => (
   </Tippy>
 );
 ```
+
+Default Tippy is very quick to use and setup and "just works" out of the box.
+
+### Headless Tippy
+
+Render your own tippy element from scratch:
+
+```jsx
+import React from 'react';
+import Tippy from '@tippyjs/react/headless';
+
+const HeadlessTippy = () => (
+  <Tippy render={attrs => <div {...attrs}>My tippy box</div>}>
+    <button>My button</button>
+  </Tippy>
+);
+```
+
+A more advanced example using `react-spring` & `styled-components`:
+
+```jsx
+import React from 'react';
+import Tippy from '@tippyjs/react/headless';
+import styled from 'styled-components';
+import {useSpring, animated} from 'react-spring';
+
+const Box = styled(animated.div)`
+  background: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+`;
+
+function AnimatedHeadlessTippy() {
+  const config = {tension: 300, friction: 15};
+  const initialStyles = {opacity: 0, transform: 'scale(0.5)'};
+  const [props, setSpring] = useSpring(() => initialStyles);
+
+  function onMount() {
+    setSpring({
+      opacity: 1,
+      transform: 'scale(1)',
+      onRest: () => {},
+      config,
+    });
+  }
+
+  function onHide({unmount}) {
+    setSpring({
+      ...initialStyles,
+      onRest: unmount,
+      config: {...config, clamp: true},
+    });
+  }
+
+  return (
+    <Tippy
+      render={attrs => (
+        <Box style={props} {...attrs}>
+          Hello
+        </Box>
+      )}
+      animation={true}
+      onMount={onMount}
+      onHide={onHide}
+    >
+      <button>react-spring</button>
+    </Tippy>
+  );
+}
+```
+
+#### Arrow
+
+To make Popper position your custom arrow, set a `data-popper-arrow` attribute
+on it:
+
+```jsx
+<Tippy
+  render={attrs => (
+    <Box {...attrs}>
+      Hello
+      <Arrow data-popper-arrow="" />
+    </Box>
+  )}
+>
+  <button>Reference</button>
+</Tippy>
+```
+
+For details on styling the arrow from scratch,
+[take a look at the Popper tutorial](https://popper.js.org/docs/v2/tutorial/#arrow).
 
 ### Component children
 
@@ -98,8 +200,8 @@ function App() {
 }
 ```
 
-`styled-components` v4 does this for you automatically, so it should be seamless
-when using the `styled` constructor.
+`styled-components` v4+ does this for you automatically, so it should be
+seamless when using the `styled` constructor.
 
 If you're using a library that doesn't `forwardRef` for you, and doesn't give
 access to the ref via `innerRef` or similar, you can use a wrapper `<span>`
@@ -117,13 +219,13 @@ element as a workaround.
 
 All of the native Tippy.js props can be passed to the component.
 
-Visit [All Props](https://atomiks.github.io/tippyjs/all-props/) to view the
-complete table.
+Visit [All Props](https://atomiks.github.io/tippyjs/v6/all-props/) to view the
+complete list.
 
 ```jsx
 <Tippy
   content="Tooltip"
-  arrow={true}
+  arrow={false}
   animation="scale"
   duration={0}
   delay={[300, 0]}
@@ -136,6 +238,8 @@ complete table.
 In addition, there are 3 more props added specifically for the React component.
 
 ### `className?: string`
+
+> **Note**: This does not apply if using Headless Tippy
 
 A React alternative to the `theme` prop. The className gets added to the tooltip
 element's class list as expected, without adding `-theme` as a suffix.
@@ -154,31 +258,24 @@ const PurpleTippy = styled(Tippy)`
   background: purple;
 
   /* Styling the arrow for different placements */
-  &[data-placement^='top'] {
-    .tippy-arrow {
-      border-top-color: purple;
-    }
+  &[data-placement^='top'] > .tippy-arrow::before {
+    border-top-color: purple;
   }
 `;
 ```
 
-See [themes](https://atomiks.github.io/tippyjs/themes/) for more information.
+See [themes](https://atomiks.github.io/tippyjs/v6/themes/) for more information.
 
-> **Note**: the following examples are using the new
-> [React Hooks API](https://reactjs.org/docs/hooks-intro.html). It isn't
-> required to use this library – the props will work as expected in class
-> components too.
+### `disabled?: boolean`
 
-### `enabled?: boolean`
-
-Prop to control the `tippy.enable()` / `tippy.disable()` instance methods. Use
-this when you want to temporarily disable a tippy from showing.
+Use this when you want to temporarily disable a tippy from showing.
 
 ```jsx
 function App() {
-  const [enabled, setEnabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+
   return (
-    <Tippy content="Tooltip" enabled={enabled}>
+    <Tippy content="Tooltip" disabled={disabled}>
       <button />
     </Tippy>
   );
@@ -187,14 +284,12 @@ function App() {
 
 ### `visible?: boolean`
 
-Prop to control the `tippy.show()` / `tippy.hide()` instance methods. Use this
-when you want to programmatically show or hide the tippy instead of relying on
-UI events. This puts the tippy in controlled mode so it will only respond to
-state.
+Programmatically show or hide the tippy instead of relying on events.
 
 ```jsx
 function App() {
   const [visible, setVisible] = useState(true);
+
   return (
     <Tippy content="Tooltip" visible={visible}>
       <button />
@@ -213,9 +308,8 @@ enable treeshaking, so that users who don't need the prop's functionality are
 not burdened with the cost of it.
 
 ```jsx
-import Tippy from '@tippy.js/react';
+import Tippy from '@tippyjs/react';
 import {followCursor} from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
 
 function App() {
   return (
@@ -226,89 +320,9 @@ function App() {
 }
 ```
 
-[Read more about plugins here](https://atomiks.github.io/tippyjs/plugins/).
+[Read more about plugins here](https://atomiks.github.io/tippyjs/v6/plugins/).
 
-### Performance
-
-Props that the `popperInstance` depends on that aren't primitive values should be memoized or hoisted to a static constant, so that the `popperInstance` is not recreated on every render:
-
-- `popperOptions`
-- `flipBehavior`
-
-```jsx
-// static constant if it doesn't change
-const popperOptions = {};
-
-function App() {
-  const [placement, setPlacement] = useState('right');
-  // memoized value if it's dynamic
-  const flipBehavior = useMemo(() => [placement, 'bottom'], [placement]);
-
-  return (
-    <Tippy
-      content="Tooltip"
-      placement={placement}
-      flipBehavior={flipBehavior}
-      popperOptions={popperOptions}
-    >
-      <button />
-    </Tippy>
-  );
-}
-```
-
-### Default props
-
-You can create a new component file that exports a wrapper component that has
-its own default props.
-
-```js
-import Tippy from '@tippy.js/react';
-
-// When importing Tippy from this file instead, it will have the fade animation
-// by default
-export default props => <Tippy animation="fade" {...props} />;
-```
-
-### Proxy components
-
-`<Tippy />`'s purpose is to be a useful generic component for all types of
-popper elements. This includes tooltips, popovers, dropdowns, etc. This means
-you can create proxy components that wrap the base `<Tippy />` component with a
-new name and their own default props, to distinguish their functionality. For
-example:
-
-```jsx
-export function Tooltip(props) {
-  return (
-    <Tippy
-      animation="fade"
-      theme="translucent"
-      arrow={true}
-      delay={150}
-      {...props}
-    />
-  );
-}
-
-export function Popover(props) {
-  return (
-    <Tippy
-      interactive={true}
-      interactiveBorder={10}
-      animation="scale"
-      theme="light-border"
-      trigger="click"
-      {...props}
-    />
-  );
-}
-
-// In another file
-import {Tooltip, Popover} from './Tippy';
-```
-
-## 🌈 Multiple tippys on a single element
+## 🌈 Multiple tippies on a single element
 
 You can nest the components like so:
 
@@ -324,56 +338,66 @@ You can nest the components like so:
 </Tippy>
 ```
 
-## 📚 Singleton
+## 📚 useSingleton
 
-Wraps the
-[`createSingleton()`](https://atomiks.github.io/tippyjs/addons/#singleton)
-method.
-
-Depending on your component tree, you can use one of the following:
-
-### `<TippySingleton />`
-
-If each of your reference elements are adjacent to one another, with no nesting in the tree.
+A Hook for the
+[`createSingleton()`](https://atomiks.github.io/tippyjs/v6/addons/#singleton)
+addon.
 
 ```jsx
-import Tippy, {TippySingleton} from '@tippy.js/react';
+import Tippy, {useSingleton} from '@tippyjs/react';
 
 function App() {
+  const [source, target] = useSingleton();
+
   return (
-    <TippySingleton delay={500}>
-      <Tippy content="a">
-        <button />
+    <>
+      {/* This is the tippy that gets used as the singleton */}
+      <Tippy singleton={source} delay={500} />
+
+      {/* These become "virtual" */}
+      <Tippy content="Hello" singleton={target}>
+        <button>Reference</button>
       </Tippy>
-      <Tippy content="b">
-        <button />
+      <Tippy content="Bye" singleton={target}>
+        <button>Reference</button>
       </Tippy>
-    </TippySingleton>
+    </>
   );
 }
 ```
 
-### `useSingleton()` (v3.1)
+`useSingleton()` takes an optional props argument, currently with one property,
+`disabled`:
 
-If each of your reference elements are not adjacent to one another, or there is nesting in the tree.
+```js
+const [source, target] = useSingleton({disabled: true});
+```
+
+### Headless singleton
+
+The `render` prop takes the singleton content as a second parameter:
 
 ```jsx
-import Tippy, {useSingleton} from '@tippy.js/react';
+import Tippy, {useSingleton} from '@tippyjs/react/headless';
 
 function App() {
-  const singleton = useSingleton({delay: 500});
+  const [source, target] = useSingleton();
 
   return (
     <>
-      <Tippy content="a" singleton={singleton}>
-        <button />
+      <Tippy
+        singleton={source}
+        render={(attrs, content) => <div {...attrs}>{content}</div>}
+        delay={500}
+      />
+
+      <Tippy content="Hello" singleton={target}>
+        <button>Reference</button>
       </Tippy>
-      <button />
-      <div>
-        <Tippy content="b" singleton={singleton}>
-          <button />
-        </Tippy>
-      </div>
+      <Tippy content="Bye" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
     </>
   );
 }
@@ -381,9 +405,9 @@ function App() {
 
 ## 📦 Bundle size
 
-- `popper.js` ≈ 7 kB
-- `tippy.js` ≈ 5.5 kB (including CSS)
-- `@tippy.js/react` ≈ 1 kB
+- `@popperjs/core` ≈ 6 kB
+- `tippy.js` ≈ 4.5 kB
+- `@tippyjs/react` ≈ 1 kB
 
 If you're using Popper.js for other parts of your app, the added cost becomes
 much smaller!
@@ -392,7 +416,7 @@ much smaller!
 
 Why should you use this library, and how does it compare to other ones?
 
-[Read all about it here!](https://atomiks.github.io/tippyjs/motivation/)
+[Read all about it here!](https://atomiks.github.io/tippyjs/v6/motivation/)
 
 ## 📝 License
 

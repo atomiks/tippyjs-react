@@ -1,10 +1,31 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import Tippy, {TippySingleton, useSingleton} from '../src';
+import styled from 'styled-components';
+import {useSpring, animated} from 'react-spring';
 import {followCursor} from 'tippy.js';
+import Tippy, {useSingleton} from '../src';
+import TippyHeadless, {
+  useSingleton as useSingletonHeadless,
+} from '../src/headless';
 
 import 'tippy.js/dist/tippy.css';
 import './index.css';
+
+const Box = styled(animated.div)`
+  background: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  visibility: visible;
+
+  &[data-placement^='top'] {
+    transform-origin: bottom;
+  }
+
+  &[data-placement^='bottom'] {
+    transform-origin: top;
+  }
+`;
 
 function ContentString() {
   const [count, setCount] = useState(0);
@@ -45,13 +66,13 @@ function ContentElement() {
   );
 }
 
-function EnabledProp() {
-  const [enabled, setEnabled] = useState(true);
+function DisabledProp() {
+  const [disabled, setDisabled] = useState(false);
 
   return (
-    <Tippy content="Tooltip" enabled={enabled}>
-      <button onClick={() => setEnabled(enabled => !enabled)}>
-        enabled: {String(enabled)}
+    <Tippy content="Tooltip" disabled={disabled}>
+      <button onClick={() => setDisabled(disabled => !disabled)}>
+        disabled: {String(disabled)}
       </button>
     </Tippy>
   );
@@ -70,46 +91,39 @@ function VisibleProp() {
 }
 
 function Singleton() {
-  const [count, setCount] = useState(3);
+  const [source, target] = useSingleton();
 
-  let children = [];
-  for (let i = 0; i < count; i++) {
-    children.push(
-      <Tippy key={i} content="Tooltip">
-        <button>{i}</button>
-      </Tippy>,
-    );
-  }
-
-  useEffect(() => {
-    setInterval(() => {
-      setCount(count => (count === 5 ? 1 : count + 1));
-    }, 5000);
-  }, []);
-
-  return <TippySingleton delay={500}>{children}</TippySingleton>;
+  return (
+    <>
+      <Tippy singleton={source} delay={500} />
+      <Tippy content="Hello" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+      <Tippy content="Bye" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+    </>
+  );
 }
 
-function SingletonHook() {
-  const singleton = useSingleton({delay: 500});
-  const [count, setCount] = useState(3);
+function SingletonHeadless() {
+  const [source, target] = useSingletonHeadless();
 
-  let children = [];
-  for (let i = 0; i < count; i++) {
-    children.push(
-      <Tippy key={i} singleton={singleton} content="Tooltip">
-        <button>{i}</button>
-      </Tippy>,
-    );
-  }
-
-  useEffect(() => {
-    setInterval(() => {
-      setCount(count => (count === 5 ? 1 : count + 1));
-    }, 5000);
-  }, []);
-
-  return <>{children}</>;
+  return (
+    <>
+      <Tippy
+        render={(attrs, content) => <Box {...attrs}>{content}</Box>}
+        singleton={source}
+        delay={500}
+      />
+      <Tippy content="Hello" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+      <Tippy content="Bye" singleton={target}>
+        <button>Reference</button>
+      </Tippy>
+    </>
+  );
 }
 
 function FollowCursor() {
@@ -120,6 +134,44 @@ function FollowCursor() {
   );
 }
 
+function AnimatedHeadlessTippy() {
+  const config = {tension: 300, friction: 15};
+  const initialStyles = {opacity: 0, transform: 'scale(0.5)'};
+  const [props, setSpring] = useSpring(() => initialStyles);
+
+  function onMount() {
+    setSpring({
+      opacity: 1,
+      transform: 'scale(1)',
+      onRest: () => {},
+      config,
+    });
+  }
+
+  function onHide({unmount}) {
+    setSpring({
+      ...initialStyles,
+      onRest: unmount,
+      config: {...config, clamp: true},
+    });
+  }
+
+  return (
+    <TippyHeadless
+      render={attrs => (
+        <Box style={props} {...attrs}>
+          Hello
+        </Box>
+      )}
+      animation={true}
+      onMount={onMount}
+      onHide={onHide}
+    >
+      <button>react-spring</button>
+    </TippyHeadless>
+  );
+}
+
 function App() {
   return (
     <>
@@ -127,14 +179,16 @@ function App() {
       <ContentString />
       <ContentElement />
       <h2>Special</h2>
-      <EnabledProp />
+      <DisabledProp />
       <VisibleProp />
-      <h2>Singleton dynamic children</h2>
+      <h2>Singleton</h2>
       <Singleton />
-      <h2>Singleton (via useSingleton hook)</h2>
-      <SingletonHook />
+      <h2>Singleton Headless</h2>
+      <SingletonHeadless />
       <h2>Plugins</h2>
       <FollowCursor />
+      <h2>Headless Tippy</h2>
+      <AnimatedHeadlessTippy />
     </>
   );
 }

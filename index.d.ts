@@ -1,13 +1,24 @@
 import * as React from 'react';
-import {default as tippyCore, Instance, Props, Plugin} from 'tippy.js';
+import {
+  default as tippyCore,
+  Instance,
+  Props,
+  Plugin,
+  Placement,
+} from 'tippy.js';
 
-export interface TippyProps extends Omit<Partial<Props>, 'content'> {
-  content: React.ReactChild | React.ReactChild[];
-  children: React.ReactElement<any>;
+export interface TippyProps extends Omit<Partial<Props>, 'content' | 'render'> {
+  children?: React.ReactElement<any>;
+  content?: React.ReactChild | React.ReactChild[];
   visible?: boolean;
-  enabled?: boolean;
+  disabled?: boolean;
   className?: string;
-  singleton?: (instance: Instance) => void;
+  singleton?: SingletonObject;
+  render?: (attrs: {
+    'data-placement': Placement;
+    'data-reference-hidden'?: string;
+    'data-escaped'?: string;
+  }) => React.ReactNode;
 }
 
 declare const Tippy: React.ForwardRefExoticComponent<TippyProps>;
@@ -15,16 +26,21 @@ export default Tippy;
 
 export const tippy: typeof tippyCore;
 
-export interface TippySingletonProps extends Partial<Props> {
-  children: Array<React.ReactElement<any>>;
-  enabled?: boolean;
-  className?: string;
+type SingletonHookArgs = {
+  instance: Instance;
+  content: React.ReactChild | React.ReactChild[];
+  props: Props;
+};
+
+type SingletonObject = {
+  data?: any;
+  hook(args: SingletonHookArgs): void;
+};
+
+export interface UseSingletonProps {
+  disabled?: boolean;
 }
-
-export const TippySingleton: React.FunctionComponent<TippySingletonProps>;
-
-export type UseSingletonProps = Omit<TippySingletonProps, 'children'>;
 
 export const useSingleton: (
   props?: UseSingletonProps,
-) => (instance: Instance) => void;
+) => [SingletonObject, SingletonObject];

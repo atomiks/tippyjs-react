@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Tippy /> props.plugins 1`] = `
+Array [
+  Object {
+    "defaultValue": false,
+    "fn": [Function],
+    "name": "animateFill",
+  },
+  Object {
+    "defaultValue": false,
+    "fn": [Function],
+    "name": "followCursor",
+  },
+  Object {
+    "defaultValue": false,
+    "fn": [Function],
+    "name": "inlinePositioning",
+  },
+  Object {
+    "defaultValue": false,
+    "fn": [Function],
+    "name": "sticky",
+  },
+  Object {
+    "fn": [Function],
+  },
+]
+`;
+
+exports[`<Tippy /> render prop 1`] = `
+<div
+  data-tippy-root=""
+  id="tippy-29"
+  style="pointer-events: none; transition: none; position: absolute; left: 0px; top: 0px; margin: 0px;"
+>
+  <div>
+    Hello
+  </div>
+</div>
+`;

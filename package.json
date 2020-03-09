@@ -1,6 +1,6 @@
 {
-  "name": "@tippy.js/react",
-  "version": "3.1.1",
+  "name": "@tippyjs/react",
+  "version": "4.0.0-alpha.1",
   "description": "React component for Tippy.js",
   "main": "dist/tippy-react.umd.js",
   "module": "dist/tippy-react.esm.js",
@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "parcel demo/index.html -d .devserver --no-cache",
     "build": "rollup --config",
-    "test": "jest --coverage --silent",
+    "test": "jest --coverage",
     "lint": "eslint \"{src,test}/**/*.js\"",
     "format": "prettier --write \"{src,test,demo}/**/*.{js,ts,json,css,md}\""
   },
@@ -24,6 +24,7 @@
   ],
   "files": [
     "dist/",
+    "headless/",
     "index.d.ts"
   ],
   "jest": {
@@ -51,7 +52,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "tippy.js": "^5.1.1"
+    "tippy.js": "^6.0.1"
   },
   "peerDependencies": {
     "react": ">=16.8",
@@ -67,7 +68,8 @@
     "@types/react": "^16.8.2",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^25.1.0",
+    "core-js": "^3.6.4",
     "eslint": "^5.14.1",
     "eslint-config-prettier": "^3.6.0",
     "eslint-plugin-react": "^7.12.4",
@@ -79,11 +81,13 @@
     "prettier": "^1.16.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
+    "react-spring": "^8.0.27",
     "rollup": "^1.14.3",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
-    "rollup-plugin-terser": "^4.0.4",
+    "rollup-plugin-terser": "^5.2.0",
+    "styled-components": "^5.0.1",
     "typescript": "^3.6.3"
   },
   "directories": {
