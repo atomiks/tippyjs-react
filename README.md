@@ -20,7 +20,7 @@
 popover, dropdown, and menu solution for the web, powered by Popper.js. It
 provides the logic and styling involved in all types of elements that pop out
 from the flow of the document and get overlaid on top of the UI, positioned next
-to a reference element.
+to a reference element.f
 
 This is a lightweight wrapper that lets you use it declaratively in React.
 
