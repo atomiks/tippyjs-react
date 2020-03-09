@@ -4,11 +4,7 @@
 
 <div align="center">
   <h1>Tippy.js for React</h1>
-  <p>The complete tooltip, popover, dropdown, and menu solution for React apps</p>
-  <br>
 </div>
-
----
 
 [Tippy.js](https://github.com/atomiks/tippyjs/) is the complete tooltip,
 popover, dropdown, and menu solution for the web, powered by Popper.js. It
