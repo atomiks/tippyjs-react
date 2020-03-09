@@ -5,12 +5,6 @@
 <div align="center">
   <h1>Tippy.js for React</h1>
   <p>The complete tooltip, popover, dropdown, and menu solution for React apps</p>
-  <a href="https://www.npmjs.com/package/@tippyjs/react">
-   <img src="https://img.shields.io/npm/dm/@tippyjs/react.svg?color=%235599ff&style=for-the-badge" alt="npm downloads per month">
-  <a>
-  <a href="https://github.com/atomiks/tippy.js-react/blob/master/LICENSE">
-    <img src="https://img.shields.io/npm/l/@tippyjs/react.svg?color=%23c677cf&style=for-the-badge" alt="MIT License">
-  </a>
   <br>
 </div>
 
@@ -20,7 +14,7 @@
 popover, dropdown, and menu solution for the web, powered by Popper.js. It
 provides the logic and styling involved in all types of elements that pop out
 from the flow of the document and get overlaid on top of the UI, positioned next
-to a reference element.f
+to a reference element.
 
 This is a lightweight wrapper that lets you use it declaratively in React.
 
