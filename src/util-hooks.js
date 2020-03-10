@@ -1,21 +1,9 @@
-import {isBrowser, updateClassName} from './utils';
+import {isBrowser} from './utils';
 import {useLayoutEffect, useEffect, useRef} from 'react';
 
 export const useIsomorphicLayoutEffect = isBrowser
   ? useLayoutEffect
   : useEffect;
-
-export function useUpdateClassName(component, className, deps) {
-  useIsomorphicLayoutEffect(() => {
-    const box = component.instance.popper.firstElementChild;
-    if (className) {
-      updateClassName(box, 'add', className);
-      return () => {
-        updateClassName(box, 'remove', className);
-      };
-    }
-  }, [className, ...deps]);
-}
 
 export function useInstance(initialValue) {
   // Using refs instead of state as it's recommended to not store imperative

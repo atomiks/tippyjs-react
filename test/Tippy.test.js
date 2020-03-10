@@ -403,6 +403,27 @@ describe('<Tippy />', () => {
 
     expect(instance.props.popperOptions).toMatchSnapshot();
   });
+
+  test('render + className prop warning', () => {
+    const spy = jest.spyOn(console, 'warn');
+
+    render(<Tippy render={() => <div />} className="x" />);
+
+    expect(spy).toHaveBeenCalledWith(
+      [
+        '@tippyjs/react: Cannot use `className` prop in conjunction',
+        'with the `render` prop. Place the className on the element',
+        'you are rendering.',
+      ].join(' '),
+    );
+
+    spy.mockReset();
+
+    render(<Tippy render={() => <div />} />);
+    render(<Tippy className="x" />);
+
+    expect(spy).not.toHaveBeenCalled();
+  });
 });
 
 describe('Tippy.propTypes', () => {

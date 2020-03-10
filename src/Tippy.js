@@ -1,12 +1,13 @@
 import React, {cloneElement, useState} from 'react';
 import PropTypes from 'prop-types';
 import {createPortal} from 'react-dom';
-import {preserveRef, ssrSafeCreateDiv, toDataAttributes} from './utils';
 import {
-  useInstance,
-  useIsomorphicLayoutEffect,
-  useUpdateClassName,
-} from './util-hooks';
+  preserveRef,
+  ssrSafeCreateDiv,
+  toDataAttributes,
+  updateClassName,
+} from './utils';
+import {useInstance, useIsomorphicLayoutEffect} from './util-hooks';
 
 export default function TippyGenerator(tippy) {
   function Tippy({
@@ -195,7 +196,31 @@ export default function TippyGenerator(tippy) {
       });
     }, [attrs.placement, attrs.referenceHidden, attrs.escaped]);
 
-    useUpdateClassName(component, className, deps);
+    useIsomorphicLayoutEffect(() => {
+      if (className) {
+        if (render) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.warn(
+              [
+                '@tippyjs/react: Cannot use `className` prop in conjunction',
+                'with the `render` prop. Place the className on the element',
+                'you are rendering.',
+              ].join(' '),
+            );
+          }
+
+          return;
+        }
+
+        const box = component.instance.popper.firstElementChild;
+
+        updateClassName(box, 'add', className);
+
+        return () => {
+          updateClassName(box, 'remove', className);
+        };
+      }
+    }, [className, ...deps]);
 
     return (
       <>
