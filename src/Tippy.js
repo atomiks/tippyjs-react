@@ -15,9 +15,9 @@ export default function TippyGenerator(tippy) {
     className,
     visible,
     singleton,
+    render,
     disabled = false,
     ignoreAttributes = true,
-    render,
     // Filter React development reserved props
     // added by babel-preset-react dev plugins:
     // transform-react-jsx-self and transform-react-jsx-source
@@ -115,7 +115,20 @@ export default function TippyGenerator(tippy) {
 
       const {instance} = component;
 
-      instance.setProps(props);
+      instance.setProps({
+        ...props,
+        popperOptions: {
+          ...instance.props.popperOptions,
+          ...props.popperOptions,
+          modifiers: [
+            // Preserve tippy's internal + plugin modifiers
+            ...(instance.props.popperOptions?.modifiers || []).filter(
+              modifier => modifier.name.indexOf('tippy') >= 0,
+            ),
+            ...(props.popperOptions?.modifiers || []),
+          ],
+        },
+      });
 
       if (disabled) {
         instance.disable();

@@ -39,3 +39,32 @@ exports[`<Tippy /> render prop 1`] = `
   </div>
 </div>
 `;
+
+exports[`<Tippy /> render prop preserve popperOptions 1`] = `
+Object {
+  "modifiers": Array [
+    Object {
+      "enabled": true,
+      "fn": [Function],
+      "name": "tippyInlinePositioning",
+      "phase": "afterWrite",
+    },
+    Object {
+      "enabled": true,
+      "fn": [Function],
+      "name": "$$tippyReact",
+      "phase": "beforeWrite",
+      "requires": Array [
+        "computeStyles",
+      ],
+    },
+    Object {
+      "enabled": true,
+      "fn": [Function],
+      "name": "x",
+      "phase": "main",
+    },
+  ],
+  "strategy": "fixed",
+}
+`;

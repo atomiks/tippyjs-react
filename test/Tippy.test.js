@@ -384,6 +384,25 @@ describe('<Tippy />', () => {
 
     expect(instance.popper).toMatchSnapshot();
   });
+
+  test('render prop preserve popperOptions', () => {
+    const element = (
+      <Tippy
+        render={attrs => <div {...attrs}>Hello</div>}
+        popperOptions={{
+          strategy: 'fixed',
+          modifiers: [{name: 'x', enabled: true, phase: 'main', fn: () => {}}],
+        }}
+      >
+        <button />
+      </Tippy>
+    );
+
+    const {rerender} = render(element);
+    rerender(element);
+
+    expect(instance.props.popperOptions).toMatchSnapshot();
+  });
 });
 
 describe('Tippy.propTypes', () => {
