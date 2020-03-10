@@ -165,6 +165,36 @@ on it:
 For details on styling the arrow from scratch,
 [take a look at the Popper tutorial](https://popper.js.org/docs/v2/tutorial/#arrow).
 
+You may also pass a ref to the element directly without the attribute using a
+callback ref:
+
+```jsx
+function App() {
+  const [arrow, setArrow] = useState(null);
+
+  return (
+    <Tippy
+      render={attrs => (
+        <Box {...attrs}>
+          Content
+          <Arrow ref={setArrow} />
+        </Box>
+      )}
+      popperOptions={{
+        modifiers: [
+          {
+            name: 'arrow',
+            options: {
+              element: arrow,
+            },
+          },
+        ],
+      }}
+    />
+  );
+}
+```
+
 #### Note on Headless Tippy in React
 
 The root popper node is abstracted away and gets styled/mutated by Tippy
