@@ -165,6 +165,17 @@ on it:
 For details on styling the arrow from scratch,
 [take a look at the Popper tutorial](https://popper.js.org/docs/v2/tutorial/#arrow).
 
+#### Note on Headless Tippy in React
+
+The root popper node is abstracted away and gets styled/mutated by Tippy
+internally, so Headless Tippy in React is partially headless. This ensures it
+works correctly with minimal effort on your behalf to render.
+
+When rendering an element with the `render` prop, you're rendering the inner box
+element that the root popper node wraps, which is what gets styled and animated.
+For advanced cases, you can access the parent popper node as `instance.popper`
+in the `onCreate` lifecycle hook.
+
 ### Component children
 
 If you want to use a component element as a child, ensure you forward the ref to
