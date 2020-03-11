@@ -32,7 +32,7 @@ exports[`<Tippy /> render prop 1`] = `
 <div
   data-tippy-root=""
   id="tippy-29"
-  style="pointer-events: none; transition: none; position: absolute; left: 0px; top: 0px; margin: 0px;"
+  style="pointer-events: none; z-index: 9999; transition: none; position: absolute; left: 0px; top: 0px; margin: 0px;"
 >
   <div>
     Hello
