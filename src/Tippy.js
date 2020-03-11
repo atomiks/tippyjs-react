@@ -75,7 +75,7 @@ export default function TippyGenerator(tippy) {
       };
     }
 
-    const deps = [children.type];
+    const createDeps = [children.type];
 
     // CREATE
     useIsomorphicLayoutEffect(() => {
@@ -104,7 +104,7 @@ export default function TippyGenerator(tippy) {
       return () => {
         instance.destroy();
       };
-    }, deps);
+    }, createDeps);
 
     // UPDATE
     useIsomorphicLayoutEffect(() => {
@@ -194,7 +194,7 @@ export default function TippyGenerator(tippy) {
           ],
         },
       });
-    }, [attrs.placement, attrs.referenceHidden, attrs.escaped]);
+    }, [attrs.placement, attrs.referenceHidden, attrs.escaped, ...createDeps]);
 
     useIsomorphicLayoutEffect(() => {
       if (className) {
@@ -220,7 +220,7 @@ export default function TippyGenerator(tippy) {
           updateClassName(box, 'remove', className);
         };
       }
-    }, [className, ...deps]);
+    }, [className, ...createDeps]);
 
     return (
       <>
