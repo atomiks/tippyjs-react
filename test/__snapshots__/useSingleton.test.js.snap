@@ -3,7 +3,7 @@
 exports[`useSingleton headless mode updates content correctly 1`] = `
 <div
   data-tippy-root=""
-  id="tippy-1"
+  id="tippy-4"
   style="pointer-events: none; z-index: 9999; transition: none; position: absolute; left: 0px; top: 0px; margin: 0px;"
 >
   <div>
@@ -15,7 +15,7 @@ exports[`useSingleton headless mode updates content correctly 1`] = `
 exports[`useSingleton headless mode updates content correctly 2`] = `
 <div
   data-tippy-root=""
-  id="tippy-1"
+  id="tippy-4"
   style="pointer-events: none; z-index: 9999; transition: none; position: absolute; left: 0px; top: 0px; margin: 0px;"
 >
   <div>

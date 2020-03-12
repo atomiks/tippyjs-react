@@ -1,7 +1,9 @@
 /* eslint-disable */
 import React from 'react';
 import Tippy, {useSingleton} from '../src';
-import {useSingleton as useSingletonHeadless} from '../src/headless';
+import TippyHeadless, {
+  useSingleton as useSingletonHeadless,
+} from '../src/headless';
 import {render, cleanup, fireEvent} from '@testing-library/react';
 
 jest.useFakeTimers();
@@ -100,19 +102,20 @@ describe('useSingleton headless mode', () => {
 
     return (
       <>
-        <Tippy
+        <TippyHeadless
           onCreate={onCreate}
           render={(attrs, content) => <div {...attrs}>{content}</div>}
           singleton={source}
           trigger="click"
           hideOnClick={false}
         />
-        <Tippy content="a" singleton={target}>
+
+        <TippyHeadless content="a" singleton={target}>
           <button data-testid="a" />
-        </Tippy>
-        <Tippy content="b" singleton={target}>
+        </TippyHeadless>
+        <TippyHeadless content="b" singleton={target}>
           <button data-testid="b" />
-        </Tippy>
+        </TippyHeadless>
       </>
     );
   }
