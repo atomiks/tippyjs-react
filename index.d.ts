@@ -7,18 +7,23 @@ import {
   Placement,
 } from 'tippy.js';
 
+type Content = React.ReactChild | React.ReactChild[];
+
 export interface TippyProps extends Omit<Partial<Props>, 'content' | 'render'> {
   children?: React.ReactElement<any>;
-  content?: React.ReactChild | React.ReactChild[];
+  content?: Content;
   visible?: boolean;
   disabled?: boolean;
   className?: string;
   singleton?: SingletonObject;
-  render?: (attrs: {
-    'data-placement': Placement;
-    'data-reference-hidden'?: string;
-    'data-escaped'?: string;
-  }) => React.ReactNode;
+  render?: (
+    attrs: {
+      'data-placement': Placement;
+      'data-reference-hidden'?: string;
+      'data-escaped'?: string;
+    },
+    content?: Content,
+  ) => React.ReactNode;
 }
 
 declare const Tippy: React.ForwardRefExoticComponent<TippyProps>;
@@ -28,7 +33,7 @@ export const tippy: typeof tippyCore;
 
 type SingletonHookArgs = {
   instance: Instance;
-  content: React.ReactChild | React.ReactChild[];
+  content: Content;
   props: Props;
 };
 
