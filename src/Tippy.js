@@ -6,6 +6,7 @@ import {
   ssrSafeCreateDiv,
   toDataAttributes,
   updateClassName,
+  deepPreserveProps,
 } from './utils';
 import {useInstance, useIsomorphicLayoutEffect} from './util-hooks';
 
@@ -55,31 +56,36 @@ export default function TippyGenerator(tippy) {
     const plugins = props.plugins || [];
 
     if (render) {
-      if (isSingletonMode) {
-        plugins.push({
-          fn: () => ({
-            onTrigger(_, event) {
-              const {content} = singleton.data.children.find(
-                ({instance}) => instance.reference === event.currentTarget,
-              );
-              setSingletonContent(content);
-            },
-          }),
-        });
-      }
-
       computedProps = {
         ...props,
-        plugins,
+        plugins: isSingletonMode
+          ? [
+              ...plugins,
+              {
+                fn: () => ({
+                  onTrigger(_, event) {
+                    const {content} = singleton.data.children.find(
+                      ({instance}) =>
+                        instance.reference === event.currentTarget,
+                    );
+                    setSingletonContent(content);
+                  },
+                }),
+              },
+            ]
+          : plugins,
         render: () => ({popper: component.container}),
       };
     }
 
-    const createDeps = [children.type];
+    const deps = children ? [children.type] : [];
 
     // CREATE
     useIsomorphicLayoutEffect(() => {
-      const instance = tippy(component.ref, computedProps);
+      const instance = tippy(
+        component.ref || ssrSafeCreateDiv(),
+        computedProps,
+      );
 
       component.instance = instance;
 
@@ -104,7 +110,7 @@ export default function TippyGenerator(tippy) {
       return () => {
         instance.destroy();
       };
-    }, createDeps);
+    }, deps);
 
     // UPDATE
     useIsomorphicLayoutEffect(() => {
@@ -116,20 +122,7 @@ export default function TippyGenerator(tippy) {
 
       const {instance} = component;
 
-      instance.setProps({
-        ...props,
-        popperOptions: {
-          ...instance.props.popperOptions,
-          ...props.popperOptions,
-          modifiers: [
-            // Preserve tippy's internal + plugin modifiers
-            ...(instance.props.popperOptions?.modifiers || []).filter(
-              modifier => modifier.name.indexOf('tippy') >= 0,
-            ),
-            ...(props.popperOptions?.modifiers || []),
-          ],
-        },
-      });
+      instance.setProps(deepPreserveProps(instance.props, props));
 
       if (disabled) {
         instance.disable();
@@ -194,7 +187,7 @@ export default function TippyGenerator(tippy) {
           ],
         },
       });
-    }, [attrs.placement, attrs.referenceHidden, attrs.escaped, ...createDeps]);
+    }, [attrs.placement, attrs.referenceHidden, attrs.escaped, ...deps]);
 
     useIsomorphicLayoutEffect(() => {
       if (className) {
@@ -220,16 +213,18 @@ export default function TippyGenerator(tippy) {
           updateClassName(box, 'remove', className);
         };
       }
-    }, [className, ...createDeps]);
+    }, [className, ...deps]);
 
     return (
       <>
-        {cloneElement(children, {
-          ref(node) {
-            component.ref = node;
-            preserveRef(children.ref, node);
-          },
-        })}
+        {children
+          ? cloneElement(children, {
+              ref(node) {
+                component.ref = node;
+                preserveRef(children.ref, node);
+              },
+            })
+          : null}
         {mounted &&
           createPortal(
             render
@@ -249,7 +244,7 @@ export default function TippyGenerator(tippy) {
     ]);
 
     Tippy.propTypes = {
-      children: PropTypes.element.isRequired,
+      children: PropTypes.element,
       content: PropTypes.oneOfType([
         ContentType,
         PropTypes.arrayOf(ContentType),

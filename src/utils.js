@@ -39,3 +39,20 @@ export function toDataAttributes(attrs) {
 
   return dataAttrs;
 }
+
+export function deepPreserveProps(instanceProps, componentProps) {
+  return {
+    ...componentProps,
+    popperOptions: {
+      ...instanceProps.popperOptions,
+      ...componentProps.popperOptions,
+      modifiers: [
+        // Preserve tippy's internal + plugin modifiers
+        ...(instanceProps.popperOptions?.modifiers || []).filter(
+          modifier => modifier.name.indexOf('tippy') >= 0,
+        ),
+        ...(componentProps.popperOptions?.modifiers || []),
+      ],
+    },
+  };
+}

@@ -1,7 +1,8 @@
 import {useInstance, useIsomorphicLayoutEffect} from './util-hooks';
+import {deepPreserveProps} from './utils';
 
 export default function useSingletonGenerator(createSingleton) {
-  return function useSingleton({disabled = false} = {}) {
+  return function useSingleton({disabled = false, overrides = []} = {}) {
     const component = useInstance({
       children: [],
       renders: 1,
@@ -13,7 +14,11 @@ export default function useSingletonGenerator(createSingleton) {
       const {children, sourceData} = component;
       const instance = createSingleton(
         children.map(child => child.instance),
-        sourceData.props,
+        {
+          ...sourceData.props,
+          popperOptions: sourceData.instance.props.popperOptions,
+          overrides,
+        },
       );
 
       component.instance = instance;
@@ -38,7 +43,7 @@ export default function useSingletonGenerator(createSingleton) {
 
       const {instance, sourceData} = component;
 
-      instance.setProps(sourceData.props);
+      instance.setProps(deepPreserveProps(instance, sourceData.props));
 
       if (disabled) {
         instance.disable();
