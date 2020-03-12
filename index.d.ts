@@ -44,6 +44,7 @@ type SingletonObject = {
 
 export interface UseSingletonProps {
   disabled?: boolean;
+  overrides?: Array<keyof Props>;
 }
 
 export const useSingleton: (
