@@ -107,21 +107,22 @@ function Singleton() {
 }
 
 function SingletonHeadless() {
-  const [source, target] = useSingletonHeadless();
+  const [source, target] = useSingletonHeadless({overrides: ['placement']});
 
   return (
     <>
-      <Tippy
+      <TippyHeadless
         render={(attrs, content) => <Box {...attrs}>{content}</Box>}
         singleton={source}
         delay={500}
       />
-      <Tippy content="Hello" singleton={target}>
+
+      <TippyHeadless content="Hello" singleton={target}>
         <button>Reference</button>
-      </Tippy>
-      <Tippy content="Bye" singleton={target}>
+      </TippyHeadless>
+      <TippyHeadless placement="right" content="Bye" singleton={target}>
         <button>Reference</button>
-      </Tippy>
+      </TippyHeadless>
     </>
   );
 }
