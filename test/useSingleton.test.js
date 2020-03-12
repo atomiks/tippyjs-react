@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import Tippy, {useSingleton} from '../src';
 import TippyHeadless, {
