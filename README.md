@@ -398,11 +398,13 @@ function App() {
 }
 ```
 
-`useSingleton()` takes an optional props argument, currently with one property,
-`disabled`:
+`useSingleton()` takes an optional props argument:
 
 ```js
-const [source, target] = useSingleton({disabled: true});
+const [source, target] = useSingleton({
+  disabled: true,
+  overrides: ['placement'],
+});
 ```
 
 ### Headless singleton
