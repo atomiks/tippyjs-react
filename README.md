@@ -322,15 +322,18 @@ function App() {
   const [visible, setVisible] = useState(true);
 
   return (
-    <Tippy content="Tooltip" visible={visible}>
+    <Tippy
+      content="Tooltip"
+      visible={visible}
+      // Control document click behavior
+      hideOnClick={false}
+      onClickOutside={() => setVisible(false)}
+    >
       <button />
     </Tippy>
   );
 }
 ```
-
-> **Note**: You should also set the `hideOnClick` prop to `false` if you don't
-> want the tippy to hide when the user clicks on the document somewhere.
 
 ### Plugins
 
