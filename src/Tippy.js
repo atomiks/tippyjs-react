@@ -45,6 +45,26 @@ export default function TippyGenerator(tippy) {
     };
 
     if (isControlledMode) {
+      if (process.env.NODE_ENV !== 'production') {
+        if (props.trigger !== undefined) {
+          console.warn(
+            [
+              '@tippyjs/react: Cannot specify `trigger` prop in controlled',
+              'mode (`visible` prop)',
+            ].join(' '),
+          );
+        }
+
+        if (props.hideOnClick !== undefined) {
+          console.warn(
+            [
+              '@tippyjs/react: Cannot specify `hideOnClick` prop in controlled',
+              'mode (`visible` prop)',
+            ].join(' '),
+          );
+        }
+      }
+
       props.trigger = 'manual';
       props.hideOnClick = false;
     }

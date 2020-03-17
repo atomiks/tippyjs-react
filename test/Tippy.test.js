@@ -381,12 +381,12 @@ describe('<Tippy />', () => {
     expect(instance.props.hideOnClick).toBe(false);
 
     rerender(
-      <Tippy content="tooltip">
+      <Tippy content="tooltip" visible={false} hideOnClick={true}>
         <button />
       </Tippy>,
     );
 
-    expect(instance.props.hideOnClick).toBe(true);
+    expect(instance.props.hideOnClick).toBe(false);
 
     rerender(
       <Tippy content="tooltip" hideOnClick="toggle">
@@ -395,6 +395,44 @@ describe('<Tippy />', () => {
     );
 
     expect(instance.props.hideOnClick).toBe('toggle');
+  });
+
+  test('controlled mode warnings', () => {
+    const spy = jest.spyOn(console, 'warn');
+
+    const {rerender} = render(
+      <Tippy content="tooltip" hideOnClick={false}>
+        <button />
+      </Tippy>,
+    );
+
+    expect(spy).not.toHaveBeenCalled();
+
+    rerender(
+      <Tippy content="tooltip" visible={false} hideOnClick={false}>
+        <button />
+      </Tippy>,
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      [
+        '@tippyjs/react: Cannot specify `hideOnClick` prop in controlled',
+        'mode (`visible` prop)',
+      ].join(' '),
+    );
+
+    rerender(
+      <Tippy content="tooltip" visible={false} trigger="click">
+        <button />
+      </Tippy>,
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      [
+        '@tippyjs/react: Cannot specify `trigger` prop in controlled',
+        'mode (`visible` prop)',
+      ].join(' '),
+    );
   });
 
   test('props.plugins', () => {
