@@ -350,6 +350,7 @@ not burdened with the cost of it.
 
 ```jsx
 import Tippy from '@tippyjs/react';
+// ⚠️ import from 'tippy.js/headless' if using Headless Tippy
 import {followCursor} from 'tippy.js';
 
 function App() {
