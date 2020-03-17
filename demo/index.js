@@ -82,7 +82,7 @@ function VisibleProp() {
   const [visible, setVisible] = useState(false);
 
   return (
-    <Tippy content="Tooltip" visible={visible} hideOnClick={false}>
+    <Tippy content="Tooltip" visible={visible}>
       <button onClick={() => setVisible(visible => !visible)}>
         visible: {String(visible)}
       </button>
@@ -186,7 +186,6 @@ function FullyControlledOnClick() {
         </div>
       }
       interactive={true}
-      trigger="manual"
       visible={isOpen}
       onClickOutside={close}
     >
