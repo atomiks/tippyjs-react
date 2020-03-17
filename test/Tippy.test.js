@@ -361,6 +361,42 @@ describe('<Tippy />', () => {
     expect(instance.state.isVisible).toBe(true);
   });
 
+  test('props.visible uses hideOnClick: false by default', () => {
+    const {rerender} = render(
+      <Tippy content="tooltip" visible={true}>
+        <button />
+      </Tippy>,
+    );
+
+    jest.runAllTimers();
+
+    expect(instance.props.hideOnClick).toBe(false);
+
+    rerender(
+      <Tippy content="tooltip" visible={false}>
+        <button />
+      </Tippy>,
+    );
+
+    expect(instance.props.hideOnClick).toBe(false);
+
+    rerender(
+      <Tippy content="tooltip">
+        <button />
+      </Tippy>,
+    );
+
+    expect(instance.props.hideOnClick).toBe(true);
+
+    rerender(
+      <Tippy content="tooltip" hideOnClick="toggle">
+        <button />
+      </Tippy>,
+    );
+
+    expect(instance.props.hideOnClick).toBe('toggle');
+  });
+
   test('props.plugins', () => {
     const plugins = [{fn: () => ({})}];
 
