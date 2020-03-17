@@ -299,8 +299,6 @@ See [themes](https://atomiks.github.io/tippyjs/v6/themes/) for more information.
 
 ### `disabled?: boolean`
 
-Use this when you want to temporarily disable a tippy from showing.
-
 ```jsx
 function App() {
   const [disabled, setDisabled] = useState(false);
@@ -313,23 +311,20 @@ function App() {
 }
 ```
 
-### `visible?: boolean`
+### `visible?: boolean` (controlled mode)
 
-Programmatically show or hide the tippy instead of relying on events.
+Use React's state to fully control the tippy instead of relying on the native
+`trigger` and `hideOnClick` props:
 
 ```jsx
 function App() {
   const [visible, setVisible] = useState(true);
+  const show = () => setVisible(true);
+  const hide = () => setVisible(false);
 
   return (
-    <Tippy
-      content="Tooltip"
-      visible={visible}
-      // Control document click behavior
-      hideOnClick={false}
-      onClickOutside={() => setVisible(false)}
-    >
-      <button />
+    <Tippy content="Tooltip" visible={visible} onClickOutside={hide}>
+      <button onClick={visible ? hide : show}>Reference</button>
     </Tippy>
   );
 }
