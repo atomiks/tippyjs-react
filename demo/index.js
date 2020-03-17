@@ -173,6 +173,29 @@ function AnimatedHeadlessTippy() {
   );
 }
 
+function FullyControlledOnClick() {
+  const [isOpen, setIsOpen] = useState(false);
+  const open = () => setIsOpen(true);
+  const close = () => setIsOpen(false);
+
+  return (
+    <Tippy
+      content={
+        <div style={{padding: '1rem'}}>
+          <button onClick={close}>Close it</button>
+        </div>
+      }
+      interactive={true}
+      trigger="manual"
+      visible={isOpen}
+      hideOnClick={false}
+      onClickOutside={close}
+    >
+      <button onClick={isOpen ? close : open}>Open</button>
+    </Tippy>
+  );
+}
+
 function App() {
   return (
     <>
@@ -190,6 +213,8 @@ function App() {
       <FollowCursor />
       <h2>Headless Tippy</h2>
       <AnimatedHeadlessTippy />
+      <h2>Fully Controlled on Click</h2>
+      <FullyControlledOnClick />
     </>
   );
 }
