@@ -40,13 +40,13 @@ export default function TippyGenerator(tippy) {
 
     const props = {
       ignoreAttributes,
-      hideOnClick: !isControlledMode,
       ...restOfNativeProps,
       content: component.container,
     };
 
     if (isControlledMode) {
       props.trigger = 'manual';
+      props.hideOnClick = false;
     }
 
     if (isSingletonMode) {
