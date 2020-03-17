@@ -84,11 +84,21 @@ import React from 'react';
 import Tippy from '@tippyjs/react/headless';
 
 const HeadlessTippy = () => (
-  <Tippy render={attrs => <div {...attrs}>My tippy box</div>}>
+  <Tippy
+    render={attrs => (
+      <div className="box" {...attrs}>
+        My tippy box
+      </div>
+    )}
+  >
     <button>My button</button>
   </Tippy>
 );
 ```
+
+`attrs` is an object containing `data-placement`, `data-reference-hidden`, and
+`data-escaped` attributes. This allows you to conditionally style your tippy if
+necessary.
 
 A more advanced example using `react-spring` & `styled-components`:
 
@@ -190,7 +200,9 @@ function App() {
           },
         ],
       }}
-    />
+    >
+      <button>Reference</button>
+    </Tippy>
   );
 }
 ```
@@ -215,11 +227,11 @@ the DOM node:
 import React, {forwardRef} from 'react';
 
 function ThisWontWork() {
-  return <button>Text</button>;
+  return <button>Reference</button>;
 }
 
 const ThisWillWork = forwardRef((props, ref) => {
-  return <button ref={ref}>Text</button>;
+  return <button ref={ref}>Reference</button>;
 });
 
 function App() {
@@ -241,7 +253,7 @@ element as a workaround.
 ```jsx
 <Tippy content="Tooltip">
   <span tabIndex="0">
-    <LegacyComponent>Content</LegacyComponent>
+    <LegacyComponent>Reference</LegacyComponent>
   </span>
 </Tippy>
 ```
@@ -262,7 +274,7 @@ complete list.
   delay={[300, 0]}
   // ...and many more!
 >
-  <button>Text</button>
+  <button>Reference</button>
 </Tippy>
 ```
 
@@ -277,7 +289,7 @@ element's class list as expected, without adding `-theme` as a suffix.
 
 ```jsx
 <Tippy content="Tooltip" className="hello world">
-  <button />
+  <button>Reference</button>
 </Tippy>
 ```
 
@@ -305,7 +317,7 @@ function App() {
 
   return (
     <Tippy content="Tooltip" disabled={disabled}>
-      <button />
+      <button>Reference</button>
     </Tippy>
   );
 }
@@ -343,7 +355,7 @@ import {followCursor} from 'tippy.js';
 function App() {
   return (
     <Tippy content="Tooltip" followCursor={true} plugins={[followCursor]}>
-      <button />
+      <button>Reference</button>
     </Tippy>
   );
 }
@@ -360,7 +372,7 @@ You can nest the components like so:
   <Tippy content="Tooltip" placement="left">
     <Tippy content="Tooltip" placement="right">
       <Tippy content="Tooltip">
-        <button />
+        <button>Reference</button>
       </Tippy>
     </Tippy>
   </Tippy>
@@ -419,7 +431,11 @@ function App() {
     <>
       <Tippy
         singleton={source}
-        render={(attrs, content) => <div {...attrs}>{content}</div>}
+        render={(attrs, content) => (
+          <div className="box" {...attrs}>
+            {content}
+          </div>
+        )}
         delay={500}
       />
 
@@ -433,21 +449,6 @@ function App() {
   );
 }
 ```
-
-## 📦 Bundle size
-
-- `@popperjs/core` ≈ 6 kB
-- `tippy.js` ≈ 4.5 kB
-- `@tippyjs/react` ≈ 1 kB
-
-If you're using Popper.js for other parts of your app, the added cost becomes
-much smaller!
-
-## ⭐️ Comparison with other tooltip/popover libraries
-
-Why should you use this library, and how does it compare to other ones?
-
-[Read all about it here!](https://atomiks.github.io/tippyjs/v6/motivation/)
 
 ## 📝 License
 
