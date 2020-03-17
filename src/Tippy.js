@@ -40,6 +40,7 @@ export default function TippyGenerator(tippy) {
 
     const props = {
       ignoreAttributes,
+      hideOnClick: !isControlledMode,
       ...restOfNativeProps,
       content: component.container,
     };

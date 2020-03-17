@@ -188,7 +188,6 @@ function FullyControlledOnClick() {
       interactive={true}
       trigger="manual"
       visible={isOpen}
-      hideOnClick={false}
       onClickOutside={close}
     >
       <button onClick={isOpen ? close : open}>Open</button>
