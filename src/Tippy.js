@@ -33,7 +33,7 @@ export default function TippyGenerator(tippy) {
     const [attrs, setAttrs] = useState({});
     const [mounted, setMounted] = useState(false);
     const [singletonContent, setSingletonContent] = useState();
-    const component = useInstance(() => ({
+    const mutableBox = useInstance(() => ({
       container: ssrSafeCreateDiv(),
       renders: 1,
     }));
@@ -41,7 +41,7 @@ export default function TippyGenerator(tippy) {
     const props = {
       ignoreAttributes,
       ...restOfNativeProps,
-      content: component.container,
+      content: mutableBox.container,
     };
 
     if (isControlledMode) {
@@ -95,7 +95,7 @@ export default function TippyGenerator(tippy) {
               },
             ]
           : plugins,
-        render: () => ({popper: component.container}),
+        render: () => ({popper: mutableBox.container}),
       };
     }
 
@@ -104,11 +104,11 @@ export default function TippyGenerator(tippy) {
     // CREATE
     useIsomorphicLayoutEffect(() => {
       const instance = tippy(
-        component.ref || ssrSafeCreateDiv(),
+        mutableBox.ref || ssrSafeCreateDiv(),
         computedProps,
       );
 
-      component.instance = instance;
+      mutableBox.instance = instance;
 
       if (disabled) {
         instance.disable();
@@ -136,12 +136,12 @@ export default function TippyGenerator(tippy) {
     // UPDATE
     useIsomorphicLayoutEffect(() => {
       // Prevent this effect from running on 1st render
-      if (component.renders === 1) {
-        component.renders++;
+      if (mutableBox.renders === 1) {
+        mutableBox.renders++;
         return;
       }
 
-      const {instance} = component;
+      const {instance} = mutableBox;
 
       instance.setProps(deepPreserveProps(instance.props, props));
 
@@ -173,7 +173,7 @@ export default function TippyGenerator(tippy) {
         return;
       }
 
-      const {instance} = component;
+      const {instance} = mutableBox;
 
       instance.setProps({
         popperOptions: {
@@ -226,7 +226,7 @@ export default function TippyGenerator(tippy) {
           return;
         }
 
-        const box = component.instance.popper.firstElementChild;
+        const box = mutableBox.instance.popper.firstElementChild;
 
         updateClassName(box, 'add', className);
 
@@ -241,7 +241,7 @@ export default function TippyGenerator(tippy) {
         {children
           ? cloneElement(children, {
               ref(node) {
-                component.ref = node;
+                mutableBox.ref = node;
                 preserveRef(children.ref, node);
               },
             })
@@ -251,7 +251,7 @@ export default function TippyGenerator(tippy) {
             render
               ? render(toDataAttributes(attrs), singletonContent)
               : content,
-            component.container,
+            mutableBox.container,
           )}
       </>
     );
