@@ -418,7 +418,7 @@ describe('<Tippy />', () => {
 
     jest.runAllTimers();
 
-    expect(instance.popper).toMatchSnapshot();
+    expect(instance.popper.firstElementChild).toMatchSnapshot();
   });
 
   test('render prop preserve popperOptions', () => {
