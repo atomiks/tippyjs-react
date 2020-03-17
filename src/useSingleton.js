@@ -1,17 +1,18 @@
 import {useInstance, useIsomorphicLayoutEffect} from './util-hooks';
 import {deepPreserveProps} from './utils';
+import {useMemo} from 'react';
 
 export default function useSingletonGenerator(createSingleton) {
   return function useSingleton({disabled = false, overrides = []} = {}) {
-    const component = useInstance({
+    const mutableBox = useInstance({
       children: [],
       renders: 1,
     });
 
-    const deps = [component.children.length];
+    const deps = [mutableBox.children.length];
 
     useIsomorphicLayoutEffect(() => {
-      const {children, sourceData} = component;
+      const {children, sourceData} = mutableBox;
       const instance = createSingleton(
         children.map(child => child.instance),
         {
@@ -21,7 +22,7 @@ export default function useSingletonGenerator(createSingleton) {
         },
       );
 
-      component.instance = instance;
+      mutableBox.instance = instance;
 
       if (disabled) {
         instance.disable();
@@ -29,19 +30,19 @@ export default function useSingletonGenerator(createSingleton) {
 
       return () => {
         instance.destroy();
-        component.children = children.filter(
+        mutableBox.children = children.filter(
           ({instance}) => !instance.state.isDestroyed,
         );
       };
-    }, deps);
+    }, [...overrides, ...deps]);
 
     useIsomorphicLayoutEffect(() => {
-      if (component.renders === 1) {
-        component.renders++;
+      if (mutableBox.renders === 1) {
+        mutableBox.renders++;
         return;
       }
 
-      const {instance, sourceData} = component;
+      const {instance, sourceData} = mutableBox;
 
       instance.setProps(deepPreserveProps(instance, sourceData.props));
 
@@ -52,19 +53,21 @@ export default function useSingletonGenerator(createSingleton) {
       }
     });
 
-    const source = {
-      data: component,
-      hook(data) {
-        component.sourceData = data;
-      },
-    };
-
-    const target = {
-      hook(data) {
-        component.children.push(data);
-      },
-    };
-
-    return [source, target];
+    return useMemo(
+      () => [
+        {
+          data: mutableBox,
+          hook(data) {
+            mutableBox.sourceData = data;
+          },
+        },
+        {
+          hook(data) {
+            mutableBox.children.push(data);
+          },
+        },
+      ],
+      [],
+    );
   };
 }
