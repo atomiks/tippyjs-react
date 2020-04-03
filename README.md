@@ -100,59 +100,10 @@ const HeadlessTippy = () => (
 `data-escaped` attributes. This allows you to conditionally style your tippy if
 necessary.
 
-A more advanced example using `react-spring` & `styled-components`:
+#### Headless animation
 
-```jsx
-import React from 'react';
-import Tippy from '@tippyjs/react/headless';
-import styled from 'styled-components';
-import {useSpring, animated} from 'react-spring';
-
-const Box = styled(animated.div)`
-  background: #333;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-`;
-
-function AnimatedHeadlessTippy() {
-  const config = {tension: 300, friction: 15};
-  const initialStyles = {opacity: 0, transform: 'scale(0.5)'};
-  const [props, setSpring] = useSpring(() => initialStyles);
-
-  function onMount() {
-    setSpring({
-      opacity: 1,
-      transform: 'scale(1)',
-      onRest: () => {},
-      config,
-    });
-  }
-
-  function onHide({unmount}) {
-    setSpring({
-      ...initialStyles,
-      onRest: unmount,
-      config: {...config, clamp: true},
-    });
-  }
-
-  return (
-    <Tippy
-      render={attrs => (
-        <Box style={props} {...attrs}>
-          Hello
-        </Box>
-      )}
-      animation={true}
-      onMount={onMount}
-      onHide={onHide}
-    >
-      <button>react-spring</button>
-    </Tippy>
-  );
-}
-```
+- [`framer-motion`](https://codesandbox.io/s/festive-fire-hcr47)
+- [`react-spring`](https://codesandbox.io/s/vigilant-northcutt-7w3yr)
 
 #### Arrow
 

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {useSpring, animated} from 'react-spring';
+import {motion, useSpring as useFramerSpring} from 'framer-motion';
 import {followCursor} from 'tippy.js';
 import Tippy, {useSingleton} from '../src';
 import TippyHeadless, {
@@ -11,12 +12,26 @@ import TippyHeadless, {
 import 'tippy.js/dist/tippy.css';
 import './index.css';
 
-const Box = styled(animated.div)`
+const ReactSpringBox = styled(animated.div)`
   background: #333;
   color: white;
   padding: 5px 10px;
   border-radius: 4px;
-  visibility: visible;
+
+  &[data-placement^='top'] {
+    transform-origin: bottom;
+  }
+
+  &[data-placement^='bottom'] {
+    transform-origin: top;
+  }
+`;
+
+const ReactFramerBox = styled(motion.div)`
+  background: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
 
   &[data-placement^='top'] {
     transform-origin: bottom;
@@ -112,7 +127,9 @@ function SingletonHeadless() {
   return (
     <>
       <TippyHeadless
-        render={(attrs, content) => <Box {...attrs}>{content}</Box>}
+        render={(attrs, content) => (
+          <ReactSpringBox {...attrs}>{content}</ReactSpringBox>
+        )}
         singleton={source}
         delay={500}
       />
@@ -135,7 +152,7 @@ function FollowCursor() {
   );
 }
 
-function AnimatedHeadlessTippy() {
+function ReactSpring() {
   const config = {tension: 300, friction: 15};
   const initialStyles = {opacity: 0, transform: 'scale(0.5)'};
   const [props, setSpring] = useSpring(() => initialStyles);
@@ -160,15 +177,54 @@ function AnimatedHeadlessTippy() {
   return (
     <TippyHeadless
       render={attrs => (
-        <Box style={props} {...attrs}>
+        <ReactSpringBox style={props} {...attrs}>
           Hello
-        </Box>
+        </ReactSpringBox>
       )}
       animation={true}
       onMount={onMount}
       onHide={onHide}
     >
       <button>react-spring</button>
+    </TippyHeadless>
+  );
+}
+
+function FramerMotion() {
+  const springConfig = {damping: 15, stiffness: 300};
+  const initialScale = 0.5;
+  const opacity = useFramerSpring(0, springConfig);
+  const scale = useFramerSpring(initialScale, springConfig);
+
+  function onMount() {
+    scale.set(1);
+    opacity.set(1);
+  }
+
+  function onHide({unmount}) {
+    const cleanup = scale.onChange(value => {
+      if (value <= initialScale) {
+        cleanup();
+        unmount();
+      }
+    });
+
+    scale.set(0.5);
+    opacity.set(0);
+  }
+
+  return (
+    <TippyHeadless
+      render={attrs => (
+        <ReactFramerBox style={{scale, opacity}} {...attrs}>
+          Hello
+        </ReactFramerBox>
+      )}
+      animation={true}
+      onMount={onMount}
+      onHide={onHide}
+    >
+      <button>framer-motion</button>
     </TippyHeadless>
   );
 }
@@ -209,8 +265,10 @@ function App() {
       <SingletonHeadless />
       <h2>Plugins</h2>
       <FollowCursor />
-      <h2>Headless Tippy</h2>
-      <AnimatedHeadlessTippy />
+      <h2>Headless Tippy w/ React Spring</h2>
+      <ReactSpring />
+      <h2>Headless Tippy w/ Framer Motion</h2>
+      <FramerMotion />
       <h2>Fully Controlled on Click</h2>
       <FullyControlledOnClick />
     </>
