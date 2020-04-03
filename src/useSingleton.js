@@ -13,6 +13,11 @@ export default function useSingletonGenerator(createSingleton) {
 
     useIsomorphicLayoutEffect(() => {
       const {children, sourceData} = mutableBox;
+
+      if (!sourceData) {
+        return;
+      }
+
       const instance = createSingleton(
         children.map(child => child.instance),
         {
@@ -43,6 +48,10 @@ export default function useSingletonGenerator(createSingleton) {
       }
 
       const {instance, sourceData} = mutableBox;
+
+      if (!sourceData) {
+        return;
+      }
 
       instance.setProps(deepPreserveProps(instance, sourceData.props));
 
