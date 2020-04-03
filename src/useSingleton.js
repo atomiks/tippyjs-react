@@ -1,10 +1,10 @@
-import {useInstance, useIsomorphicLayoutEffect} from './util-hooks';
+import {useMutableBox, useIsomorphicLayoutEffect} from './util-hooks';
 import {deepPreserveProps} from './utils';
 import {useMemo} from 'react';
 
 export default function useSingletonGenerator(createSingleton) {
   return function useSingleton({disabled = false, overrides = []} = {}) {
-    const mutableBox = useInstance({
+    const mutableBox = useMutableBox({
       children: [],
       renders: 1,
     });

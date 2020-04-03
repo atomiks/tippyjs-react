@@ -8,7 +8,7 @@ import {
   updateClassName,
   deepPreserveProps,
 } from './utils';
-import {useInstance, useIsomorphicLayoutEffect} from './util-hooks';
+import {useMutableBox, useIsomorphicLayoutEffect} from './util-hooks';
 
 export default function TippyGenerator(tippy) {
   function Tippy({
@@ -33,7 +33,7 @@ export default function TippyGenerator(tippy) {
     const [attrs, setAttrs] = useState({});
     const [mounted, setMounted] = useState(false);
     const [singletonContent, setSingletonContent] = useState();
-    const mutableBox = useInstance(() => ({
+    const mutableBox = useMutableBox(() => ({
       container: ssrSafeCreateDiv(),
       renders: 1,
     }));
