@@ -126,6 +126,9 @@ on it:
 For details on styling the arrow from scratch,
 [take a look at the Popper tutorial](https://popper.js.org/docs/v2/tutorial/#arrow).
 
+**Note: your arrow must be an `HTMLElement` (not an `SVGElement`). To use an SVG
+arrow, wrap it in a `<div>` tag with the `data-popper-arrow` attribute.**
+
 You may also pass a ref to the element directly without the attribute using a
 callback ref:
 
@@ -146,7 +149,7 @@ function App() {
           {
             name: 'arrow',
             options: {
-              element: arrow,
+              element: arrow, // can be a CSS selector too
             },
           },
         ],
@@ -168,6 +171,19 @@ When rendering an element with the `render` prop, you're rendering the inner box
 element that the root popper node wraps, which is what gets styled and animated.
 For advanced cases, you can access the parent popper node as `instance.popper`
 in the `onCreate` lifecycle hook.
+
+[Here's `moveTransition` with Framer Motion](https://codesandbox.io/s/tippyjs-react-framer-motion-j94mj).
+
+##### iOS click outside
+
+Add this to your CSS to enable click outsides to work on iOS:
+
+```css
+.tippy-iOS {
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent;
+}
+```
 
 ### Component children
 
