@@ -7,25 +7,17 @@
 </div>
 
 [Tippy.js](https://github.com/atomiks/tippyjs/) is the complete tooltip,
-popover, dropdown, and menu solution for the web, powered by Popper.js. It
-provides the logic and styling involved in all types of elements that pop out
-from the flow of the document and get overlaid on top of the UI, positioned next
-to a reference element.
+popover, dropdown, and menu solution for the web, powered by Popper.js.
 
-This is a lightweight wrapper that lets you use it declaratively in React.
+It is an abstraction over Popper that provides the logic and optionally the
+styling involved in all types of elements that pop out from the flow of the
+document and get overlaid on top of the UI, positioned next to a reference
+element.
 
-<!--
-## 💎 Examples
-
-### Tooltips
-
-- [Bootstrap 4 Style](https://codesandbox.io/s/mm61w3rrqx)
-- [Material Style](https://codesandbox.io/s/0y6pj161wp)
-
-### Popovers
-
-- [Accessible Emoji Reaction Picker](https://codesandbox.io/s/1vzvoo9mwl)
--->
+This is a lightweight wrapper that lets you use it declaratively in React,
+providing full integration including headless rendering abilities. Tippy has
+virtually no restrictions over Popper, and gives you limitless control while
+providing useful behavior and defaults.
 
 ## 🚀 Installation
 
@@ -45,9 +37,15 @@ Requires React 16.8+
 
 There are two ways to use this component:
 
-- **Default**: With the built-in DOM rendering and optionally the default CSS
-- **Headless**: With React's DOM rendering for better usage with CSS-in-JS and
-  spring libraries e.g. `react-spring`
+- **Default**: With the built-in DOM rendering and optionally the default CSS.
+  This is complete "out of the box" behavior and requires no setup. If you want
+  something that just works, this is for you.
+- **Headless**: With React's DOM rendering for improved usage with CSS-in-JS and
+  spring libraries. If you want greater control over your poppers to integrate
+  fully with design systems (CSS-in-JS, spring animations, JSX SVG arrow
+  rendering), this is for you.
+
+You can use both of these in conjunction if you'd like however.
 
 ### Default Tippy
 
@@ -86,7 +84,7 @@ import Tippy from '@tippyjs/react/headless';
 const HeadlessTippy = () => (
   <Tippy
     render={attrs => (
-      <div className="box" {...attrs}>
+      <div className="box" tabIndex="-1" {...attrs}>
         My tippy box
       </div>
     )}
@@ -176,7 +174,8 @@ in the `onCreate` lifecycle hook.
 
 ##### iOS click outside
 
-Add this to your CSS to enable click outsides to work on iOS:
+Add this to your CSS to enable click outsides to work on iOS when not importing
+the CSS or using Headless Tippy:
 
 ```css
 .tippy-iOS {
@@ -235,10 +234,9 @@ complete list.
 ```jsx
 <Tippy
   content="Tooltip"
-  arrow={false}
-  animation="scale"
-  duration={0}
-  delay={[300, 0]}
+  interactive={true}
+  interactiveBorder={20}
+  delay={100}
   // ...and many more!
 >
   <button>Reference</button>
@@ -249,7 +247,8 @@ In addition, there are 3 more props added specifically for the React component.
 
 ### `className?: string`
 
-> **Note**: This does not apply if using Headless Tippy
+> **Note**: This does not apply if using Headless Tippy, as you can set this on
+> the element yourself.
 
 A React alternative to the `theme` prop. The className gets added to the tooltip
 element's class list as expected, without adding `-theme` as a suffix.
@@ -312,8 +311,9 @@ function App() {
 ### Plugins
 
 Tippy.js splits certain props into separate pieces of code called plugins to
-enable treeshaking, so that users who don't need the prop's functionality are
-not burdened with the cost of it.
+enable tree-shaking, so that components or routes that don't need the prop's
+functionality are not burdened with the bundle size cost of it. In addition,
+they enable a neat way to extend the functionality of tippy instances.
 
 ```jsx
 import Tippy from '@tippyjs/react';
@@ -351,7 +351,10 @@ You can nest the components like so:
 
 A Hook for the
 [`createSingleton()`](https://atomiks.github.io/tippyjs/v6/addons/#singleton)
-addon.
+addon to re-use a single tippy element for many different reference element
+targets.
+
+[View on CodeSandbox](https://codesandbox.io/s/unruffled-pasteur-4yy99?file=/src/App.js)
 
 ```jsx
 import Tippy, {useSingleton} from '@tippyjs/react';
@@ -400,7 +403,7 @@ function App() {
       <Tippy
         singleton={source}
         render={(attrs, content) => (
-          <div className="box" {...attrs}>
+          <div className="box" tabIndex="-1" {...attrs}>
             {content}
           </div>
         )}
