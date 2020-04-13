@@ -9,7 +9,11 @@ export default function useSingletonGenerator(createSingleton) {
       renders: 1,
     });
 
-    const deps = [mutableBox.children.length];
+    const deps = [
+      mutableBox.children.length,
+      mutableBox.sourceData,
+      ...overrides,
+    ];
 
     useIsomorphicLayoutEffect(() => {
       const {children, sourceData} = mutableBox;
@@ -39,7 +43,7 @@ export default function useSingletonGenerator(createSingleton) {
           ({instance}) => !instance.state.isDestroyed,
         );
       };
-    }, [...overrides, ...deps]);
+    }, deps);
 
     useIsomorphicLayoutEffect(() => {
       if (mutableBox.renders === 1) {
@@ -62,21 +66,35 @@ export default function useSingletonGenerator(createSingleton) {
       }
     });
 
-    return useMemo(
-      () => [
-        {
-          data: mutableBox,
-          hook(data) {
-            mutableBox.sourceData = data;
-          },
+    return useMemo(() => {
+      const source = {
+        data: mutableBox,
+        hook(data) {
+          mutableBox.sourceData = data;
         },
-        {
-          hook(data) {
+        cleanup() {
+          mutableBox.sourceData = null;
+        },
+      };
+
+      const target = {
+        hook(data) {
+          if (
+            !mutableBox.children.find(
+              ({instance}) => data.instance === instance,
+            )
+          ) {
             mutableBox.children.push(data);
-          },
+          }
         },
-      ],
-      [],
-    );
+        cleanup(instance) {
+          mutableBox.children = mutableBox.children.filter(
+            data => data.instance !== instance,
+          );
+        },
+      };
+
+      return [source, target];
+    }, []);
   };
 }

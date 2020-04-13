@@ -123,18 +123,31 @@ function Singleton() {
 
 function SingletonHeadless() {
   const [source, target] = useSingletonHeadless({overrides: ['placement']});
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    setInterval(() => {
+      setEnabled(e => !e);
+    }, 2000);
+  }, []);
 
   return (
     <>
-      <TippyHeadless
-        render={(attrs, content) => (
-          <ReactSpringBox {...attrs}>{content}</ReactSpringBox>
-        )}
-        singleton={source}
-        delay={500}
-      />
+      {enabled && (
+        <TippyHeadless
+          render={(attrs, content) => (
+            <ReactSpringBox {...attrs}>{content}</ReactSpringBox>
+          )}
+          singleton={source}
+        />
+      )}
 
-      <TippyHeadless content="Hello" singleton={target}>
+      {enabled && (
+        <TippyHeadless content="Hello" singleton={target}>
+          <button>Reference</button>
+        </TippyHeadless>
+      )}
+      <TippyHeadless placement="right" content="Bye" singleton={target}>
         <button>Reference</button>
       </TippyHeadless>
       <TippyHeadless placement="right" content="Bye" singleton={target}>

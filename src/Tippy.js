@@ -123,6 +123,7 @@ export default function TippyGenerator(tippy) {
 
       return () => {
         instance.destroy();
+        singleton?.cleanup(instance);
       };
     }, deps);
 
