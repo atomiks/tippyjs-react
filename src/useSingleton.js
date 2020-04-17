@@ -9,16 +9,19 @@ export default function useSingletonGenerator(createSingleton) {
       renders: 1,
     });
 
-    const deps = [
-      mutableBox.children.length,
-      mutableBox.sourceData,
-      ...overrides,
-    ];
-
     useIsomorphicLayoutEffect(() => {
       const {children, sourceData} = mutableBox;
 
       if (!sourceData) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.error(
+            [
+              '@tippyjs/react: The `source` variable from `useSingleton()` has',
+              'not been passed to a <Tippy /> component.',
+            ].join(' '),
+          );
+        }
+
         return;
       }
 
@@ -43,7 +46,7 @@ export default function useSingletonGenerator(createSingleton) {
           ({instance}) => !instance.state.isDestroyed,
         );
       };
-    }, deps);
+    }, []);
 
     useIsomorphicLayoutEffect(() => {
       if (mutableBox.renders === 1) {
@@ -51,13 +54,21 @@ export default function useSingletonGenerator(createSingleton) {
         return;
       }
 
-      const {instance, sourceData} = mutableBox;
+      const {children, instance, sourceData} = mutableBox;
 
-      if (!sourceData) {
+      if (!(instance && sourceData)) {
         return;
       }
 
-      instance.setProps(deepPreserveProps(instance, sourceData.props));
+      const {content, ...props} = sourceData.props;
+      instance.setProps(
+        deepPreserveProps(instance, {
+          ...props,
+          overrides,
+        }),
+      );
+
+      instance.setInstances(children.map(child => child.instance));
 
       if (disabled) {
         instance.disable();
