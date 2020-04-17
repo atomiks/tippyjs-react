@@ -94,10 +94,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/atomiks/tippy.js-react.git"
+    "url": "git+https://github.com/atomiks/tippyjs-react.git"
   },
   "bugs": {
-    "url": "https://github.com/atomiks/tippy.js-react/issues"
+    "url": "https://github.com/atomiks/tippyjs-react/issues"
   },
-  "homepage": "https://github.com/atomiks/tippy.js-react#readme"
+  "homepage": "https://github.com/atomiks/tippyjs-react#readme"
 }
