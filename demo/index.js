@@ -133,14 +133,12 @@ function SingletonHeadless() {
 
   return (
     <>
-      {enabled && (
-        <TippyHeadless
-          render={(attrs, content) => (
-            <ReactSpringBox {...attrs}>{content}</ReactSpringBox>
-          )}
-          singleton={source}
-        />
-      )}
+      <TippyHeadless
+        render={(attrs, content) => (
+          <ReactSpringBox {...attrs}>{content}</ReactSpringBox>
+        )}
+        singleton={source}
+      />
 
       {enabled && (
         <TippyHeadless content="Hello" singleton={target}>
