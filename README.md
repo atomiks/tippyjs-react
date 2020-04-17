@@ -172,18 +172,6 @@ in the `onCreate` lifecycle hook.
 
 [Here's `moveTransition` with Framer Motion](https://codesandbox.io/s/tippyjs-react-framer-motion-j94mj).
 
-##### iOS click outside
-
-Add this to your CSS to enable click outsides to work on iOS when not importing
-the CSS or using Headless Tippy:
-
-```css
-.tippy-iOS {
-  cursor: pointer !important;
-  -webkit-tap-highlight-color: transparent;
-}
-```
-
 ### Component children
 
 If you want to use a component element as a child, ensure you forward the ref to
