@@ -1,4 +1,10 @@
-import {updateClassName} from './utils';
+function updateClassName(box, action, classNames) {
+  classNames.split(/\s+/).forEach(name => {
+    if (name) {
+      box.classList[action](name);
+    }
+  });
+}
 
 export const classNamePlugin = {
   name: 'className',
