@@ -3,6 +3,11 @@
 exports[`<Tippy /> props.plugins 1`] = `
 Array [
   Object {
+    "defaultValue": "",
+    "fn": [Function],
+    "name": "className",
+  },
+  Object {
     "fn": [Function],
   },
 ]

@@ -6,15 +6,14 @@ import {
   ssrSafeCreateDiv,
   toDataAttributes,
   deepPreserveProps,
-  updateClassName,
 } from './utils';
 import {useMutableBox, useIsomorphicLayoutEffect} from './util-hooks';
+import {classNamePlugin} from './className-plugin';
 
 export default function TippyGenerator(tippy) {
   function Tippy({
     children,
     content,
-    className,
     visible,
     singleton,
     render,
@@ -96,10 +95,10 @@ export default function TippyGenerator(tippy) {
 
     // CREATE
     useIsomorphicLayoutEffect(() => {
-      const instance = tippy(
-        mutableBox.ref || ssrSafeCreateDiv(),
-        computedProps,
-      );
+      const instance = tippy(mutableBox.ref || ssrSafeCreateDiv(), {
+        ...computedProps,
+        plugins: [classNamePlugin, ...(props.plugins || [])],
+      });
 
       mutableBox.instance = instance;
 
@@ -116,7 +115,6 @@ export default function TippyGenerator(tippy) {
           instance,
           content,
           props: computedProps,
-          className,
         });
       }
 
@@ -159,7 +157,6 @@ export default function TippyGenerator(tippy) {
           instance,
           content,
           props,
-          className,
         });
       }
     });
@@ -205,32 +202,6 @@ export default function TippyGenerator(tippy) {
         },
       });
     }, [attrs.placement, attrs.referenceHidden, attrs.escaped, ...deps]);
-
-    useIsomorphicLayoutEffect(() => {
-      if (className) {
-        if (render) {
-          if (process.env.NODE_ENV !== 'production') {
-            console.warn(
-              [
-                '@tippyjs/react: Cannot use `className` prop in conjunction',
-                'with the `render` prop. Place the className on the element',
-                'you are rendering.',
-              ].join(' '),
-            );
-          }
-
-          return;
-        }
-
-        const box = mutableBox.instance.popper.firstElementChild;
-
-        updateClassName(box, 'add', className);
-
-        return () => {
-          updateClassName(box, 'remove', className);
-        };
-      }
-    }, [className, ...deps]);
 
     return (
       <>

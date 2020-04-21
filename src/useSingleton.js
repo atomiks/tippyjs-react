@@ -1,5 +1,6 @@
 import {useMutableBox, useIsomorphicLayoutEffect} from './util-hooks';
-import {deepPreserveProps, updateClassName} from './utils';
+import {deepPreserveProps} from './utils';
+import {classNamePlugin} from './className-plugin';
 import {useMemo} from 'react';
 
 export default function useSingletonGenerator(createSingleton) {
@@ -31,6 +32,7 @@ export default function useSingletonGenerator(createSingleton) {
           ...sourceData.props,
           popperOptions: sourceData.instance.props.popperOptions,
           overrides,
+          plugins: [classNamePlugin, ...(sourceData.props.plugins || [])],
         },
       );
 
@@ -74,34 +76,6 @@ export default function useSingletonGenerator(createSingleton) {
         instance.disable();
       } else {
         instance.enable();
-      }
-    });
-
-    useIsomorphicLayoutEffect(() => {
-      const className = mutableBox.sourceData?.className;
-
-      if (className) {
-        if (mutableBox.sourceData?.props.render) {
-          if (process.env.NODE_ENV !== 'production') {
-            console.warn(
-              [
-                '@tippyjs/react: Cannot use `className` prop in conjunction',
-                'with the `render` prop. Place the className on the element',
-                'you are rendering.',
-              ].join(' '),
-            );
-          }
-
-          return;
-        }
-
-        const box = mutableBox.instance.popper.firstElementChild;
-
-        updateClassName(box, 'add', className);
-
-        return () => {
-          updateClassName(box, 'remove', className);
-        };
       }
     });
 

@@ -485,9 +485,9 @@ describe('<Tippy />', () => {
 
     expect(spy).toHaveBeenCalledWith(
       [
-        '@tippyjs/react: Cannot use `className` prop in conjunction',
-        'with the `render` prop. Place the className on the element',
-        'you are rendering.',
+        '@tippyjs/react: Cannot use `className` prop in conjunction with',
+        '`render` prop. Place the className on the element you are',
+        'rendering.',
       ].join(' '),
     );
 
