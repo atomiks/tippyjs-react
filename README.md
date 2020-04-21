@@ -335,6 +335,16 @@ You can nest the components like so:
 </Tippy>
 ```
 
+## Lazy mounting
+
+By default, Tippy mounts your `content` or `render` elements into a container
+element once created, even if the tippy isn't mounted on the DOM. In most cases,
+this is fine, but in performance-sensitive scenarios or cases where mounting the
+component should fire effects only when the tippy mounted, you can lazify the
+component.
+
+[View the following gists to optimize your `<Tippy />` if needed.](https://gist.github.com/atomiks/520f4b0c7b537202a23a3059d4eec908)
+
 ## 📚 useSingleton
 
 A Hook for the
