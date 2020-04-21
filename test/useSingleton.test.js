@@ -81,6 +81,50 @@ it('updates `className` correctly', () => {
   ).toBe(true);
 });
 
+it('errors if source variable has not been passed to a <Tippy />', () => {
+  const spy = jest.spyOn(console, 'error');
+
+  function App1() {
+    // eslint-disable-next-line
+    const [source, target] = useSingleton();
+
+    return (
+      <>
+        <Tippy />
+        <Tippy singleton={target} />
+        <Tippy singleton={target} />
+      </>
+    );
+  }
+
+  function App2() {
+    const [source, target] = useSingleton();
+
+    return (
+      <>
+        <Tippy singleton={source} />
+        <Tippy singleton={target} />
+        <Tippy singleton={target} />
+      </>
+    );
+  }
+
+  render(<App1 />);
+
+  expect(spy).toHaveBeenCalledWith(
+    [
+      '@tippyjs/react: The `source` variable from `useSingleton()` has',
+      'not been passed to a <Tippy /> component.',
+    ].join(' '),
+  );
+
+  spy.mockReset();
+
+  render(<App2 />);
+
+  expect(spy).not.toHaveBeenCalled();
+});
+
 describe('disabled prop', () => {
   function App({disabled}) {
     const [source, target] = useSingleton({disabled});
