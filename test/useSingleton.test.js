@@ -51,6 +51,36 @@ it('changes the singleton content correctly', () => {
   expect(instance.props.content.textContent).toBe('b');
 });
 
+it('updates `className` correctly', () => {
+  function App({className}) {
+    const [source, target] = useSingleton();
+
+    return (
+      <>
+        <Tippy onCreate={onCreate} className={className} singleton={source} />
+        <Tippy content="a" singleton={target}>
+          <button data-testid="a" />
+        </Tippy>
+        <Tippy content="b" singleton={target}>
+          <button data-testid="b" />
+        </Tippy>
+      </>
+    );
+  }
+
+  const {rerender} = render(<App className="some class names" />);
+
+  expect(
+    instance.popper.firstElementChild.className.includes('some class names'),
+  ).toBe(true);
+
+  rerender(<App className="other names" />);
+
+  expect(
+    instance.popper.firstElementChild.className.includes('other names'),
+  ).toBe(true);
+});
+
 describe('disabled prop', () => {
   function App({disabled}) {
     const [source, target] = useSingleton({disabled});

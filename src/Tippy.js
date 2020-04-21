@@ -5,8 +5,8 @@ import {
   preserveRef,
   ssrSafeCreateDiv,
   toDataAttributes,
-  updateClassName,
   deepPreserveProps,
+  updateClassName,
 } from './utils';
 import {useMutableBox, useIsomorphicLayoutEffect} from './util-hooks';
 
@@ -116,6 +116,7 @@ export default function TippyGenerator(tippy) {
           instance,
           content,
           props: computedProps,
+          className,
         });
       }
 
@@ -157,7 +158,8 @@ export default function TippyGenerator(tippy) {
         singleton.hook({
           instance,
           content,
-          props: computedProps,
+          props,
+          className,
         });
       }
     });
