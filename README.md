@@ -42,10 +42,11 @@ There are two ways to use this component:
   something that just works, this is for you.
 - **Headless**: With React's DOM rendering for improved usage with CSS-in-JS and
   spring libraries. If you want greater control over your poppers to integrate
-  fully with design systems (CSS-in-JS, spring animations, JSX SVG arrow
-  rendering), this is for you.
+  fully with design systems, this is for you.
 
-You can use both of these in conjunction if you'd like however.
+You can use both of these in conjunction if you'd like though — if so, use the
+default import and set `animation={false}` as a default prop instead of using
+the `/headless` import.
 
 ### Default Tippy
 
