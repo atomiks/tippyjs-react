@@ -1,13 +1,7 @@
 import * as React from 'react';
-import {
-  default as tippyCore,
-  Instance,
-  Props,
-  Plugin,
-  Placement,
-} from 'tippy.js';
+import {default as tippyCore, Instance, Props, Placement} from 'tippy.js';
 
-type Content = React.ReactChild | React.ReactChild[];
+type Content = React.ReactNode;
 
 export interface TippyProps extends Omit<Partial<Props>, 'content' | 'render'> {
   children?: React.ReactElement<any>;
