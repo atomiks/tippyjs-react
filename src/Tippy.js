@@ -30,7 +30,6 @@ export default function TippyGenerator(tippy) {
     const isSingletonMode = singleton !== undefined;
 
     const [attrs, setAttrs] = useState({});
-    const [mounted, setMounted] = useState(false);
     const [singletonContent, setSingletonContent] = useState();
     const mutableBox = useMutableBox(() => ({
       container: ssrSafeCreateDiv(),
@@ -117,8 +116,6 @@ export default function TippyGenerator(tippy) {
           props: computedProps,
         });
       }
-
-      setMounted(true);
 
       return () => {
         instance.destroy();
@@ -213,13 +210,10 @@ export default function TippyGenerator(tippy) {
               },
             })
           : null}
-        {mounted &&
-          createPortal(
-            render
-              ? render(toDataAttributes(attrs), singletonContent)
-              : content,
-            mutableBox.container,
-          )}
+        {createPortal(
+          render ? render(toDataAttributes(attrs), singletonContent) : content,
+          mutableBox.container,
+        )}
       </>
     );
   }
