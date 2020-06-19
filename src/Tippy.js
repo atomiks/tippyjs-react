@@ -1,5 +1,4 @@
 import React, {cloneElement, useState} from 'react';
-import PropTypes from 'prop-types';
 import {createPortal} from 'react-dom';
 import {
   preserveRef,
@@ -216,27 +215,6 @@ export default function TippyGenerator(tippy) {
         )}
       </>
     );
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    const ContentType = PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-      PropTypes.element,
-    ]);
-
-    Tippy.propTypes = {
-      children: PropTypes.element,
-      content: PropTypes.oneOfType([
-        ContentType,
-        PropTypes.arrayOf(ContentType),
-      ]),
-      render: PropTypes.func,
-      visible: PropTypes.bool,
-      disabled: PropTypes.bool,
-      className: PropTypes.string,
-      singleton: PropTypes.object,
-    };
   }
 
   return Tippy;

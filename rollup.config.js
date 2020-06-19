@@ -12,13 +12,7 @@ const pluginReplaceEnvProduction = replace({
 
 const COMMON_INPUT = {
   input: './src/index.js',
-  external: [
-    'react',
-    'react-dom',
-    'prop-types',
-    'tippy.js',
-    'tippy.js/headless',
-  ],
+  external: ['react', 'react-dom', 'tippy.js', 'tippy.js/headless'],
 };
 
 const COMMON_OUTPUT = {
@@ -28,7 +22,6 @@ const COMMON_OUTPUT = {
   globals: {
     react: 'React',
     'react-dom': 'ReactDOM',
-    'prop-types': 'PropTypes',
     'tippy.js': 'tippy',
     'tippy.js/headless': 'tippy',
   },
