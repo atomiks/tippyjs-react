@@ -511,13 +511,6 @@ describe('Tippy.propTypes', () => {
     process.env.NODE_ENV = originalEnv;
   });
 
-  test('is defined if NODE_ENV=development', () => {
-    process.env.NODE_ENV = 'development';
-
-    const TippyGenerator = require('../src/Tippy').default;
-    expect(TippyGenerator().propTypes).toBeDefined();
-  });
-
   test('is undefined if NODE_ENV=production', () => {
     process.env.NODE_ENV = 'production';
 
