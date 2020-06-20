@@ -5,6 +5,7 @@ import {
   ssrSafeCreateDiv,
   toDataAttributes,
   deepPreserveProps,
+  isBrowser,
 } from './utils';
 import {useMutableBox, useIsomorphicLayoutEffect} from './util-hooks';
 import {classNamePlugin} from './className-plugin';
@@ -209,10 +210,13 @@ export default function TippyGenerator(tippy) {
               },
             })
           : null}
-        {createPortal(
-          render ? render(toDataAttributes(attrs), singletonContent) : content,
-          mutableBox.container,
-        )}
+        {isBrowser &&
+          createPortal(
+            render
+              ? render(toDataAttributes(attrs), singletonContent)
+              : content,
+            mutableBox.container,
+          )}
       </>
     );
   }
