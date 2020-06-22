@@ -5,7 +5,6 @@ import {
   ssrSafeCreateDiv,
   toDataAttributes,
   deepPreserveProps,
-  isBrowser,
 } from './utils';
 import {useMutableBox, useIsomorphicLayoutEffect} from './util-hooks';
 import {classNamePlugin} from './className-plugin';
@@ -29,6 +28,7 @@ export default function TippyGenerator(tippy) {
     const isControlledMode = visible !== undefined;
     const isSingletonMode = singleton !== undefined;
 
+    const [mounted, setMounted] = useState(false);
     const [attrs, setAttrs] = useState({});
     const [singletonContent, setSingletonContent] = useState();
     const mutableBox = useMutableBox(() => ({
@@ -117,6 +117,8 @@ export default function TippyGenerator(tippy) {
         });
       }
 
+      setMounted(true);
+
       return () => {
         instance.destroy();
         singleton?.cleanup(instance);
@@ -153,7 +155,7 @@ export default function TippyGenerator(tippy) {
         singleton.hook({
           instance,
           content,
-          props,
+          props: computedProps,
         });
       }
     });
@@ -210,7 +212,7 @@ export default function TippyGenerator(tippy) {
               },
             })
           : null}
-        {isBrowser &&
+        {mounted &&
           createPortal(
             render
               ? render(toDataAttributes(attrs), singletonContent)

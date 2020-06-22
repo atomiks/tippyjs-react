@@ -25,17 +25,17 @@ Object {
     Object {
       "enabled": true,
       "fn": [Function],
-      "name": "x",
-      "phase": "main",
-    },
-    Object {
-      "enabled": true,
-      "fn": [Function],
       "name": "$$tippyReact",
       "phase": "beforeWrite",
       "requires": Array [
         "computeStyles",
       ],
+    },
+    Object {
+      "enabled": true,
+      "fn": [Function],
+      "name": "x",
+      "phase": "main",
     },
   ],
   "strategy": "fixed",
