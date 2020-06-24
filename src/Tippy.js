@@ -135,7 +135,7 @@ export default function TippyGenerator(tippy) {
 
       const {instance} = mutableBox;
 
-      instance.setProps(deepPreserveProps(instance.props, props));
+      instance.setProps(deepPreserveProps(instance.props, computedProps));
 
       if (disabled) {
         instance.disable();
