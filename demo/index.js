@@ -261,6 +261,39 @@ function FullyControlledOnClick() {
   );
 }
 
+function NestedSingleton() {
+  const [source, target] = useSingleton({
+    overrides: ['placement'],
+  });
+
+  return (
+    <div>
+      <Tippy
+        content={
+          <div style={{border: '2px solid black'}}>
+            <Tippy
+              singleton={source}
+              delay={500}
+              moveTransition="transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)"
+            />
+            <Tippy content="Hello" singleton={target} placement="bottom">
+              <button>hover me</button>
+            </Tippy>
+            <Tippy content="Hi" singleton={target} placement="bottom">
+              <button>hover me</button>
+            </Tippy>
+          </div>
+        }
+        interactive
+        delay={250}
+        placement="bottom"
+      >
+        <button>hover me test</button>
+      </Tippy>
+    </div>
+  );
+}
+
 function App() {
   return (
     <>
@@ -274,6 +307,8 @@ function App() {
       <Singleton />
       <h2>Singleton Headless</h2>
       <SingletonHeadless />
+      <h2>Nested Singleton</h2>
+      <NestedSingleton />
       <h2>Plugins</h2>
       <FollowCursor />
       <h2>Headless Tippy w/ React Spring</h2>

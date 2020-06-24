@@ -1,16 +1,22 @@
 import {useMutableBox, useIsomorphicLayoutEffect} from './util-hooks';
 import {deepPreserveProps} from './utils';
 import {classNamePlugin} from './className-plugin';
-import {useMemo} from 'react';
+import {useMemo, useState} from 'react';
 
 export default function useSingletonGenerator(createSingleton) {
   return function useSingleton({disabled = false, overrides = []} = {}) {
+    const [mounted, setMounted] = useState(false);
     const mutableBox = useMutableBox({
       children: [],
       renders: 1,
     });
 
     useIsomorphicLayoutEffect(() => {
+      if (!mounted) {
+        setMounted(true);
+        return;
+      }
+
       const {children, sourceData} = mutableBox;
 
       if (!sourceData) {
@@ -48,9 +54,13 @@ export default function useSingletonGenerator(createSingleton) {
           ({instance}) => !instance.state.isDestroyed,
         );
       };
-    }, []);
+    }, [mounted]);
 
     useIsomorphicLayoutEffect(() => {
+      if (!mounted) {
+        return;
+      }
+
       if (mutableBox.renders === 1) {
         mutableBox.renders++;
         return;
@@ -63,6 +73,7 @@ export default function useSingletonGenerator(createSingleton) {
       }
 
       const {content, ...props} = sourceData.props;
+
       instance.setProps(
         deepPreserveProps(instance, {
           ...props,
