@@ -91,7 +91,7 @@ export default function TippyGenerator(tippy) {
       };
     }
 
-    const deps = children ? [children.type] : [];
+    const deps = [reference].concat(children ? [children.type] : []);
 
     // CREATE
     useIsomorphicLayoutEffect(() => {

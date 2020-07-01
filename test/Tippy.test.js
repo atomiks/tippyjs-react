@@ -525,7 +525,7 @@ describe('<Tippy />', () => {
       return (
         <>
           <button ref={setElement} data-testid="reference-prop" />
-          {element ? <Tippy reference={element} /> : null}
+          <Tippy reference={element} />
         </>
       );
     }
