@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import TippyBase from '../src';
 import {render, cleanup} from '@testing-library/react';
 
@@ -497,6 +497,25 @@ describe('<Tippy />', () => {
     render(<Tippy className="x" />);
 
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  test('`reference` prop', () => {
+    function App() {
+      const ref = useRef();
+
+      return (
+        <>
+          <button ref={ref} data-testid="reference-prop" />
+          <Tippy reference={ref} />
+        </>
+      );
+    }
+
+    render(<App />);
+
+    expect(instance.reference.getAttribute('data-testid')).toBe(
+      'reference-prop',
+    );
   });
 });
 

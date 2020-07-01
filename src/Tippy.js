@@ -16,6 +16,7 @@ export default function TippyGenerator(tippy) {
     visible,
     singleton,
     render,
+    reference,
     disabled = false,
     ignoreAttributes = true,
     // Filter React development reserved props
@@ -94,10 +95,13 @@ export default function TippyGenerator(tippy) {
 
     // CREATE
     useIsomorphicLayoutEffect(() => {
-      const instance = tippy(mutableBox.ref || ssrSafeCreateDiv(), {
-        ...computedProps,
-        plugins: [classNamePlugin, ...(props.plugins || [])],
-      });
+      const instance = tippy(
+        reference?.current || mutableBox.ref || ssrSafeCreateDiv(),
+        {
+          ...computedProps,
+          plugins: [classNamePlugin, ...(props.plugins || [])],
+        },
+      );
 
       mutableBox.instance = instance;
 
