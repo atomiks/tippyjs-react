@@ -297,6 +297,24 @@ function App() {
 }
 ```
 
+### `reference?: ref`
+
+If you can't place your reference element as a child inside `<Tippy />`, you can
+use this prop instead.
+
+```jsx
+function App() {
+  const ref = useRef();
+
+  return (
+    <>
+      <button ref={ref}></button>
+      <Tippy content="Tooltip" reference={ref} />
+    </>
+  );
+}
+```
+
 ### Plugins
 
 Tippy.js splits certain props into separate pieces of code called plugins to
