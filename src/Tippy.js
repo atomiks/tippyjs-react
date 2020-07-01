@@ -95,13 +95,15 @@ export default function TippyGenerator(tippy) {
 
     // CREATE
     useIsomorphicLayoutEffect(() => {
-      const instance = tippy(
-        reference?.current || mutableBox.ref || ssrSafeCreateDiv(),
-        {
-          ...computedProps,
-          plugins: [classNamePlugin, ...(props.plugins || [])],
-        },
-      );
+      let element = reference;
+      if (reference && reference.hasOwnProperty('current')) {
+        element = reference.current;
+      }
+
+      const instance = tippy(element || mutableBox.ref || ssrSafeCreateDiv(), {
+        ...computedProps,
+        plugins: [classNamePlugin, ...(props.plugins || [])],
+      });
 
       mutableBox.instance = instance;
 

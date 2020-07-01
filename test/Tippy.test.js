@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import TippyBase from '../src';
 import {render, cleanup} from '@testing-library/react';
 
@@ -499,7 +499,7 @@ describe('<Tippy />', () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
-  test('`reference` prop', () => {
+  test('`reference` prop as RefObject', () => {
     function App() {
       const ref = useRef();
 
@@ -507,6 +507,25 @@ describe('<Tippy />', () => {
         <>
           <button ref={ref} data-testid="reference-prop" />
           <Tippy reference={ref} />
+        </>
+      );
+    }
+
+    render(<App />);
+
+    expect(instance.reference.getAttribute('data-testid')).toBe(
+      'reference-prop',
+    );
+  });
+
+  test('`reference` prop as Element', () => {
+    function App() {
+      const [element, setElement] = useState(null);
+
+      return (
+        <>
+          <button ref={setElement} data-testid="reference-prop" />
+          {element ? <Tippy reference={element} /> : null}
         </>
       );
     }
