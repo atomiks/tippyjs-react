@@ -10,6 +10,7 @@ export interface TippyProps extends Omit<Partial<Props>, 'content' | 'render'> {
   disabled?: boolean;
   className?: string;
   singleton?: SingletonObject;
+  reference?: React.RefObject<Element> | Element | null;
   render?: (
     attrs: {
       'data-placement': Placement;

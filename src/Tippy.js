@@ -16,6 +16,7 @@ export default function TippyGenerator(tippy) {
     visible,
     singleton,
     render,
+    reference,
     disabled = false,
     ignoreAttributes = true,
     // Filter React development reserved props
@@ -90,11 +91,16 @@ export default function TippyGenerator(tippy) {
       };
     }
 
-    const deps = children ? [children.type] : [];
+    const deps = [reference].concat(children ? [children.type] : []);
 
     // CREATE
     useIsomorphicLayoutEffect(() => {
-      const instance = tippy(mutableBox.ref || ssrSafeCreateDiv(), {
+      let element = reference;
+      if (reference && reference.hasOwnProperty('current')) {
+        element = reference.current;
+      }
+
+      const instance = tippy(element || mutableBox.ref || ssrSafeCreateDiv(), {
         ...computedProps,
         plugins: [classNamePlugin, ...(props.plugins || [])],
       });

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {useSpring, animated} from 'react-spring';
@@ -294,6 +294,17 @@ function NestedSingleton() {
   );
 }
 
+function ReferenceProp() {
+  const ref = useRef();
+
+  return (
+    <>
+      <button ref={ref}>Reference</button>
+      <Tippy content="Tippy" reference={ref} />
+    </>
+  );
+}
+
 function App() {
   return (
     <>
@@ -317,6 +328,8 @@ function App() {
       <FramerMotion />
       <h2>Fully Controlled on Click</h2>
       <FullyControlledOnClick />
+      <h2>Reference prop</h2>
+      <ReferenceProp />
     </>
   );
 }
