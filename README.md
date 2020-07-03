@@ -299,7 +299,7 @@ function App() {
 
 ### `reference?: React.RefObject | Element`
 
-> Available from `v4.1.0` (**unreleased**)
+> Available from `v4.1.0`
 
 If you can't place your reference element as a child inside `<Tippy />`, you can
 use this prop instead. It accepts a React `RefObject` (`.current` property) or a
