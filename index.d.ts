@@ -11,6 +11,7 @@ export interface TippyProps extends Partial<Omit<Props, 'content' | 'render'>> {
   className?: string;
   singleton?: SingletonObject;
   reference?: React.RefObject<Element> | Element | null;
+  ref?: React.Ref<Element>;
   render?: (
     attrs: {
       'data-placement': Placement;
