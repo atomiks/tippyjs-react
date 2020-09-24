@@ -459,6 +459,25 @@ describe('<Tippy />', () => {
     expect(instance.popper.firstElementChild).toMatchSnapshot();
   });
 
+  test('render prop instance', () => {
+    let _instance;
+    render(
+      <Tippy
+        render={(attrs, content, instance) => {
+          _instance = instance;
+          return <div {...attrs}>Hello</div>;
+        }}
+        showOnCreate={true}
+      >
+        <button />
+      </Tippy>,
+    );
+
+    jest.runAllTimers();
+
+    expect(_instance).toBe(instance);
+  });
+
   test('render prop preserve popperOptions', () => {
     const element = (
       <Tippy

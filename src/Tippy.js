@@ -221,7 +221,11 @@ export default function TippyGenerator(tippy) {
         {mounted &&
           createPortal(
             render
-              ? render(toDataAttributes(attrs), singletonContent)
+              ? render(
+                  toDataAttributes(attrs),
+                  singletonContent,
+                  mutableBox.instance,
+                )
               : content,
             mutableBox.container,
           )}
