@@ -318,6 +318,74 @@ function App() {
 }
 ```
 
+### `arrow?: string`
+
+You can customize the arrow display using a custom SVG with round borders as in the
+[tippy.js original documentation](https://atomiks.github.io/tippyjs/v6/all-props/#showoncreate)
+
+First you need to import the basic CSS in your app
+```jsx 
+import 'tippy.js/dist/svg-arrow.css';
+```
+And then you can implement the arrow SVG this way
+
+```jsx
+import React from 'react';
+import Tippy from '@tippyjs/react';
+
+import { styled, StyledThemeTypes } from 'styled-components';
+
+const SVGArrow = '<svg width="16"height="6"xmlns="http://www.w3.org/2000/svg"><path d="M0 6s1.796-.013 4.67-3.615C5.851.9 6.93.006 8 0c1.07-.006 2.148.887 3.343 2.385C14.233 6.005 16 6 16 6H0z"/></svg>'
+
+const Tooltip = ({ children, content }) => (
+  <StyledTooltip
+    arrow={SVGArrow}
+    content='Your awesome tooltip content'
+  >
+    <Button>Click me</Button>
+  </StyledTooltip>
+)
+```
+
+
+You can also customize and add a "border" effect, using two SVG strings, this way one of them act as border
+The following example were using styled-components, but it you can achieve same effect with plain css
+
+```jsx
+import React from 'react';
+import Tippy from '@tippyjs/react';
+
+import { styled, StyledThemeTypes } from 'styled-components';
+
+const SVGArrow = '<svg width="16"height="6"xmlns="http://www.w3.org/2000/svg"><path d="M0 6s1.796-.013 4.67-3.615C5.851.9 6.93.006 8 0c1.07-.006 2.148.887 3.343 2.385C14.233 6.005 16 6 16 6H0z"/></svg>'
+
+const StyledTooltip = styled(Tippy)`
+  background: red;
+  border: 1px solid purple;
+
+  & .tippy-arrow {
+    color: black;
+  }
+
+  & .tippy-svg-arrow svg{
+    fill:purple;
+  }
+  & .tippy-svg-arrow svg + svg { 
+    fill: black;
+  }
+`
+
+const Tooltip = ({ children, content }) => (
+  <StyledTooltip
+    arrow={SVGArrow + SVGArrow}
+    content='Your awesome tooltip content'
+  >
+    <Button>Click me</Button>
+  </StyledTooltip>
+)
+```
+
+
 ### Plugins
 
 Tippy.js splits certain props into separate pieces of code called plugins to
