@@ -7,17 +7,12 @@
 </div>
 
 [Tippy.js](https://github.com/atomiks/tippyjs/) is the complete tooltip,
-popover, dropdown, and menu solution for the web, powered by Popper.js.
+popover, dropdown, and menu solution for the web, powered by Popper.
 
-It is an abstraction over Popper that provides the logic and optionally the
-styling involved in all types of elements that pop out from the flow of the
-document and get overlaid on top of the UI, positioned next to a reference
-element.
-
-This is a lightweight wrapper that lets you use it declaratively in React,
-providing full integration including headless rendering abilities. Tippy has
-virtually no restrictions over Popper, and gives you limitless control while
-providing useful behavior and defaults.
+Tippy is an abstraction over Popper that provides common logic involved in all
+types of elements that pop out on top of the UI, positioned next to a target or
+reference element. This is a React wrapper for the core library, providing full
+integration including headless rendering abilities.
 
 ## 🚀 Installation
 
@@ -31,8 +26,6 @@ yarn add @tippyjs/react
 
 CDN: https://unpkg.com/@tippyjs/react
 
-Requires React 16.8+
-
 ## 🖲 Usage
 
 There are two ways to use this component:
@@ -44,9 +37,7 @@ There are two ways to use this component:
   spring libraries. If you want greater control over your poppers to integrate
   fully with design systems, this is for you.
 
-You can use both of these in conjunction if you'd like though — if so, use the
-default import and set `animation={false}` as a default prop instead of using
-the `/headless` import.
+Both may be used in conjunction.
 
 ### Default Tippy
 
@@ -72,7 +63,7 @@ const JSXContent = () => (
 );
 ```
 
-Default Tippy is very quick to use and setup and "just works" out of the box.
+Default Tippy "just works" out of the box.
 
 ### Headless Tippy
 
@@ -80,7 +71,7 @@ Render your own tippy element from scratch:
 
 ```jsx
 import React from 'react';
-import Tippy from '@tippyjs/react/headless';
+import Tippy from '@tippyjs/react/headless'; // different import path!
 
 const HeadlessTippy = () => (
   <Tippy
@@ -96,15 +87,14 @@ const HeadlessTippy = () => (
 ```
 
 `attrs` is an object containing `data-placement`, `data-reference-hidden`, and
-`data-escaped` attributes. This allows you to conditionally style your tippy if
-necessary.
+`data-escaped` attributes. This allows you to conditionally style your tippy.
 
 #### Headless animation
 
 - [`framer-motion`](https://codesandbox.io/s/festive-fire-hcr47)
 - [`react-spring`](https://codesandbox.io/s/vigilant-northcutt-7w3yr)
 
-#### Arrow
+#### Headless arrow
 
 To make Popper position your custom arrow, set a `data-popper-arrow` attribute
 on it:
@@ -160,23 +150,19 @@ function App() {
 }
 ```
 
-#### Note on Headless Tippy in React
+#### Headless root element
 
-The root popper node is abstracted away and gets styled/mutated by Tippy
-internally, so Headless Tippy in React is partially headless. This ensures it
-works correctly with minimal effort on your behalf to render.
+When rendering an element with the `render` prop, you're rendering the inner
+element that the root popper (positioned) node wraps.
 
-When rendering an element with the `render` prop, you're rendering the inner box
-element that the root popper node wraps, which is what gets styled and animated.
-For advanced cases, you can access the parent popper node as `instance.popper`
-in the `onCreate` lifecycle hook.
+For advanced cases you can access the root element via `instance.popper`.
 
 [Here's `moveTransition` with Framer Motion](https://codesandbox.io/s/tippyjs-react-framer-motion-j94mj).
 
 ### Component children
 
-If you want to use a component element as a child, ensure you forward the ref to
-the DOM node:
+If you want to use a component element as a child of the component, ensure you
+forward the ref to the DOM node:
 
 ```jsx
 import React, {forwardRef} from 'react';
@@ -201,9 +187,8 @@ function App() {
 `styled-components` v4+ does this for you automatically, so it should be
 seamless when using the `styled` constructor.
 
-If you're using a library that doesn't `forwardRef` for you, and doesn't give
-access to the ref via `innerRef` or similar, you can use a wrapper `<span>`
-element as a workaround.
+Workaround for old libraries that don't forward the ref is to use a `<span>`
+wrapper tag:
 
 ```jsx
 <Tippy content="Tooltip">
@@ -221,13 +206,7 @@ Visit [All Props](https://atomiks.github.io/tippyjs/v6/all-props/) to view the
 complete list.
 
 ```jsx
-<Tippy
-  content="Tooltip"
-  interactive={true}
-  interactiveBorder={20}
-  delay={100}
-  // ...and many more!
->
+<Tippy content="Tooltip" interactive={true} interactiveBorder={20} delay={100}>
   <button>Reference</button>
 </Tippy>
 ```
@@ -236,33 +215,16 @@ In addition, there are 3 more props added specifically for the React component.
 
 ### `className?: string`
 
-> **Note**: This does not apply if using Headless Tippy, as you can set this on
-> the element yourself.
-
-A React alternative to the `theme` prop. The className gets added to the tooltip
-element's class list as expected, without adding `-theme` as a suffix.
-
 ```jsx
 <Tippy content="Tooltip" className="hello world">
   <button>Reference</button>
 </Tippy>
 ```
 
-If you're using `styled-components`, the `className` prop allows you to avoid
-global styles with the following technique:
+This allows you to use `styled(Tippy)` or the `css` prop in `styled-components`
+or `emotion`.
 
-```jsx
-const PurpleTippy = styled(Tippy)`
-  background: purple;
-
-  /* Styling the arrow for different placements */
-  &[data-placement^='top'] > .tippy-arrow::before {
-    border-top-color: purple;
-  }
-`;
-```
-
-See [themes](https://atomiks.github.io/tippyjs/v6/themes/) for more information.
+> Note: Does not apply if using Headless Tippy.
 
 ### `disabled?: boolean`
 
