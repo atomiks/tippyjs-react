@@ -14,7 +14,11 @@ Array [
 `;
 
 exports[`<Tippy /> render prop 1`] = `
-<div>
+<div
+  data-escaped=""
+  data-placement="top"
+  data-reference-hidden=""
+>
   Hello
 </div>
 `;
