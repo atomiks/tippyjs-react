@@ -308,7 +308,7 @@ function ReferenceProp() {
 function App() {
   return (
     <>
-      {/* <h2>Content</h2>
+      <h2>Content</h2>
       <ContentString />
       <ContentElement />
       <h2>Special</h2>
@@ -329,7 +329,7 @@ function App() {
       <h2>Fully Controlled on Click</h2>
       <FullyControlledOnClick />
       <h2>Reference prop</h2>
-      <ReferenceProp /> */}
+      <ReferenceProp />
       <h2>Nested update</h2>
       <NestedUpdate />
     </>
