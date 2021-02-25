@@ -143,6 +143,9 @@ export default function TippyGenerator(tippy) {
 
       instance.setProps(deepPreserveProps(instance.props, computedProps));
 
+      // Fixes #264
+      instance.popperInstance?.forceUpdate();
+
       if (disabled) {
         instance.disable();
       } else {

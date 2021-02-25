@@ -308,7 +308,7 @@ function ReferenceProp() {
 function App() {
   return (
     <>
-      <h2>Content</h2>
+      {/* <h2>Content</h2>
       <ContentString />
       <ContentElement />
       <h2>Special</h2>
@@ -329,8 +329,36 @@ function App() {
       <h2>Fully Controlled on Click</h2>
       <FullyControlledOnClick />
       <h2>Reference prop</h2>
-      <ReferenceProp />
+      <ReferenceProp /> */}
+      <h2>Nested update</h2>
+      <NestedUpdate />
     </>
+  );
+}
+
+function NestedUpdate() {
+  const [value, setValue] = useState(Math.random());
+
+  useEffect(() => {
+    const id = setInterval(() => setValue(Math.random()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="App">
+      <h1>{value}</h1>
+      <Tippy content={<NestedContent />} interactive trigger="click">
+        <span>Hover me</span>
+      </Tippy>
+    </div>
+  );
+}
+
+function NestedContent() {
+  return (
+    <Tippy content="Hello" trigger="click">
+      <span>Click me</span>
+    </Tippy>
   );
 }
 
