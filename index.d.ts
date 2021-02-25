@@ -19,6 +19,7 @@ export interface TippyProps extends Partial<Omit<Props, 'content' | 'render'>> {
       'data-escaped'?: string;
     },
     content?: Content,
+    instance?: Instance
   ) => React.ReactNode;
 }
 
