@@ -141,6 +141,16 @@ export default function TippyGenerator(tippy) {
 
       const {instance} = mutableBox;
 
+      if (
+        instance.props.popperOptions?.modifiers?.find(
+          i => i.name === '$$tippyReact',
+        )
+      ) {
+        console.log(
+          deepPreserveProps(instance.props, computedProps).popperOptions,
+        );
+      }
+
       instance.setProps(deepPreserveProps(instance.props, computedProps));
 
       // Fixes #264
@@ -180,7 +190,9 @@ export default function TippyGenerator(tippy) {
         popperOptions: {
           ...instance.props.popperOptions,
           modifiers: [
-            ...(instance.props.popperOptions?.modifiers || []),
+            ...(instance.props.popperOptions?.modifiers || []).filter(
+              ({name}) => name !== '$$tippyReact',
+            ),
             {
               name: '$$tippyReact',
               enabled: true,
