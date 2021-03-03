@@ -7677,10 +7677,10 @@ tiny-inflate@^1.0.0:
   resolved "https://registry.yarnpkg.com/tiny-inflate/-/tiny-inflate-1.0.3.tgz#122715494913a1805166aaf7c93467933eea26c4"
   integrity sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==
 
-tippy.js@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.0.tgz#1cabf492b3afb1a82cf28e5a62859f6aeb253688"
-  integrity sha512-7YhkZS7HbvEGiahGGU4QHLEnzaEWEOh/s4W1YN/ktgqm9LJHV0Bw9GV+hwGbvIAAjqgSps/FWWZBzWEiV8ojmA==
+tippy.js@^6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.1.tgz#3788a007be7015eee0fd589a66b98fb3f8f10181"
+  integrity sha512-JnFncCq+rF1dTURupoJ4yPie5Cof978inW6/4S6kmWV7LL9YOSEVMifED3KdrVPEG+Z/TFH2CDNJcQEfaeuQww==
   dependencies:
     "@popperjs/core" "^2.8.3"
 
