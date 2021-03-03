@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, forwardRef} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {useSpring, animated} from 'react-spring';
@@ -42,6 +42,53 @@ const ReactFramerBox = styled(motion.div)`
   }
 `;
 
+const LazyTippy = forwardRef((props, ref) => {
+  const [mounted, setMounted] = useState(false);
+
+  const lazyPlugin = {
+    fn: () => ({
+      onMount: () => setMounted(true),
+      onHidden: () => setMounted(false),
+    }),
+  };
+
+  const computedProps = {...props};
+
+  computedProps.plugins = [lazyPlugin, ...(props.plugins || [])];
+
+  if (props.render) {
+    computedProps.render = (...args) => (mounted ? props.render(...args) : '');
+  } else {
+    computedProps.content = mounted ? props.content : '';
+  }
+
+  return <Tippy {...computedProps} ref={ref} />;
+});
+
+function CountContent() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(c => c + 1);
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return count;
+}
+
+function LazyTippyExample() {
+  return (
+    <LazyTippy content={<CountContent />} hideOnClick={false}>
+      <LazyTippy content={<CountContent />} trigger="click" placement="bottom">
+        <button>Lazy tippy</button>
+      </LazyTippy>
+    </LazyTippy>
+  );
+}
+
 function ContentString() {
   const [count, setCount] = useState(0);
 
@@ -52,7 +99,7 @@ function ContentString() {
   }, []);
 
   return (
-    <Tippy content={count}>
+    <Tippy content={count} popperOptions={{modifiers: [{name: 'hi'}]}}>
       <button>ContentString</button>
     </Tippy>
   );
@@ -311,7 +358,7 @@ function App() {
       <h2>Content</h2>
       <ContentString />
       <ContentElement />
-      <h2>Special</h2>
+      {/* <h2>Special</h2>
       <DisabledProp />
       <VisibleProp />
       <h2>Singleton</h2>
@@ -332,6 +379,8 @@ function App() {
       <ReferenceProp />
       <h2>Nested update</h2>
       <NestedUpdate />
+      <h2>Lazy Tippy</h2>
+      <LazyTippyExample /> */}
     </>
   );
 }

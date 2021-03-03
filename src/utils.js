@@ -32,19 +32,30 @@ export function toDataAttributes(attrs) {
   return dataAttrs;
 }
 
+export function uniqueByName(arr) {
+  const output = [];
+  const lookup = Object.create(null);
+
+  for (const item in arr) {
+    if (lookup[arr[item].name] === undefined) {
+      output.push(arr[item]);
+    }
+    lookup[arr[item].name] = arr[item];
+  }
+
+  return output;
+}
+
 export function deepPreserveProps(instanceProps, componentProps) {
   return {
     ...componentProps,
     popperOptions: {
       ...instanceProps.popperOptions,
       ...componentProps.popperOptions,
-      modifiers: [
-        // Preserve tippy's internal + plugin modifiers
-        ...(instanceProps.popperOptions?.modifiers || []).filter(
-          modifier => modifier.name.indexOf('tippy') >= 0,
-        ),
+      modifiers: uniqueByName([
+        ...(instanceProps.popperOptions?.modifiers || []),
         ...(componentProps.popperOptions?.modifiers || []),
-      ],
+      ]),
     },
   };
 }

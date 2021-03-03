@@ -75,7 +75,7 @@ export default function useSingletonGenerator(createSingleton) {
       const {content, ...props} = sourceData.props;
 
       instance.setProps(
-        deepPreserveProps(instance, {
+        deepPreserveProps(instance.props, {
           ...props,
           overrides,
         }),
