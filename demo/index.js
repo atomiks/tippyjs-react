@@ -358,7 +358,7 @@ function App() {
       <h2>Content</h2>
       <ContentString />
       <ContentElement />
-      {/* <h2>Special</h2>
+      <h2>Special</h2>
       <DisabledProp />
       <VisibleProp />
       <h2>Singleton</h2>
@@ -380,7 +380,7 @@ function App() {
       <h2>Nested update</h2>
       <NestedUpdate />
       <h2>Lazy Tippy</h2>
-      <LazyTippyExample /> */}
+      <LazyTippyExample />
     </>
   );
 }
