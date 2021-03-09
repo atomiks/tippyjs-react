@@ -32,9 +32,10 @@ export function toDataAttributes(attrs) {
   return dataAttrs;
 }
 
-export function uniqueByName(arr) {
+export function uniqueByName(arrNaturalOrder) {
   const output = [];
   const lookup = Object.create(null);
+  const arr = arrNaturalOrder.reverse();
 
   for (const item in arr) {
     if (lookup[arr[item].name] === undefined) {
