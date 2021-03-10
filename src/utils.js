@@ -32,17 +32,16 @@ export function toDataAttributes(attrs) {
   return dataAttrs;
 }
 
-export function uniqueByName(arrNaturalOrder) {
+export function uniqueByShape(arr) {
   const output = [];
   const lookup = Object.create(null);
-  const arr = arrNaturalOrder.reverse();
 
-  for (const item in arr) {
-    if (lookup[arr[item].name] === undefined) {
-      output.push(arr[item]);
+  arr.forEach(item => {
+    if (lookup[JSON.stringify(item)] === undefined) {
+      output.push(item);
     }
-    lookup[arr[item].name] = arr[item];
-  }
+    lookup[JSON.stringify(item)] = true;
+  });
 
   return output;
 }
@@ -53,7 +52,7 @@ export function deepPreserveProps(instanceProps, componentProps) {
     popperOptions: {
       ...instanceProps.popperOptions,
       ...componentProps.popperOptions,
-      modifiers: uniqueByName([
+      modifiers: uniqueByShape([
         ...(instanceProps.popperOptions?.modifiers || []),
         ...(componentProps.popperOptions?.modifiers || []),
       ]),
