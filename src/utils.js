@@ -35,8 +35,8 @@ export function toDataAttributes(attrs) {
 export function uniqueByShape(arr) {
   const output = [];
   const lookup = Object.create(null);
-  
-  arr.forEach((item) => {
+
+  arr.forEach(item => {
     if (lookup[JSON.stringify(item)] === undefined) {
       output.push(item);
     }
