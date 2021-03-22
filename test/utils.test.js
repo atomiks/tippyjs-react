@@ -10,6 +10,7 @@ describe('uniqueByShape', () => {
         {name: 'hello'},
         {name: 'hello'},
         {name: 'hello', enabled: false, options: {date, element}},
+        {name: 'hello', enabled: false, options: {date, element}},
         {name: 'hello', options: {element, x: true}},
         {name: 'hello2'},
       ]),
