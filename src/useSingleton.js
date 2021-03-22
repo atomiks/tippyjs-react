@@ -109,12 +109,24 @@ export default function useSingletonGenerator(createSingleton) {
             )
           ) {
             mutableBox.children.push(data);
+
+            if (mutableBox.instance && !mutableBox.instance.state.isDestroyed) {
+              mutableBox.instance.setInstances(
+                mutableBox.children.map(child => child.instance),
+              );
+            }
           }
         },
         cleanup(instance) {
           mutableBox.children = mutableBox.children.filter(
             data => data.instance !== instance,
           );
+
+          if (mutableBox.instance && !mutableBox.instance.state.isDestroyed) {
+            mutableBox.instance.setInstances(
+              mutableBox.children.map(child => child.instance),
+            );
+          }
         },
       };
 
