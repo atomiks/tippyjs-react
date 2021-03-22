@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Tippy, {useSingleton} from '../src';
 import TippyHeadless, {
   useSingleton as useSingletonHeadless,
@@ -167,6 +167,52 @@ describe('disabled prop', () => {
 
     expect(instance.state.isVisible).toBe(false);
   });
+});
+
+it('when new Tippys are added to DOM, they are registered with singleton', () => {
+  const TippyCreator = ({target}) => {
+    const [isTippyAdded, setIsTippyAdded] = useState(false);
+
+    return (
+      <div>
+        <button onClick={() => setIsTippyAdded(true)} data-testid="add-tippy" />
+        {isTippyAdded && (
+          <Tippy content="a" singleton={target}>
+            <button data-testid="a" />
+          </Tippy>
+        )}
+      </div>
+    );
+  };
+
+  function App() {
+    const [source, target] = useSingleton();
+
+    return (
+      <>
+        <Tippy
+          onCreate={onCreate}
+          singleton={source}
+          trigger="click"
+          hideOnClick={false}
+        />
+        <TippyCreator target={target} />
+      </>
+    );
+  }
+
+  const {getByTestId} = render(<App />);
+
+  const addTippyButton = getByTestId('add-tippy');
+
+  fireEvent.click(addTippyButton);
+
+  const buttonA = getByTestId('a');
+
+  fireEvent.click(buttonA);
+
+  expect(instance.state.isVisible).toBe(true);
+  expect(instance.props.content.textContent).toBe('a');
 });
 
 describe('useSingleton headless mode', () => {
