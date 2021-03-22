@@ -32,15 +32,42 @@ export function toDataAttributes(attrs) {
   return dataAttrs;
 }
 
+function deepEqual(x, y) {
+  if (x === y) {
+    return true;
+  } else if (
+    typeof x === 'object' &&
+    x != null &&
+    typeof y === 'object' &&
+    y != null
+  ) {
+    if (Object.keys(x).length !== Object.keys(y).length) {
+      return false;
+    }
+
+    for (const prop in x) {
+      if (y.hasOwnProperty(prop)) {
+        if (!deepEqual(x[prop], y[prop])) {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export function uniqueByShape(arr) {
   const output = [];
-  const lookup = Object.create(null);
 
   arr.forEach(item => {
-    if (lookup[JSON.stringify(item)] === undefined) {
+    if (!output.find(outputItem => deepEqual(item, outputItem))) {
       output.push(item);
     }
-    lookup[JSON.stringify(item)] = true;
   });
 
   return output;
