@@ -29,7 +29,8 @@
   ],
   "jest": {
     "setupFilesAfterEnv": [
-      "<rootDir>test/setup.js"
+      "<rootDir>test/setup.js",
+      "@testing-library/jest-dom/extend-expect"
     ],
     "coveragePathIgnorePatterns": [
       "test/setup.js"
@@ -61,7 +62,8 @@
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "@babel/preset-react": "^7.0.0",
-    "@testing-library/react": "^8.0.1",
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.7",
     "@types/react": "^16.8.2",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^25.1.0",
