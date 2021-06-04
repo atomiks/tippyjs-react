@@ -4,7 +4,7 @@ import {default as tippyCore, Instance, Props, Placement} from 'tippy.js';
 type Content = React.ReactNode;
 
 export interface TippyProps extends Partial<Omit<Props, 'content' | 'render'>> {
-  children?: React.ReactElement<any>;
+  children?: React.ReactChild;
   content?: Content;
   visible?: boolean;
   disabled?: boolean;
