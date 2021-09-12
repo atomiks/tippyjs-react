@@ -76,7 +76,7 @@ import Tippy from '@tippyjs/react/headless'; // different import path!
 const HeadlessTippy = () => (
   <Tippy
     render={attrs => (
-      <div className="box" tabIndex="-1" {...attrs}>
+      <div className="box" tabIndex={-1} {...attrs}>
         My tippy box
       </div>
     )}
@@ -192,7 +192,7 @@ wrapper tag:
 
 ```jsx
 <Tippy content="Tooltip">
-  <span tabIndex="0">
+  <span tabIndex={0}>
     <LegacyComponent>Reference</LegacyComponent>
   </span>
 </Tippy>
@@ -385,7 +385,7 @@ function App() {
       <Tippy
         singleton={source}
         render={(attrs, content) => (
-          <div className="box" tabIndex="-1" {...attrs}>
+          <div className="box" tabIndex={-1} {...attrs}>
             {content}
           </div>
         )}
