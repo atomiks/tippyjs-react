@@ -4,4 +4,12 @@ module.exports = {
     '@babel/react',
   ],
   plugins: ['annotate-pure-calls'],
+  env: {
+    test: {
+      presets: [
+        ['@babel/env', {targets: {node: 'current'}}],
+        '@babel/react',
+      ]
+    }
+  }
 };
