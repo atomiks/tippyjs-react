@@ -168,6 +168,34 @@ function Singleton() {
   );
 }
 
+function SingletonHeadlessDynamicContent() {
+  const [source, target] = useSingletonHeadless();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setInterval(() => {
+      setCount(c => c + 1);
+    }, 1000);
+  }, []);
+
+  return (
+    <>
+      <TippyHeadless
+        render={(attrs, content) => (
+          <ReactSpringBox {...attrs}>{content}</ReactSpringBox>
+        )}
+        singleton={source}
+      />
+      <TippyHeadless content={count} singleton={target}>
+        <button>Reference</button>
+      </TippyHeadless>
+      <TippyHeadless content={count + 1} singleton={target}>
+        <button>Reference</button>
+      </TippyHeadless>
+    </>
+  );
+}
+
 function SingletonHeadless() {
   const [source, target] = useSingletonHeadless({overrides: ['placement']});
   const [enabled, setEnabled] = useState(false);
@@ -365,6 +393,8 @@ function App() {
       <Singleton />
       <h2>Singleton Headless</h2>
       <SingletonHeadless />
+      <h2>Singleton Headless Dynamic Content</h2>
+      <SingletonHeadlessDynamicContent />
       <h2>Nested Singleton</h2>
       <NestedSingleton />
       <h2>Plugins</h2>

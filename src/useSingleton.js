@@ -95,6 +95,7 @@ export default function useSingletonGenerator(createSingleton) {
         data: mutableBox,
         hook(data) {
           mutableBox.sourceData = data;
+          mutableBox.setSingletonContent = data.setSingletonContent;
         },
         cleanup() {
           mutableBox.sourceData = null;
@@ -103,18 +104,23 @@ export default function useSingletonGenerator(createSingleton) {
 
       const target = {
         hook(data) {
-          if (
-            !mutableBox.children.find(
-              ({instance}) => data.instance === instance,
-            )
-          ) {
-            mutableBox.children.push(data);
+          mutableBox.children = mutableBox.children.filter(
+            ({instance}) => data.instance !== instance,
+          );
+          mutableBox.children.push(data);
 
-            if (mutableBox.instance && !mutableBox.instance.state.isDestroyed) {
-              mutableBox.instance.setInstances(
-                mutableBox.children.map(child => child.instance),
-              );
-            }
+          if (
+            mutableBox.instance?.state.isMounted &&
+            mutableBox.instance?.state.$$activeSingletonInstance ===
+              data.instance
+          ) {
+            mutableBox.setSingletonContent?.(data.content);
+          }
+
+          if (mutableBox.instance && !mutableBox.instance.state.isDestroyed) {
+            mutableBox.instance.setInstances(
+              mutableBox.children.map(child => child.instance),
+            );
           }
         },
         cleanup(instance) {
