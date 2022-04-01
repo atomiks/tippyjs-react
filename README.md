@@ -313,6 +313,25 @@ function App() {
 
 [Read more about plugins here](https://atomiks.github.io/tippyjs/v6/plugins/).
 
+## 🧪 Testing with `@testing-library/react`
+
+```jsx
+it('shows a tooltip', () => {
+  render(
+    <Tippy content="myTooltip">
+      <span data-testid="referenceElement">Hover over me!</span>
+    </Tippy>,
+  );
+
+  const referenceElement = screen.getByTestId('referenceElement');
+  fireEvent.mouseEnter(referenceElement);
+
+  expect(document.querySelector('.tippy-content')).toHaveTextContent(
+    'myTooltip',
+  );
+});
+```
+
 ## 🌈 Multiple tippies on a single element
 
 You can nest the components like so:
