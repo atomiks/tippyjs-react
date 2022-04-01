@@ -30,7 +30,9 @@ export default function TippyGenerator(tippy) {
     const isSingletonMode = singleton !== undefined;
 
     const [mounted, setMounted] = useState(false);
-    const [attrs, setAttrs] = useState({});
+    const [attrs, setAttrs] = useState({
+      placement: restOfNativeProps.placement,
+    });
     const [singletonContent, setSingletonContent] = useState();
     const mutableBox = useMutableBox(() => ({
       container: ssrSafeCreateDiv(),
