@@ -6,6 +6,16 @@
   <h1>Tippy.js for React</h1>
 </div>
 
+⚠️⚠️⚠️
+
+**If you're new here, we recommend using [Floating UI's React DOM Interactions package](https://floating-ui.com/docs/react-dom-interactions) instead of this library**. It offers a first class React experience rather than being a wrapper around a vanilla library and encourages much better accessibility practices with more flexibility.
+
+If you want some out-of-the-box styling and animations, and are adding simple tooltips/popovers to your app, Tippy will still work fine. For more advanced/headless solutions, it's best to use Floating UI!
+
+⚠️⚠️⚠️
+
+---
+
 [Tippy.js](https://github.com/atomiks/tippyjs/) is the complete tooltip,
 popover, dropdown, and menu solution for the web, powered by Popper.
 
